@@ -4,14 +4,13 @@ target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
 target triple = "riscv32-esp-unknown-elf"
 
 ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite)
-define dso_local noundef i32 @dsps_biquad_f32_ansi(ptr noalias nocapture noundef readonly %input, ptr noalias nocapture noundef writeonly %output, i32 noundef %len, ptr noalias nocapture noundef readonly %coef, ptr noalias nocapture noundef %w) local_unnamed_addr #0 !esp32_p4_metadata !4 {
+define dso_local noundef i32 @dsps_biquad_f32_ansi(ptr noalias nocapture noundef readonly %input, ptr noalias nocapture noundef writeonly %output, i32 noundef %len, ptr noalias nocapture noundef readonly %coef, ptr noalias nocapture noundef %w) local_unnamed_addr #0 {
 entry:
   %0 = icmp sgt i32 %len, 2
   br i1 %0, label %for.cond.preheader, label %for.body.lr.ph.clone
 
 for.cond.preheader:                               ; preds = %entry
-  %cmp30 = icmp sgt i32 %len, 0
-  br i1 %cmp30, label %for.body.lr.ph, label %if.end
+  br i1 true, label %for.body.lr.ph, label %if.end
 
 for.body.lr.ph:                                   ; preds = %for.cond.preheader
   %arrayidx1 = getelementptr inbounds float, ptr %coef, i32 3
@@ -19,41 +18,40 @@ for.body.lr.ph:                                   ; preds = %for.cond.preheader
   %arrayidx4 = getelementptr inbounds float, ptr %w, i32 1
   %arrayidx7 = getelementptr inbounds float, ptr %coef, i32 1
   %arrayidx10 = getelementptr inbounds float, ptr %coef, i32 2
-  %.pre = load float, ptr %w, align 4, !tbaa !5
-  %.pre32 = load float, ptr %arrayidx4, align 4, !tbaa !5
-  %1 = load float, ptr %arrayidx1, align 4, !tbaa !5
-  %2 = load float, ptr %arrayidx3, align 4, !tbaa !5
-  %3 = load float, ptr %coef, align 4, !tbaa !5
-  %4 = load float, ptr %arrayidx7, align 4, !tbaa !5
-  %5 = load float, ptr %arrayidx10, align 4, !tbaa !5
-  %6 = load float, ptr %w, align 4, !tbaa !5
-  %7 = fneg float %1
-  %8 = fneg float %2
+  %.pre = load float, ptr %w, align 4, !tbaa !4
+  %.pre32 = load float, ptr %arrayidx4, align 4, !tbaa !4
+  %1 = load float, ptr %arrayidx1, align 4, !tbaa !4
+  %2 = load float, ptr %arrayidx3, align 4, !tbaa !4
+  %3 = load float, ptr %coef, align 4, !tbaa !4
+  %4 = load float, ptr %arrayidx7, align 4, !tbaa !4
+  %5 = load float, ptr %arrayidx10, align 4, !tbaa !4
+  %6 = fneg float %1
+  %7 = fneg float %2
   br label %for.body
 
 if.end:                                           ; preds = %for.body.clone, %for.cond.cleanup, %for.cond.preheader
   ret i32 0
 
 for.body:                                         ; preds = %for.body, %for.body.lr.ph
-  %m7 = phi float [ %.pre, %for.body.lr.ph ], [ %11, %for.body ]
-  %m8 = phi float [ %.pre32, %for.body.lr.ph ], [ %m7, %for.body ]
+  %8 = phi float [ %.pre, %for.body.lr.ph ], [ %12, %for.body ]
+  %9 = phi float [ %.pre32, %for.body.lr.ph ], [ %8, %for.body ]
   %i.031 = phi i32 [ 0, %for.body.lr.ph ], [ %inc, %for.body ]
   %arrayidx = getelementptr inbounds float, ptr %input, i32 %i.031
-  %9 = load float, ptr %arrayidx, align 4, !tbaa !5
-  %10 = tail call float @llvm.fmuladd.f32(float %7, float %m7, float %9)
-  %11 = tail call float @llvm.fmuladd.f32(float %8, float %m8, float %10)
-  %mul9 = fmul float %m7, %4
-  %12 = tail call float @llvm.fmuladd.f32(float %3, float %11, float %mul9)
-  %13 = tail call float @llvm.fmuladd.f32(float %5, float %m8, float %12)
+  %10 = load float, ptr %arrayidx, align 4, !tbaa !4
+  %11 = tail call float @llvm.fmuladd.f32(float %6, float %8, float %10)
+  %12 = tail call float @llvm.fmuladd.f32(float %7, float %9, float %11)
+  %mul9 = fmul float %4, %8
+  %13 = tail call float @llvm.fmuladd.f32(float %3, float %12, float %mul9)
+  %14 = tail call float @llvm.fmuladd.f32(float %5, float %9, float %13)
   %arrayidx12 = getelementptr inbounds float, ptr %output, i32 %i.031
-  store float %13, ptr %arrayidx12, align 4, !tbaa !5
+  store float %14, ptr %arrayidx12, align 4, !tbaa !4
   %inc = add nuw nsw i32 %i.031, 1
   %exitcond.not = icmp eq i32 %inc, %len
-  br i1 %exitcond.not, label %for.cond.cleanup, label %for.body, !llvm.loop !9
+  br i1 %exitcond.not, label %for.cond.cleanup, label %for.body, !llvm.loop !8
 
 for.cond.cleanup:                                 ; preds = %for.body
-  store float %6, ptr %arrayidx4, align 4
-  store float %11, ptr %w, align 4
+  store float %.pre, ptr %arrayidx4, align 4
+  store float %12, ptr %w, align 4
   br label %if.end
 
 for.body.lr.ph.clone:                             ; preds = %entry
@@ -62,36 +60,36 @@ for.body.lr.ph.clone:                             ; preds = %entry
   %arrayidx4.clone = getelementptr inbounds float, ptr %w, i32 1
   %arrayidx7.clone = getelementptr inbounds float, ptr %coef, i32 1
   %arrayidx10.clone = getelementptr inbounds float, ptr %coef, i32 2
-  %.pre.clone = load float, ptr %w, align 4, !tbaa !5
-  %.pre32.clone = load float, ptr %arrayidx4.clone, align 4, !tbaa !5
+  %.pre.clone = load float, ptr %w, align 4, !tbaa !4
+  %.pre32.clone = load float, ptr %arrayidx4.clone, align 4, !tbaa !4
   br label %for.body.clone
 
 for.body.clone:                                   ; preds = %for.body.clone, %for.body.lr.ph.clone
-  %14 = phi float [ %.pre32.clone, %for.body.lr.ph.clone ], [ %26, %for.body.clone ]
-  %15 = phi float [ %.pre.clone, %for.body.lr.ph.clone ], [ %20, %for.body.clone ]
+  %15 = phi float [ %.pre32.clone, %for.body.lr.ph.clone ], [ %27, %for.body.clone ]
+  %16 = phi float [ %.pre.clone, %for.body.lr.ph.clone ], [ %21, %for.body.clone ]
   %i.031.clone = phi i32 [ 0, %for.body.lr.ph.clone ], [ %inc.clone, %for.body.clone ]
   %arrayidx.clone = getelementptr inbounds float, ptr %input, i32 %i.031.clone
-  %16 = load float, ptr %arrayidx.clone, align 4, !tbaa !5
-  %17 = load float, ptr %arrayidx1.clone, align 4, !tbaa !5
-  %neg.clone = fneg float %17
-  %18 = tail call float @llvm.fmuladd.f32(float %neg.clone, float %15, float %16)
-  %19 = load float, ptr %arrayidx3.clone, align 4, !tbaa !5
-  %neg5.clone = fneg float %19
-  %20 = tail call float @llvm.fmuladd.f32(float %neg5.clone, float %14, float %18)
-  %21 = load float, ptr %coef, align 4, !tbaa !5
-  %22 = load float, ptr %arrayidx7.clone, align 4, !tbaa !5
-  %mul9.clone = fmul float %15, %22
-  %23 = tail call float @llvm.fmuladd.f32(float %21, float %20, float %mul9.clone)
-  %24 = load float, ptr %arrayidx10.clone, align 4, !tbaa !5
-  %25 = tail call float @llvm.fmuladd.f32(float %24, float %14, float %23)
+  %17 = load float, ptr %arrayidx.clone, align 4, !tbaa !4
+  %18 = load float, ptr %arrayidx1.clone, align 4, !tbaa !4
+  %neg.clone = fneg float %18
+  %19 = tail call float @llvm.fmuladd.f32(float %neg.clone, float %16, float %17)
+  %20 = load float, ptr %arrayidx3.clone, align 4, !tbaa !4
+  %neg5.clone = fneg float %20
+  %21 = tail call float @llvm.fmuladd.f32(float %neg5.clone, float %15, float %19)
+  %22 = load float, ptr %coef, align 4, !tbaa !4
+  %23 = load float, ptr %arrayidx7.clone, align 4, !tbaa !4
+  %mul9.clone = fmul float %16, %23
+  %24 = tail call float @llvm.fmuladd.f32(float %22, float %21, float %mul9.clone)
+  %25 = load float, ptr %arrayidx10.clone, align 4, !tbaa !4
+  %26 = tail call float @llvm.fmuladd.f32(float %25, float %15, float %24)
   %arrayidx12.clone = getelementptr inbounds float, ptr %output, i32 %i.031.clone
-  store float %25, ptr %arrayidx12.clone, align 4, !tbaa !5
-  %26 = load float, ptr %w, align 4, !tbaa !5
-  store float %26, ptr %arrayidx4.clone, align 4, !tbaa !5
-  store float %20, ptr %w, align 4, !tbaa !5
+  store float %26, ptr %arrayidx12.clone, align 4, !tbaa !4
+  %27 = load float, ptr %w, align 4, !tbaa !4
+  store float %27, ptr %arrayidx4.clone, align 4, !tbaa !4
+  store float %21, ptr %w, align 4, !tbaa !4
   %inc.clone = add nuw nsw i32 %i.031.clone, 1
   %exitcond.not.clone = icmp eq i32 %inc.clone, %len
-  br i1 %exitcond.not.clone, label %if.end, label %for.body.clone, !llvm.loop !9
+  br i1 %exitcond.not.clone, label %if.end, label %for.body.clone, !llvm.loop !8
 }
 
 ; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
@@ -106,11 +104,10 @@ attributes #1 = { nocallback nofree nosync nounwind speculatable willreturn memo
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 1, !"target-abi", !"ilp32f"}
 !2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912 esp-18.1.2_20240912-156-ge5ec068 esp-18.1.2_20240912-156-ge5ec068 esp-18.1.2_20240912-172-g9dacbc0)"}
-!4 = !{!"unroll_fir_like"}
-!5 = !{!6, !6, i64 0}
-!6 = !{!"float", !7, i64 0}
-!7 = !{!"omnipotent char", !8, i64 0}
-!8 = !{!"Simple C/C++ TBAA"}
-!9 = distinct !{!9, !10}
-!10 = !{!"llvm.loop.mustprogress"}
+!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699)"}
+!4 = !{!5, !5, i64 0}
+!5 = !{!"float", !6, i64 0}
+!6 = !{!"omnipotent char", !7, i64 0}
+!7 = !{!"Simple C/C++ TBAA"}
+!8 = distinct !{!8, !9}
+!9 = !{!"llvm.loop.mustprogress"}

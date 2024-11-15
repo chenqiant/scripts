@@ -4,7 +4,7 @@ target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
 target triple = "riscv32-esp-unknown-elf"
 
 ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite)
-define dso_local noundef i32 @dsps_addc_f32_ansi(ptr noalias noundef readonly %input, ptr noalias noundef writeonly %output, i32 noundef %len, float noundef %C, i32 noundef %step_in, i32 noundef %step_out) local_unnamed_addr #0 !esp32_p4_metadata !4 {
+define dso_local noundef i32 @dsps_addc_f32_ansi(ptr noalias noundef readonly %input, ptr noalias noundef writeonly %output, i32 noundef %len, float noundef %C, i32 noundef %step_in, i32 noundef %step_out) local_unnamed_addr #0 {
 entry:
   %cmp = icmp eq ptr %input, null
   %cmp1 = icmp eq ptr %output, null
@@ -25,12 +25,13 @@ for.cond.preheader.new:                           ; preds = %if.end
   br i1 %cmp6.not207, label %for.cond.preheader.new2, label %for.body.modify
 
 for.cond.preheader.new2:                          ; preds = %for.body.modify, %for.cond.preheader.new
-  %0 = phi i32 [ %17, %for.body.modify ], [ 0, %for.cond.preheader.new ]
+  %0 = phi i32 [ %1, %for.body.modify ], [ 0, %for.cond.preheader.new ]
   %cmp85209 = icmp slt i32 %0, %len
   br i1 %cmp85209, label %for.body, label %return
 
 for.body.modify:                                  ; preds = %for.cond.preheader.new, %for.body.modify
-  %i.013.modify = phi i32 [ %17, %for.body.modify ], [ 0, %for.cond.preheader.new ]
+  %i.013.modify = phi i32 [ %1, %for.body.modify ], [ 0, %for.cond.preheader.new ]
+  %1 = add nuw i32 %i.013.modify, 16
   %add2 = or disjoint i32 %i.013.modify, 1
   %add6 = or disjoint i32 %i.013.modify, 2
   %add10 = or disjoint i32 %i.013.modify, 3
@@ -78,83 +79,82 @@ for.body.modify:                                  ; preds = %for.cond.preheader.
   %arrayidx57 = getelementptr inbounds float, ptr %output, i32 %add54
   %arrayidx59 = getelementptr inbounds float, ptr %input, i32 %add58
   %arrayidx61 = getelementptr inbounds float, ptr %output, i32 %add58
-  %1 = load float, ptr %arrayidx.modify, align 4, !tbaa !5
-  %2 = load float, ptr %arrayidx3, align 4, !tbaa !5
-  %3 = load float, ptr %arrayidx7, align 4, !tbaa !5
-  %4 = load float, ptr %arrayidx11, align 4, !tbaa !5
-  %5 = load float, ptr %arrayidx15, align 4, !tbaa !5
-  %6 = load float, ptr %arrayidx19, align 4, !tbaa !5
-  %7 = load float, ptr %arrayidx23, align 4, !tbaa !5
-  %8 = load float, ptr %arrayidx27, align 4, !tbaa !5
-  %9 = load float, ptr %arrayidx31, align 4, !tbaa !5
-  %10 = load float, ptr %arrayidx35, align 4, !tbaa !5
-  %11 = load float, ptr %arrayidx39, align 4, !tbaa !5
-  %12 = load float, ptr %arrayidx43, align 4, !tbaa !5
-  %13 = load float, ptr %arrayidx47, align 4, !tbaa !5
-  %14 = load float, ptr %arrayidx51, align 4, !tbaa !5
-  %15 = load float, ptr %arrayidx55, align 4, !tbaa !5
-  %16 = load float, ptr %arrayidx59, align 4, !tbaa !5
-  %add.modify = fadd float %1, %C
-  %add4 = fadd float %2, %C
-  %add8 = fadd float %3, %C
-  %add12 = fadd float %4, %C
-  %add16 = fadd float %5, %C
-  %add20 = fadd float %6, %C
-  %add24 = fadd float %7, %C
-  %add28 = fadd float %8, %C
-  %add32 = fadd float %9, %C
-  %add36 = fadd float %10, %C
-  %add40 = fadd float %11, %C
-  %add44 = fadd float %12, %C
-  %add48 = fadd float %13, %C
-  %add52 = fadd float %14, %C
-  %add56 = fadd float %15, %C
-  %add60 = fadd float %16, %C
-  store float %add60, ptr %arrayidx61, align 4, !tbaa !5
-  store float %add56, ptr %arrayidx57, align 4, !tbaa !5
-  store float %add52, ptr %arrayidx53, align 4, !tbaa !5
-  store float %add48, ptr %arrayidx49, align 4, !tbaa !5
-  store float %add44, ptr %arrayidx45, align 4, !tbaa !5
-  store float %add40, ptr %arrayidx41, align 4, !tbaa !5
-  store float %add36, ptr %arrayidx37, align 4, !tbaa !5
-  store float %add32, ptr %arrayidx33, align 4, !tbaa !5
-  store float %add28, ptr %arrayidx29, align 4, !tbaa !5
-  store float %add24, ptr %arrayidx25, align 4, !tbaa !5
-  store float %add20, ptr %arrayidx21, align 4, !tbaa !5
-  store float %add16, ptr %arrayidx17, align 4, !tbaa !5
-  store float %add12, ptr %arrayidx13, align 4, !tbaa !5
-  store float %add8, ptr %arrayidx9, align 4, !tbaa !5
-  store float %add4, ptr %arrayidx5, align 4, !tbaa !5
-  store float %add.modify, ptr %arrayidx6.modify, align 4, !tbaa !5
-  %17 = add nuw i32 %i.013.modify, 16
-  %exitcond.not.modify = icmp sgt i32 %17, %sub
-  br i1 %exitcond.not.modify, label %for.cond.preheader.new2, label %for.body.modify, !llvm.loop !9
+  %2 = load float, ptr %arrayidx.modify, align 4, !tbaa !4
+  %3 = load float, ptr %arrayidx3, align 4, !tbaa !4
+  %4 = load float, ptr %arrayidx7, align 4, !tbaa !4
+  %5 = load float, ptr %arrayidx11, align 4, !tbaa !4
+  %6 = load float, ptr %arrayidx15, align 4, !tbaa !4
+  %7 = load float, ptr %arrayidx19, align 4, !tbaa !4
+  %8 = load float, ptr %arrayidx23, align 4, !tbaa !4
+  %9 = load float, ptr %arrayidx27, align 4, !tbaa !4
+  %10 = load float, ptr %arrayidx31, align 4, !tbaa !4
+  %11 = load float, ptr %arrayidx35, align 4, !tbaa !4
+  %12 = load float, ptr %arrayidx39, align 4, !tbaa !4
+  %13 = load float, ptr %arrayidx43, align 4, !tbaa !4
+  %14 = load float, ptr %arrayidx47, align 4, !tbaa !4
+  %15 = load float, ptr %arrayidx51, align 4, !tbaa !4
+  %16 = load float, ptr %arrayidx55, align 4, !tbaa !4
+  %17 = load float, ptr %arrayidx59, align 4, !tbaa !4
+  %add.modify = fadd float %C, %2
+  %add4 = fadd float %C, %3
+  %add8 = fadd float %C, %4
+  %add12 = fadd float %C, %5
+  %add16 = fadd float %C, %6
+  %add20 = fadd float %C, %7
+  %add24 = fadd float %C, %8
+  %add28 = fadd float %C, %9
+  %add32 = fadd float %C, %10
+  %add36 = fadd float %C, %11
+  %add40 = fadd float %C, %12
+  %add44 = fadd float %C, %13
+  %add48 = fadd float %C, %14
+  %add52 = fadd float %C, %15
+  %add56 = fadd float %C, %16
+  %add60 = fadd float %C, %17
+  store float %add.modify, ptr %arrayidx6.modify, align 4, !tbaa !4
+  store float %add4, ptr %arrayidx5, align 4, !tbaa !4
+  store float %add8, ptr %arrayidx9, align 4, !tbaa !4
+  store float %add12, ptr %arrayidx13, align 4, !tbaa !4
+  store float %add16, ptr %arrayidx17, align 4, !tbaa !4
+  store float %add20, ptr %arrayidx21, align 4, !tbaa !4
+  store float %add24, ptr %arrayidx25, align 4, !tbaa !4
+  store float %add28, ptr %arrayidx29, align 4, !tbaa !4
+  store float %add32, ptr %arrayidx33, align 4, !tbaa !4
+  store float %add36, ptr %arrayidx37, align 4, !tbaa !4
+  store float %add40, ptr %arrayidx41, align 4, !tbaa !4
+  store float %add44, ptr %arrayidx45, align 4, !tbaa !4
+  store float %add48, ptr %arrayidx49, align 4, !tbaa !4
+  store float %add52, ptr %arrayidx53, align 4, !tbaa !4
+  store float %add56, ptr %arrayidx57, align 4, !tbaa !4
+  store float %add60, ptr %arrayidx61, align 4, !tbaa !4
+  %exitcond.not.modify = icmp sgt i32 %1, %sub
+  br i1 %exitcond.not.modify, label %for.cond.preheader.new2, label %for.body.modify, !llvm.loop !8
 
 for.body:                                         ; preds = %for.cond.preheader.new2, %for.body
   %i.013 = phi i32 [ %inc, %for.body ], [ %0, %for.cond.preheader.new2 ]
   %mul = mul nsw i32 %i.013, %step_in
   %arrayidx = getelementptr inbounds float, ptr %input, i32 %mul
-  %18 = load float, ptr %arrayidx, align 4, !tbaa !5
-  %add = fadd float %18, %C
+  %18 = load float, ptr %arrayidx, align 4, !tbaa !4
+  %add = fadd float %C, %18
   %mul5 = mul nsw i32 %i.013, %step_out
   %arrayidx6 = getelementptr inbounds float, ptr %output, i32 %mul5
-  store float %add, ptr %arrayidx6, align 4, !tbaa !5
+  store float %add, ptr %arrayidx6, align 4, !tbaa !4
   %inc = add nuw nsw i32 %i.013, 1
   %exitcond.not = icmp eq i32 %inc, %len
-  br i1 %exitcond.not, label %return, label %for.body, !llvm.loop !9
+  br i1 %exitcond.not, label %return, label %for.body, !llvm.loop !8
 
 for.body.clone:                                   ; preds = %for.body.clone, %for.cond.preheader
   %i.013.clone = phi i32 [ %inc.clone, %for.body.clone ], [ 0, %for.cond.preheader ]
   %mul.clone = mul nsw i32 %i.013.clone, %step_in
   %arrayidx.clone = getelementptr inbounds float, ptr %input, i32 %mul.clone
-  %19 = load float, ptr %arrayidx.clone, align 4, !tbaa !5
-  %add.clone = fadd float %19, %C
+  %19 = load float, ptr %arrayidx.clone, align 4, !tbaa !4
+  %add.clone = fadd float %C, %19
   %mul5.clone = mul nsw i32 %i.013.clone, %step_out
   %arrayidx6.clone = getelementptr inbounds float, ptr %output, i32 %mul5.clone
-  store float %add.clone, ptr %arrayidx6.clone, align 4, !tbaa !5
+  store float %add.clone, ptr %arrayidx6.clone, align 4, !tbaa !4
   %inc.clone = add nuw nsw i32 %i.013.clone, 1
   %exitcond.not.clone = icmp eq i32 %inc.clone, %len
-  br i1 %exitcond.not.clone, label %return, label %for.body.clone, !llvm.loop !9
+  br i1 %exitcond.not.clone, label %return, label %for.body.clone, !llvm.loop !8
 
 return:                                           ; preds = %for.cond.preheader.new2, %for.body.clone, %for.body, %for.cond.preheader, %entry
   %retval.0 = phi i32 [ 458755, %entry ], [ 0, %for.cond.preheader ], [ 0, %for.body ], [ 0, %for.body.clone ], [ 0, %for.cond.preheader.new2 ]
@@ -169,11 +169,10 @@ attributes #0 = { nofree norecurse nosync nounwind memory(argmem: readwrite) "no
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 1, !"target-abi", !"ilp32f"}
 !2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912 esp-18.1.2_20240912-156-ge5ec068 esp-18.1.2_20240912-156-ge5ec068 esp-18.1.2_20240912-172-g9dacbc0)"}
-!4 = !{!"unroll_addc_like"}
-!5 = !{!6, !6, i64 0}
-!6 = !{!"float", !7, i64 0}
-!7 = !{!"omnipotent char", !8, i64 0}
-!8 = !{!"Simple C/C++ TBAA"}
-!9 = distinct !{!9, !10}
-!10 = !{!"llvm.loop.mustprogress"}
+!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333)"}
+!4 = !{!5, !5, i64 0}
+!5 = !{!"float", !6, i64 0}
+!6 = !{!"omnipotent char", !7, i64 0}
+!7 = !{!"Simple C/C++ TBAA"}
+!8 = distinct !{!8, !9}
+!9 = !{!"llvm.loop.mustprogress"}

@@ -1,4 +1,4 @@
-# 2024-10-10 18:59:13
+# 2024-11-15 16:09:19
 	.text
 	.attribute	4, 16
 	#.attribute	5, "rv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zifencei2p0_zca1p0_zcb1p0_zcmp1p0_zcmt1p0_xesppie1p0"
@@ -11,10 +11,8 @@
 dsps_biquad_f32_arp4:                   # @dsps_biquad_f32_arp4
 # %bb.0:                                # %entry
 	li	a5, 3
-	blt	a2, a5, .LBB0_5
+	blt	a2, a5, .LBB0_4
 # %bb.1:                                # %for.cond.preheader
-	blez	a2, .LBB0_7
-# %bb.2:                                # %for.body.lr.ph
 	flw	fa5, 0(a4)
 	flw	ft0, 4(a4)
 	flw	fa1, 12(a3)
@@ -27,31 +25,31 @@ dsps_biquad_f32_arp4:                   # @dsps_biquad_f32_arp4
 	slli	a2, a2, 2
 	add	a2, a2, a1
 	fmv.s	ft1, fa5
-.LBB0_3:                                # %for.body
+.LBB0_2:                                # %for.body
                                         # =>This Inner Loop Header: Depth=1
 	flw	ft2, 0(a0)
 	fmv.s	ft3, ft1
 	fmadd.s	ft1, fa1, ft1, ft2
 	fmadd.s	ft1, fa0, ft0, ft1
-	fmul.s	ft2, ft3, fa3
+	fmul.s	ft2, fa3, ft3
 	fmadd.s	ft2, fa4, ft1, ft2
 	fmadd.s	ft0, fa2, ft0, ft2
 	fsw	ft0, 0(a1)
 	addi	a1, a1, 4
 	addi	a0, a0, 4
 	fmv.s	ft0, ft3
-	bne	a1, a2, .LBB0_3
-# %bb.4:                                # %for.cond.cleanup
+	bne	a1, a2, .LBB0_2
+# %bb.3:                                # %for.cond.cleanup
 	fsw	fa5, 4(a4)
 	fsw	ft1, 0(a4)
 	li	a0, 0
 	ret
-.LBB0_5:                                # %for.body.lr.ph.clone
+.LBB0_4:                                # %for.body.lr.ph.clone
 	flw	fa4, 0(a4)
 	flw	fa5, 4(a4)
 	slli	a2, a2, 2
 	add	a2, a2, a1
-.LBB0_6:                                # %for.body.clone
+.LBB0_5:                                # %for.body.clone
                                         # =>This Inner Loop Header: Depth=1
 	flw	fa3, 0(a0)
 	flw	fa2, 12(a3)
@@ -71,13 +69,13 @@ dsps_biquad_f32_arp4:                   # @dsps_biquad_f32_arp4
 	addi	a1, a1, 4
 	addi	a0, a0, 4
 	fmv.s	fa4, fa3
-	bne	a1, a2, .LBB0_6
-.LBB0_7:                                # %if.end
+	bne	a1, a2, .LBB0_5
+# %bb.6:                                # %if.end
 	li	a0, 0
 	ret
 .Lfunc_end0:
 	.size	dsps_biquad_f32_arp4, .Lfunc_end0-dsps_biquad_f32_arp4
                                         # -- End function
 	.option	pop
-	.ident	"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912 esp-18.1.2_20240912-156-ge5ec068 esp-18.1.2_20240912-156-ge5ec068 esp-18.1.2_20240912-172-g9dacbc0)"
+	.ident	"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699)"
 	.section	".note.GNU-stack","",@progbits

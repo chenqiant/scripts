@@ -16,6 +16,10 @@ cd corr
 ./run.sh
 cd ..
 
+cd ccorr
+./run.sh
+cd ..
+
 cd dotprod
 ./run.sh
 cd ..
@@ -25,6 +29,10 @@ cd dotprode
 cd ..
 
 cd fir
+./run.sh
+cd ..
+
+cd fird
 ./run.sh
 cd ..
 
@@ -48,7 +56,7 @@ cd conv
 ./run.sh
 cd ..
 
-cd complicate_dotprod
+cd complicated_dotprod
 ./run.sh
 cd ..
 

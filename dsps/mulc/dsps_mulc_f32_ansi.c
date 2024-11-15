@@ -14,7 +14,7 @@
 
 #include "dsps_mulc.h"
 
-esp_err_t dsps_mulc_f32_ansi(const float * restrict input, float * restrict output, int len, float C, int step_in, int step_out)
+esp_err_t dsps_mulc_f32_ansi(const float *  input, float * output, int len, float C, int step_in, int step_out)
 {
     if (NULL == input) {
         return ESP_ERR_DSP_PARAM_OUTOFRANGE;

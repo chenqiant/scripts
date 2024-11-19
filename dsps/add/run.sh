@@ -1,4 +1,4 @@
-rm -rf *.ll *.s
+# rm -rf *.ll *.s
 export PATH=/home/chenqian/Workspace/tool/build_esp_clang/llvm/bin:$PATH
 #-mllvm -opt-bisect-limit=0
 clang  -O3 -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -emit-llvm -S -o dsps_add_f32_ansi.ll \
@@ -38,7 +38,11 @@ opt  after_splitloopbylength.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-c
 
 opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unroll-and-remainder -riscv-loop-unroll-and-remainder=true  -S -o after_loopunrollandremainder.ll
 
-llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32  after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
+# llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll \
+#     -O3 -stop-before=riscv-enable-esp-opt -o before_esp_accel.mir
+
+# llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize before_esp_accel.mir -O3 -filetype=asm -o before_esp_accel.s
 ../preprocess_asm.sh after_loopunrollandremainder.s
 cp after_loopunrollandremainder.s /home/chenqian/esp/esp-idf/components/esp-dsp/modules/math/add/float/dsps_add_f32_arp4.S

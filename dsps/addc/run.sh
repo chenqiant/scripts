@@ -23,6 +23,9 @@ opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unr
 
 llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
+llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll \
+    -O3 -stop-before=riscv-enable-esp-opt -o before_esp_accel.mir
+
 ../preprocess_asm.sh after_loopunrollandremainder.s
 
 cp after_loopunrollandremainder.s /home/chenqian/esp/esp-idf/components/esp-dsp/modules/math/addc/float/dsps_addc_f32_arp4.S

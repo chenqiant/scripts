@@ -1,0 +1,509 @@
+--- |
+  ; ModuleID = 'after_loopunrollandremainder.ll'
+  source_filename = "dsps_sqrt_f32_ansi.c"
+  target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
+  target triple = "riscv32"
+  
+  ; Function Attrs: inlinehint mustprogress nofree norecurse nosync nounwind willreturn memory(none)
+  define dso_local float @dsps_sqrtf_f32_ansi(float noundef %f) local_unnamed_addr #0 {
+  entry:
+    %0 = bitcast float %f to i32
+    %shr = ashr i32 %0, 1
+    %add = add nsw i32 %shr, 532365312
+    %1 = bitcast i32 %add to float
+    ret float %1
+  }
+  
+  ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite)
+  define dso_local noundef i32 @dsps_sqrt_f32_ansi(ptr noalias noundef readonly %input, ptr noalias noundef writeonly %output, i32 noundef %len) local_unnamed_addr #1 {
+  entry:
+    %cmp = icmp eq ptr %input, null
+    %cmp1 = icmp eq ptr %output, null
+    %or.cond = or i1 %cmp, %cmp1
+    br i1 %or.cond, label %return, label %if.end
+  
+  if.end:                                           ; preds = %entry
+    %cmp4 = icmp sgt i32 %len, 2
+    br i1 %cmp4, label %for.cond.preheader.new, label %for.cond.preheader
+  
+  for.cond.preheader:                               ; preds = %if.end
+    %cmp411 = icmp sgt i32 %len, 0
+    br i1 %cmp411, label %for.body.clone.preheader, label %return
+  
+  for.body.clone.preheader:                         ; preds = %for.cond.preheader
+    %0 = shl i32 %len, 2
+    %scevgep48 = getelementptr i8, ptr %output, i32 %0
+    br label %for.body.clone
+  
+  for.cond.preheader.new:                           ; preds = %if.end
+    %sub = add nsw i32 %len, -16
+    %cmp6.not207 = icmp ult i32 %len, 16
+    br i1 %cmp6.not207, label %for.cond.preheader.new2, label %for.body.modify.preheader
+  
+  for.body.modify.preheader:                        ; preds = %for.cond.preheader.new
+    %scevgep8 = getelementptr i8, ptr %output, i32 32
+    %scevgep25 = getelementptr i8, ptr %input, i32 32
+    br label %for.body.modify
+  
+  for.cond.preheader.new2:                          ; preds = %for.body.modify, %for.cond.preheader.new
+    %1 = phi i32 [ 0, %for.cond.preheader.new ], [ %35, %for.body.modify ]
+    %cmp85209 = icmp slt i32 %1, %len
+    br i1 %cmp85209, label %for.body.preheader, label %return
+  
+  for.body.preheader:                               ; preds = %for.cond.preheader.new2
+    %2 = shl i32 %1, 2
+    %scevgep = getelementptr i8, ptr %output, i32 %2
+    %scevgep4 = getelementptr i8, ptr %input, i32 %2
+    %3 = shl i32 %len, 2
+    %scevgep7 = getelementptr i8, ptr %output, i32 %3
+    br label %for.body
+  
+  for.body.modify:                                  ; preds = %for.body.modify.preheader, %for.body.modify
+    %lsr.iv26 = phi ptr [ %scevgep25, %for.body.modify.preheader ], [ %scevgep27, %for.body.modify ]
+    %lsr.iv = phi ptr [ %scevgep8, %for.body.modify.preheader ], [ %scevgep9, %for.body.modify ]
+    %i.012.modify = phi i32 [ %35, %for.body.modify ], [ 0, %for.body.modify.preheader ]
+    %scevgep29 = getelementptr i8, ptr %lsr.iv26, i32 -32
+    %4 = load i32, ptr %scevgep29, align 4, !tbaa !4
+    %shr.i.modify = ashr i32 %4, 1
+    %add48 = or disjoint i32 %shr.i.modify, 532365312
+    %scevgep10 = getelementptr i8, ptr %lsr.iv, i32 -32
+    store i32 %add48, ptr %scevgep10, align 4, !tbaa !4
+    %scevgep30 = getelementptr i8, ptr %lsr.iv26, i32 -28
+    %5 = load i32, ptr %scevgep30, align 4, !tbaa !4
+    %6 = ashr i32 %5, 1
+    %add50 = or disjoint i32 %6, 532365312
+    %scevgep12 = getelementptr i8, ptr %lsr.iv, i32 -28
+    store i32 %add50, ptr %scevgep12, align 4, !tbaa !4
+    %scevgep31 = getelementptr i8, ptr %lsr.iv26, i32 -24
+    %7 = load i32, ptr %scevgep31, align 4, !tbaa !4
+    %8 = ashr i32 %7, 1
+    %add52 = or disjoint i32 %8, 532365312
+    %scevgep13 = getelementptr i8, ptr %lsr.iv, i32 -24
+    store i32 %add52, ptr %scevgep13, align 4, !tbaa !4
+    %scevgep32 = getelementptr i8, ptr %lsr.iv26, i32 -20
+    %9 = load i32, ptr %scevgep32, align 4, !tbaa !4
+    %10 = ashr i32 %9, 1
+    %add54 = or disjoint i32 %10, 532365312
+    %scevgep14 = getelementptr i8, ptr %lsr.iv, i32 -20
+    store i32 %add54, ptr %scevgep14, align 4, !tbaa !4
+    %scevgep33 = getelementptr i8, ptr %lsr.iv26, i32 -16
+    %11 = load i32, ptr %scevgep33, align 4, !tbaa !4
+    %12 = ashr i32 %11, 1
+    %add56 = or disjoint i32 %12, 532365312
+    %scevgep15 = getelementptr i8, ptr %lsr.iv, i32 -16
+    store i32 %add56, ptr %scevgep15, align 4, !tbaa !4
+    %scevgep34 = getelementptr i8, ptr %lsr.iv26, i32 -12
+    %13 = load i32, ptr %scevgep34, align 4, !tbaa !4
+    %14 = ashr i32 %13, 1
+    %add58 = or disjoint i32 %14, 532365312
+    %scevgep16 = getelementptr i8, ptr %lsr.iv, i32 -12
+    store i32 %add58, ptr %scevgep16, align 4, !tbaa !4
+    %scevgep35 = getelementptr i8, ptr %lsr.iv26, i32 -8
+    %15 = load i32, ptr %scevgep35, align 4, !tbaa !4
+    %16 = ashr i32 %15, 1
+    %add60 = or disjoint i32 %16, 532365312
+    %scevgep17 = getelementptr i8, ptr %lsr.iv, i32 -8
+    store i32 %add60, ptr %scevgep17, align 4, !tbaa !4
+    %scevgep36 = getelementptr i8, ptr %lsr.iv26, i32 -4
+    %17 = load i32, ptr %scevgep36, align 4, !tbaa !4
+    %18 = ashr i32 %17, 1
+    %add62 = or disjoint i32 %18, 532365312
+    %scevgep18 = getelementptr i8, ptr %lsr.iv, i32 -4
+    store i32 %add62, ptr %scevgep18, align 4, !tbaa !4
+    %19 = load i32, ptr %lsr.iv26, align 4, !tbaa !4
+    %20 = ashr i32 %19, 1
+    %add64 = or disjoint i32 %20, 532365312
+    store i32 %add64, ptr %lsr.iv, align 4, !tbaa !4
+    %scevgep37 = getelementptr i8, ptr %lsr.iv26, i32 4
+    %21 = load i32, ptr %scevgep37, align 4, !tbaa !4
+    %22 = ashr i32 %21, 1
+    %add66 = or disjoint i32 %22, 532365312
+    %scevgep20 = getelementptr i8, ptr %lsr.iv, i32 4
+    store i32 %add66, ptr %scevgep20, align 4, !tbaa !4
+    %scevgep38 = getelementptr i8, ptr %lsr.iv26, i32 8
+    %23 = load i32, ptr %scevgep38, align 4, !tbaa !4
+    %24 = ashr i32 %23, 1
+    %add68 = or disjoint i32 %24, 532365312
+    %scevgep21 = getelementptr i8, ptr %lsr.iv, i32 8
+    store i32 %add68, ptr %scevgep21, align 4, !tbaa !4
+    %scevgep39 = getelementptr i8, ptr %lsr.iv26, i32 12
+    %25 = load i32, ptr %scevgep39, align 4, !tbaa !4
+    %26 = ashr i32 %25, 1
+    %add70 = or disjoint i32 %26, 532365312
+    %scevgep22 = getelementptr i8, ptr %lsr.iv, i32 12
+    store i32 %add70, ptr %scevgep22, align 4, !tbaa !4
+    %scevgep40 = getelementptr i8, ptr %lsr.iv26, i32 16
+    %27 = load i32, ptr %scevgep40, align 4, !tbaa !4
+    %28 = ashr i32 %27, 1
+    %add72 = or disjoint i32 %28, 532365312
+    %scevgep23 = getelementptr i8, ptr %lsr.iv, i32 16
+    store i32 %add72, ptr %scevgep23, align 4, !tbaa !4
+    %scevgep41 = getelementptr i8, ptr %lsr.iv26, i32 20
+    %29 = load i32, ptr %scevgep41, align 4, !tbaa !4
+    %30 = ashr i32 %29, 1
+    %add74 = or disjoint i32 %30, 532365312
+    %scevgep24 = getelementptr i8, ptr %lsr.iv, i32 20
+    store i32 %add74, ptr %scevgep24, align 4, !tbaa !4
+    %scevgep42 = getelementptr i8, ptr %lsr.iv26, i32 24
+    %31 = load i32, ptr %scevgep42, align 4, !tbaa !4
+    %32 = ashr i32 %31, 1
+    %add76 = or disjoint i32 %32, 532365312
+    %scevgep19 = getelementptr i8, ptr %lsr.iv, i32 24
+    store i32 %add76, ptr %scevgep19, align 4, !tbaa !4
+    %scevgep28 = getelementptr i8, ptr %lsr.iv26, i32 28
+    %33 = load i32, ptr %scevgep28, align 4, !tbaa !4
+    %34 = ashr i32 %33, 1
+    %add78 = or disjoint i32 %34, 532365312
+    %scevgep11 = getelementptr i8, ptr %lsr.iv, i32 28
+    store i32 %add78, ptr %scevgep11, align 4, !tbaa !4
+    %35 = add nuw i32 %i.012.modify, 16
+    %scevgep9 = getelementptr i8, ptr %lsr.iv, i32 64
+    %scevgep27 = getelementptr i8, ptr %lsr.iv26, i32 64
+    %exitcond.not.modify = icmp sgt i32 %35, %sub
+    br i1 %exitcond.not.modify, label %for.cond.preheader.new2, label %for.body.modify, !llvm.loop !8
+  
+  for.body:                                         ; preds = %for.body.preheader, %for.body
+    %lsr.iv5 = phi ptr [ %scevgep4, %for.body.preheader ], [ %scevgep6, %for.body ]
+    %lsr.iv2 = phi ptr [ %scevgep, %for.body.preheader ], [ %scevgep3, %for.body ]
+    %36 = load i32, ptr %lsr.iv5, align 4, !tbaa !4
+    %shr.i = ashr i32 %36, 1
+    %add.i = add nsw i32 %shr.i, 532365312
+    store i32 %add.i, ptr %lsr.iv2, align 4, !tbaa !4
+    %scevgep3 = getelementptr i8, ptr %lsr.iv2, i32 4
+    %scevgep6 = getelementptr i8, ptr %lsr.iv5, i32 4
+    %lsr_fold_term_cond.replaced_term_cond = icmp eq ptr %scevgep3, %scevgep7
+    br i1 %lsr_fold_term_cond.replaced_term_cond, label %return, label %for.body, !llvm.loop !8
+  
+  for.body.clone:                                   ; preds = %for.body.clone.preheader, %for.body.clone
+    %lsr.iv46 = phi ptr [ %input, %for.body.clone.preheader ], [ %scevgep47, %for.body.clone ]
+    %lsr.iv44 = phi ptr [ %output, %for.body.clone.preheader ], [ %scevgep45, %for.body.clone ]
+    %37 = load i32, ptr %lsr.iv46, align 4, !tbaa !4
+    %shr.i.clone = ashr i32 %37, 1
+    %add.i.clone = add nsw i32 %shr.i.clone, 532365312
+    store i32 %add.i.clone, ptr %lsr.iv44, align 4, !tbaa !4
+    %scevgep45 = getelementptr i8, ptr %lsr.iv44, i32 4
+    %scevgep47 = getelementptr i8, ptr %lsr.iv46, i32 4
+    %lsr_fold_term_cond.replaced_term_cond49 = icmp eq ptr %scevgep45, %scevgep48
+    br i1 %lsr_fold_term_cond.replaced_term_cond49, label %return, label %for.body.clone, !llvm.loop !8
+  
+  return:                                           ; preds = %for.body.clone, %for.body, %for.cond.preheader.new2, %for.cond.preheader, %entry
+    %retval.0 = phi i32 [ 458755, %entry ], [ 0, %for.cond.preheader ], [ 0, %for.cond.preheader.new2 ], [ 0, %for.body ], [ 0, %for.body.clone ]
+    ret i32 %retval.0
+  }
+  
+  attributes #0 = { inlinehint mustprogress nofree norecurse nosync nounwind willreturn memory(none) "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="generic-rv32" "target-features"="+32bit,+a,+c,+f,+m,+relax,+xesppie,+zicsr,+zifencei,-d,-e,-experimental-zacas,-experimental-zcmop,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicfiss,-experimental-zimop,-experimental-ztso,-experimental-zvfbfmin,-experimental-zvfbfwma,-h,-smaia,-smepmp,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-za128rs,-za64rs,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zca,-zcb,-zcd,-zce,-zcf,-zcmp,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zic64b,-zicbom,-zicbop,-zicboz,-ziccamoa,-ziccif,-zicclsm,-ziccrse,-zicntr,-zicond,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zvbb,-zvbc,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvkb,-zvkg,-zvkn,-zvknc,-zvkned,-zvkng,-zvknha,-zvknhb,-zvks,-zvksc,-zvksed,-zvksg,-zvksh,-zvkt,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b" }
+  attributes #1 = { nofree norecurse nosync nounwind memory(argmem: readwrite) "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="generic-rv32" "target-features"="+32bit,+a,+c,+f,+m,+relax,+xesppie,+zicsr,+zifencei,-d,-e,-experimental-zacas,-experimental-zcmop,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicfiss,-experimental-zimop,-experimental-ztso,-experimental-zvfbfmin,-experimental-zvfbfwma,-h,-smaia,-smepmp,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-za128rs,-za64rs,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zca,-zcb,-zcd,-zce,-zcf,-zcmp,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zic64b,-zicbom,-zicbop,-zicboz,-ziccamoa,-ziccif,-zicclsm,-ziccrse,-zicntr,-zicond,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zvbb,-zvbc,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvkb,-zvkg,-zvkn,-zvknc,-zvkned,-zvkng,-zvknha,-zvknhb,-zvks,-zvksc,-zvksed,-zvksg,-zvksh,-zvkt,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b" }
+  
+  !llvm.module.flags = !{!0, !1, !2}
+  !llvm.ident = !{!3}
+  
+  !0 = !{i32 1, !"wchar_size", i32 4}
+  !1 = !{i32 1, !"target-abi", !"ilp32f"}
+  !2 = !{i32 8, !"SmallDataLimit", i32 8}
+  !3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333)"}
+  !4 = !{!5, !5, i64 0}
+  !5 = !{!"float", !6, i64 0}
+  !6 = !{!"omnipotent char", !7, i64 0}
+  !7 = !{!"Simple C/C++ TBAA"}
+  !8 = distinct !{!8, !9}
+  !9 = !{!"llvm.loop.mustprogress"}
+
+...
+---
+name:            dsps_sqrtf_f32_ansi
+alignment:       2
+exposesReturnsTwice: false
+legalized:       false
+regBankSelected: false
+selected:        false
+failedISel:      false
+tracksRegLiveness: true
+hasWinCFI:       false
+callsEHReturn:   false
+callsUnwindInit: false
+hasEHCatchret:   false
+hasEHScopes:     false
+hasEHFunclets:   false
+isOutlined:      false
+debugInstrRef:   false
+failsVerification: false
+tracksDebugUserValues: true
+registers:       []
+liveins:
+  - { reg: '$f10_f', virtual-reg: '' }
+frameInfo:
+  isFrameAddressTaken: false
+  isReturnAddressTaken: false
+  hasStackMap:     false
+  hasPatchPoint:   false
+  stackSize:       0
+  offsetAdjustment: 0
+  maxAlignment:    1
+  adjustsStack:    false
+  hasCalls:        false
+  stackProtector:  ''
+  functionContext: ''
+  maxCallFrameSize: 0
+  cvBytesOfCalleeSavedRegisters: 0
+  hasOpaqueSPAdjustment: false
+  hasVAStart:      false
+  hasMustTailInVarArgFunc: false
+  hasTailCall:     false
+  localFrameSize:  0
+  savePoint:       ''
+  restorePoint:    ''
+fixedStack:      []
+stack:           []
+entry_values:    []
+callSites:       []
+debugValueSubstitutions: []
+constants:       []
+machineFunctionInfo:
+  varArgsFrameIndex: 0
+  varArgsSaveSize: 0
+body:             |
+  bb.0.entry:
+    liveins: $f10_f
+  
+    renamable $x10 = FMV_X_W killed renamable $f10_f
+    renamable $x10 = SRAI killed renamable $x10, 1
+    renamable $x11 = LUI 129972
+    renamable $x10 = nsw ADD killed renamable $x10, killed renamable $x11
+    renamable $f10_f = FMV_W_X killed renamable $x10
+    PseudoRET implicit $f10_f
+
+...
+---
+name:            dsps_sqrt_f32_ansi
+alignment:       2
+exposesReturnsTwice: false
+legalized:       false
+regBankSelected: false
+selected:        false
+failedISel:      false
+tracksRegLiveness: true
+hasWinCFI:       false
+callsEHReturn:   false
+callsUnwindInit: false
+hasEHCatchret:   false
+hasEHScopes:     false
+hasEHFunclets:   false
+isOutlined:      false
+debugInstrRef:   false
+failsVerification: false
+tracksDebugUserValues: true
+registers:       []
+liveins:
+  - { reg: '$x10', virtual-reg: '' }
+  - { reg: '$x11', virtual-reg: '' }
+  - { reg: '$x12', virtual-reg: '' }
+frameInfo:
+  isFrameAddressTaken: false
+  isReturnAddressTaken: false
+  hasStackMap:     false
+  hasPatchPoint:   false
+  stackSize:       0
+  offsetAdjustment: 0
+  maxAlignment:    1
+  adjustsStack:    false
+  hasCalls:        false
+  stackProtector:  ''
+  functionContext: ''
+  maxCallFrameSize: 0
+  cvBytesOfCalleeSavedRegisters: 0
+  hasOpaqueSPAdjustment: false
+  hasVAStart:      false
+  hasMustTailInVarArgFunc: false
+  hasTailCall:     false
+  localFrameSize:  0
+  savePoint:       ''
+  restorePoint:    ''
+fixedStack:      []
+stack:           []
+entry_values:    []
+callSites:       []
+debugValueSubstitutions: []
+constants:       []
+machineFunctionInfo:
+  varArgsFrameIndex: 0
+  varArgsSaveSize: 0
+body:             |
+  bb.0.entry:
+    successors: %bb.13(0x20000000), %bb.1(0x60000000)
+    liveins: $x10, $x11, $x12
+  
+    renamable $x13 = LUI 112
+    renamable $x13 = ADDI killed renamable $x13, 3
+    BEQ renamable $x10, $x0, %bb.13
+  
+  bb.1.entry:
+    successors: %bb.13(0x2aaaaaab), %bb.2(0x55555555)
+    liveins: $x10, $x11, $x12, $x13
+  
+    BEQ renamable $x11, $x0, %bb.13
+  
+  bb.2.if.end:
+    successors: %bb.3(0x40000000), %bb.9(0x40000000)
+    liveins: $x10, $x11, $x12
+  
+    renamable $x13 = ADDI $x0, 2
+    BGE killed renamable $x13, renamable $x12, %bb.9
+  
+  bb.3.for.cond.preheader.new:
+    successors: %bb.6(0x40000000), %bb.4(0x40000000)
+    liveins: $x10, $x11, $x12
+  
+    $x17 = ADDI $x0, 0
+    renamable $x13 = ADDI $x0, 16
+    BLTU renamable $x12, killed renamable $x13, %bb.6
+  
+  bb.4.for.body.modify.preheader:
+    successors: %bb.5(0x80000000)
+    liveins: $x10, $x11, $x12, $x17
+  
+    renamable $x16 = nsw ADDI renamable $x12, -16
+    renamable $x15 = ADDI renamable $x11, 32
+    renamable $x14 = ADDI renamable $x10, 32
+    renamable $x5 = LUI 129972
+  
+  bb.5.for.body.modify:
+    successors: %bb.6(0x04000000), %bb.5(0x7c000000)
+    liveins: $x5, $x10, $x11, $x12, $x14, $x15, $x16, $x17
+  
+    renamable $x6 = LW renamable $x14, -32 :: (load (s32) from %ir.scevgep29, !tbaa !4)
+    renamable $x7 = LW renamable $x14, -28 :: (load (s32) from %ir.scevgep30, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -32 :: (store (s32) into %ir.scevgep10, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, -24 :: (load (s32) from %ir.scevgep31, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -28 :: (store (s32) into %ir.scevgep12, !tbaa !4)
+    renamable $x7 = LW renamable $x14, -20 :: (load (s32) from %ir.scevgep32, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -24 :: (store (s32) into %ir.scevgep13, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, -16 :: (load (s32) from %ir.scevgep33, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -20 :: (store (s32) into %ir.scevgep14, !tbaa !4)
+    renamable $x7 = LW renamable $x14, -12 :: (load (s32) from %ir.scevgep34, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -16 :: (store (s32) into %ir.scevgep15, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, -8 :: (load (s32) from %ir.scevgep35, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -12 :: (store (s32) into %ir.scevgep16, !tbaa !4)
+    renamable $x7 = LW renamable $x14, -4 :: (load (s32) from %ir.scevgep36, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -8 :: (store (s32) into %ir.scevgep17, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, 0 :: (load (s32) from %ir.lsr.iv26, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, -4 :: (store (s32) into %ir.scevgep18, !tbaa !4)
+    renamable $x7 = LW renamable $x14, 4 :: (load (s32) from %ir.scevgep37, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 0 :: (store (s32) into %ir.lsr.iv, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, 8 :: (load (s32) from %ir.scevgep38, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 4 :: (store (s32) into %ir.scevgep20, !tbaa !4)
+    renamable $x7 = LW renamable $x14, 12 :: (load (s32) from %ir.scevgep39, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 8 :: (store (s32) into %ir.scevgep21, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, 16 :: (load (s32) from %ir.scevgep40, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 12 :: (store (s32) into %ir.scevgep22, !tbaa !4)
+    renamable $x7 = LW renamable $x14, 20 :: (load (s32) from %ir.scevgep41, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 16 :: (store (s32) into %ir.scevgep23, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x6 = LW renamable $x14, 24 :: (load (s32) from %ir.scevgep42, !tbaa !4)
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 20 :: (store (s32) into %ir.scevgep24, !tbaa !4)
+    renamable $x7 = LW renamable $x14, 28 :: (load (s32) from %ir.scevgep28, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x6, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 24 :: (store (s32) into %ir.scevgep19, !tbaa !4)
+    renamable $x13 = SRAI killed renamable $x7, 1
+    renamable $x13 = OR killed renamable $x13, renamable $x5
+    SW killed renamable $x13, renamable $x15, 28 :: (store (s32) into %ir.scevgep11, !tbaa !4)
+    renamable $x17 = nuw ADDI killed renamable $x17, 16
+    renamable $x15 = ADDI killed renamable $x15, 64
+    renamable $x14 = ADDI killed renamable $x14, 64
+    BGE renamable $x16, renamable $x17, %bb.5
+  
+  bb.6.for.cond.preheader.new2:
+    successors: %bb.7(0x40000000), %bb.12(0x40000000)
+    liveins: $x10, $x11, $x12, $x17
+  
+    BGE renamable $x17, renamable $x12, %bb.12
+  
+  bb.7.for.body.preheader:
+    successors: %bb.8(0x80000000)
+    liveins: $x10, $x11, $x12, $x17
+  
+    renamable $x17 = SLLI killed renamable $x17, 2
+    renamable $x13 = ADD renamable $x11, renamable $x17
+    renamable $x10 = ADD killed renamable $x10, killed renamable $x17
+    renamable $x12 = SLLI killed renamable $x12, 2
+    renamable $x11 = ADD killed renamable $x11, killed renamable $x12
+    renamable $x12 = LUI 129972
+  
+  bb.8.for.body:
+    successors: %bb.12(0x04000000), %bb.8(0x7c000000)
+    liveins: $x10, $x11, $x12, $x13
+  
+    renamable $x14 = LW renamable $x10, 0 :: (load (s32) from %ir.lsr.iv5, !tbaa !4)
+    renamable $x14 = SRAI killed renamable $x14, 1
+    renamable $x14 = nsw ADD killed renamable $x14, renamable $x12
+    SW killed renamable $x14, renamable $x13, 0 :: (store (s32) into %ir.lsr.iv2, !tbaa !4)
+    renamable $x13 = ADDI killed renamable $x13, 4
+    renamable $x10 = ADDI killed renamable $x10, 4
+    BNE renamable $x13, renamable $x11, %bb.8
+    PseudoBR %bb.12
+  
+  bb.9.for.cond.preheader:
+    successors: %bb.10(0x50000000), %bb.12(0x30000000)
+    liveins: $x10, $x11, $x12
+  
+    BGE $x0, renamable $x12, %bb.12
+  
+  bb.10.for.body.clone.preheader:
+    successors: %bb.11(0x80000000)
+    liveins: $x10, $x11, $x12
+  
+    renamable $x12 = SLLI killed renamable $x12, 2
+    renamable $x12 = ADD renamable $x11, killed renamable $x12
+    renamable $x13 = LUI 129972
+  
+  bb.11.for.body.clone:
+    successors: %bb.12(0x04000000), %bb.11(0x7c000000)
+    liveins: $x10, $x11, $x12, $x13
+  
+    renamable $x14 = LW renamable $x10, 0 :: (load (s32) from %ir.lsr.iv46, !tbaa !4)
+    renamable $x14 = SRAI killed renamable $x14, 1
+    renamable $x14 = nsw ADD killed renamable $x14, renamable $x13
+    SW killed renamable $x14, renamable $x11, 0 :: (store (s32) into %ir.lsr.iv44, !tbaa !4)
+    renamable $x11 = ADDI killed renamable $x11, 4
+    renamable $x10 = ADDI killed renamable $x10, 4
+    BNE renamable $x11, renamable $x12, %bb.11
+  
+  bb.12:
+    successors: %bb.13(0x80000000)
+  
+    $x13 = ADDI $x0, 0
+  
+  bb.13.return:
+    liveins: $x13
+  
+    $x10 = ADDI killed $x13, 0
+    PseudoRET implicit $x10
+
+...

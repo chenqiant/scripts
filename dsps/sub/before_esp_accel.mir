@@ -1,0 +1,575 @@
+--- |
+  ; ModuleID = 'after_loopunrollandremainder.ll'
+  source_filename = "dsps_sub_f32_ansi.c"
+  target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
+  target triple = "riscv32"
+  
+  ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite)
+  define dso_local noundef i32 @dsps_sub_f32_ansi(ptr noalias noundef readonly %input1, ptr noalias noundef readonly %input2, ptr noalias noundef writeonly %output, i32 noundef %len, i32 noundef %step1, i32 noundef %step2, i32 noundef %step_out) local_unnamed_addr #0 {
+  entry:
+    %cmp = icmp eq ptr %input1, null
+    %cmp1 = icmp eq ptr %input2, null
+    %or.cond = or i1 %cmp, %cmp1
+    %cmp4 = icmp eq ptr %output, null
+    %or.cond19 = or i1 %or.cond, %cmp4
+    br i1 %or.cond19, label %return, label %if.end
+  
+  if.end:                                           ; preds = %entry
+    %cmp41 = icmp sgt i32 %len, 2
+    br i1 %cmp41, label %for.cond.preheader.new, label %for.cond.preheader
+  
+  for.cond.preheader:                               ; preds = %if.end
+    %cmp720 = icmp sgt i32 %len, 0
+    br i1 %cmp720, label %for.body.clone.preheader, label %return
+  
+  for.body.clone.preheader:                         ; preds = %for.cond.preheader
+    %0 = shl i32 %step_out, 2
+    %1 = shl i32 %step2, 2
+    %2 = shl i32 %step1, 2
+    br label %for.body.clone
+  
+  for.cond.preheader.new:                           ; preds = %if.end
+    %sub63 = add nsw i32 %len, -16
+    %cmp6.not207 = icmp ult i32 %len, 16
+    br i1 %cmp6.not207, label %for.cond.preheader.new2, label %for.body.modify.preheader
+  
+  for.body.modify.preheader:                        ; preds = %for.cond.preheader.new
+    %scevgep10 = getelementptr i8, ptr %input2, i32 32
+    %scevgep28 = getelementptr i8, ptr %input1, i32 32
+    %scevgep46 = getelementptr i8, ptr %output, i32 32
+    br label %for.body.modify
+  
+  for.cond.preheader.new2:                          ; preds = %for.body.modify, %for.cond.preheader.new
+    %3 = phi i32 [ 0, %for.cond.preheader.new ], [ %14, %for.body.modify ]
+    %cmp85209 = icmp sgt i32 %len, %3
+    br i1 %cmp85209, label %for.body.preheader, label %return
+  
+  for.body.preheader:                               ; preds = %for.cond.preheader.new2
+    %4 = sub i32 %len, %3
+    %5 = mul i32 %3, %step_out
+    %6 = shl i32 %5, 2
+    %scevgep = getelementptr i8, ptr %output, i32 %6
+    %7 = shl i32 %step_out, 2
+    %8 = mul i32 %3, %step2
+    %9 = shl i32 %8, 2
+    %scevgep4 = getelementptr i8, ptr %input2, i32 %9
+    %10 = shl i32 %step2, 2
+    %11 = mul i32 %3, %step1
+    %12 = shl i32 %11, 2
+    %scevgep7 = getelementptr i8, ptr %input1, i32 %12
+    %13 = shl i32 %step1, 2
+    br label %for.body
+  
+  for.body.modify:                                  ; preds = %for.body.modify.preheader, %for.body.modify
+    %lsr.iv47 = phi ptr [ %scevgep46, %for.body.modify.preheader ], [ %scevgep48, %for.body.modify ]
+    %lsr.iv29 = phi ptr [ %scevgep28, %for.body.modify.preheader ], [ %scevgep30, %for.body.modify ]
+    %lsr.iv11 = phi ptr [ %scevgep10, %for.body.modify.preheader ], [ %scevgep12, %for.body.modify ]
+    %i.021.modify = phi i32 [ %14, %for.body.modify ], [ 0, %for.body.modify.preheader ]
+    %14 = add nuw i32 %i.021.modify, 16
+    %scevgep31 = getelementptr i8, ptr %lsr.iv29, i32 -32
+    %scevgep14 = getelementptr i8, ptr %lsr.iv11, i32 -32
+    %scevgep50 = getelementptr i8, ptr %lsr.iv47, i32 -32
+    %scevgep32 = getelementptr i8, ptr %lsr.iv29, i32 -28
+    %scevgep15 = getelementptr i8, ptr %lsr.iv11, i32 -28
+    %scevgep51 = getelementptr i8, ptr %lsr.iv47, i32 -28
+    %scevgep33 = getelementptr i8, ptr %lsr.iv29, i32 -24
+    %scevgep16 = getelementptr i8, ptr %lsr.iv11, i32 -24
+    %scevgep52 = getelementptr i8, ptr %lsr.iv47, i32 -24
+    %scevgep34 = getelementptr i8, ptr %lsr.iv29, i32 -20
+    %scevgep17 = getelementptr i8, ptr %lsr.iv11, i32 -20
+    %scevgep53 = getelementptr i8, ptr %lsr.iv47, i32 -20
+    %scevgep35 = getelementptr i8, ptr %lsr.iv29, i32 -16
+    %scevgep18 = getelementptr i8, ptr %lsr.iv11, i32 -16
+    %scevgep54 = getelementptr i8, ptr %lsr.iv47, i32 -16
+    %scevgep36 = getelementptr i8, ptr %lsr.iv29, i32 -12
+    %scevgep19 = getelementptr i8, ptr %lsr.iv11, i32 -12
+    %scevgep55 = getelementptr i8, ptr %lsr.iv47, i32 -12
+    %scevgep37 = getelementptr i8, ptr %lsr.iv29, i32 -8
+    %scevgep20 = getelementptr i8, ptr %lsr.iv11, i32 -8
+    %scevgep56 = getelementptr i8, ptr %lsr.iv47, i32 -8
+    %scevgep38 = getelementptr i8, ptr %lsr.iv29, i32 -4
+    %scevgep21 = getelementptr i8, ptr %lsr.iv11, i32 -4
+    %scevgep57 = getelementptr i8, ptr %lsr.iv47, i32 -4
+    %scevgep39 = getelementptr i8, ptr %lsr.iv29, i32 4
+    %scevgep22 = getelementptr i8, ptr %lsr.iv11, i32 4
+    %scevgep58 = getelementptr i8, ptr %lsr.iv47, i32 4
+    %scevgep40 = getelementptr i8, ptr %lsr.iv29, i32 8
+    %scevgep23 = getelementptr i8, ptr %lsr.iv11, i32 8
+    %scevgep59 = getelementptr i8, ptr %lsr.iv47, i32 8
+    %scevgep41 = getelementptr i8, ptr %lsr.iv29, i32 12
+    %scevgep24 = getelementptr i8, ptr %lsr.iv11, i32 12
+    %scevgep60 = getelementptr i8, ptr %lsr.iv47, i32 12
+    %scevgep42 = getelementptr i8, ptr %lsr.iv29, i32 16
+    %scevgep25 = getelementptr i8, ptr %lsr.iv11, i32 16
+    %scevgep61 = getelementptr i8, ptr %lsr.iv47, i32 16
+    %scevgep43 = getelementptr i8, ptr %lsr.iv29, i32 20
+    %scevgep26 = getelementptr i8, ptr %lsr.iv11, i32 20
+    %scevgep62 = getelementptr i8, ptr %lsr.iv47, i32 20
+    %scevgep44 = getelementptr i8, ptr %lsr.iv29, i32 24
+    %scevgep27 = getelementptr i8, ptr %lsr.iv11, i32 24
+    %scevgep63 = getelementptr i8, ptr %lsr.iv47, i32 24
+    %scevgep45 = getelementptr i8, ptr %lsr.iv29, i32 28
+    %scevgep13 = getelementptr i8, ptr %lsr.iv11, i32 28
+    %scevgep49 = getelementptr i8, ptr %lsr.iv47, i32 28
+    %15 = load float, ptr %scevgep31, align 4, !tbaa !4
+    %16 = load float, ptr %scevgep14, align 4, !tbaa !4
+    %17 = load float, ptr %scevgep32, align 4, !tbaa !4
+    %18 = load float, ptr %scevgep15, align 4, !tbaa !4
+    %19 = load float, ptr %scevgep33, align 4, !tbaa !4
+    %20 = load float, ptr %scevgep16, align 4, !tbaa !4
+    %21 = load float, ptr %scevgep34, align 4, !tbaa !4
+    %22 = load float, ptr %scevgep17, align 4, !tbaa !4
+    %23 = load float, ptr %scevgep35, align 4, !tbaa !4
+    %24 = load float, ptr %scevgep18, align 4, !tbaa !4
+    %25 = load float, ptr %scevgep36, align 4, !tbaa !4
+    %26 = load float, ptr %scevgep19, align 4, !tbaa !4
+    %27 = load float, ptr %scevgep37, align 4, !tbaa !4
+    %28 = load float, ptr %scevgep20, align 4, !tbaa !4
+    %29 = load float, ptr %scevgep38, align 4, !tbaa !4
+    %30 = load float, ptr %scevgep21, align 4, !tbaa !4
+    %31 = load float, ptr %lsr.iv29, align 4, !tbaa !4
+    %32 = load float, ptr %lsr.iv11, align 4, !tbaa !4
+    %33 = load float, ptr %scevgep39, align 4, !tbaa !4
+    %34 = load float, ptr %scevgep22, align 4, !tbaa !4
+    %35 = load float, ptr %scevgep40, align 4, !tbaa !4
+    %36 = load float, ptr %scevgep23, align 4, !tbaa !4
+    %37 = load float, ptr %scevgep41, align 4, !tbaa !4
+    %38 = load float, ptr %scevgep24, align 4, !tbaa !4
+    %39 = load float, ptr %scevgep42, align 4, !tbaa !4
+    %40 = load float, ptr %scevgep25, align 4, !tbaa !4
+    %41 = load float, ptr %scevgep43, align 4, !tbaa !4
+    %42 = load float, ptr %scevgep26, align 4, !tbaa !4
+    %43 = load float, ptr %scevgep44, align 4, !tbaa !4
+    %44 = load float, ptr %scevgep27, align 4, !tbaa !4
+    %45 = load float, ptr %scevgep45, align 4, !tbaa !4
+    %46 = load float, ptr %scevgep13, align 4, !tbaa !4
+    %sub.modify = fsub float %15, %16
+    %47 = fsub float %17, %18
+    %48 = fsub float %19, %20
+    %49 = fsub float %21, %22
+    %50 = fsub float %23, %24
+    %51 = fsub float %25, %26
+    %52 = fsub float %27, %28
+    %53 = fsub float %29, %30
+    %54 = fsub float %31, %32
+    %55 = fsub float %33, %34
+    %56 = fsub float %35, %36
+    %57 = fsub float %37, %38
+    %58 = fsub float %39, %40
+    %59 = fsub float %41, %42
+    %60 = fsub float %43, %44
+    %61 = fsub float %45, %46
+    store float %sub.modify, ptr %scevgep50, align 4, !tbaa !4
+    store float %47, ptr %scevgep51, align 4, !tbaa !4
+    store float %48, ptr %scevgep52, align 4, !tbaa !4
+    store float %49, ptr %scevgep53, align 4, !tbaa !4
+    store float %50, ptr %scevgep54, align 4, !tbaa !4
+    store float %51, ptr %scevgep55, align 4, !tbaa !4
+    store float %52, ptr %scevgep56, align 4, !tbaa !4
+    store float %53, ptr %scevgep57, align 4, !tbaa !4
+    store float %54, ptr %lsr.iv47, align 4, !tbaa !4
+    store float %55, ptr %scevgep58, align 4, !tbaa !4
+    store float %56, ptr %scevgep59, align 4, !tbaa !4
+    store float %57, ptr %scevgep60, align 4, !tbaa !4
+    store float %58, ptr %scevgep61, align 4, !tbaa !4
+    store float %59, ptr %scevgep62, align 4, !tbaa !4
+    store float %60, ptr %scevgep63, align 4, !tbaa !4
+    store float %61, ptr %scevgep49, align 4, !tbaa !4
+    %scevgep12 = getelementptr i8, ptr %lsr.iv11, i32 64
+    %scevgep30 = getelementptr i8, ptr %lsr.iv29, i32 64
+    %scevgep48 = getelementptr i8, ptr %lsr.iv47, i32 64
+    %exitcond.not.modify = icmp sgt i32 %14, %sub63
+    br i1 %exitcond.not.modify, label %for.cond.preheader.new2, label %for.body.modify, !llvm.loop !8
+  
+  for.body:                                         ; preds = %for.body.preheader, %for.body
+    %lsr.iv8 = phi ptr [ %scevgep7, %for.body.preheader ], [ %scevgep9, %for.body ]
+    %lsr.iv5 = phi ptr [ %scevgep4, %for.body.preheader ], [ %scevgep6, %for.body ]
+    %lsr.iv2 = phi ptr [ %scevgep, %for.body.preheader ], [ %scevgep3, %for.body ]
+    %lsr.iv = phi i32 [ %4, %for.body.preheader ], [ %lsr.iv.next, %for.body ]
+    %62 = load float, ptr %lsr.iv8, align 4, !tbaa !4
+    %63 = load float, ptr %lsr.iv5, align 4, !tbaa !4
+    %sub = fsub float %62, %63
+    store float %sub, ptr %lsr.iv2, align 4, !tbaa !4
+    %lsr.iv.next = add i32 %lsr.iv, -1
+    %scevgep3 = getelementptr i8, ptr %lsr.iv2, i32 %7
+    %scevgep6 = getelementptr i8, ptr %lsr.iv5, i32 %10
+    %scevgep9 = getelementptr i8, ptr %lsr.iv8, i32 %13
+    %exitcond.not = icmp eq i32 %lsr.iv.next, 0
+    br i1 %exitcond.not, label %return, label %for.body, !llvm.loop !8
+  
+  for.body.clone:                                   ; preds = %for.body.clone.preheader, %for.body.clone
+    %lsr.iv70 = phi ptr [ %input1, %for.body.clone.preheader ], [ %scevgep71, %for.body.clone ]
+    %lsr.iv68 = phi ptr [ %input2, %for.body.clone.preheader ], [ %scevgep69, %for.body.clone ]
+    %lsr.iv66 = phi ptr [ %output, %for.body.clone.preheader ], [ %scevgep67, %for.body.clone ]
+    %lsr.iv64 = phi i32 [ %len, %for.body.clone.preheader ], [ %lsr.iv.next65, %for.body.clone ]
+    %64 = load float, ptr %lsr.iv70, align 4, !tbaa !4
+    %65 = load float, ptr %lsr.iv68, align 4, !tbaa !4
+    %sub.clone = fsub float %64, %65
+    store float %sub.clone, ptr %lsr.iv66, align 4, !tbaa !4
+    %lsr.iv.next65 = add i32 %lsr.iv64, -1
+    %scevgep67 = getelementptr i8, ptr %lsr.iv66, i32 %0
+    %scevgep69 = getelementptr i8, ptr %lsr.iv68, i32 %1
+    %scevgep71 = getelementptr i8, ptr %lsr.iv70, i32 %2
+    %exitcond.not.clone = icmp eq i32 %lsr.iv.next65, 0
+    br i1 %exitcond.not.clone, label %return, label %for.body.clone, !llvm.loop !8
+  
+  return:                                           ; preds = %for.body.clone, %for.body, %for.cond.preheader.new2, %for.cond.preheader, %entry
+    %retval.0 = phi i32 [ 458755, %entry ], [ 0, %for.cond.preheader ], [ 0, %for.cond.preheader.new2 ], [ 0, %for.body ], [ 0, %for.body.clone ]
+    ret i32 %retval.0
+  }
+  
+  attributes #0 = { nofree norecurse nosync nounwind memory(argmem: readwrite) "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="generic-rv32" "target-features"="+32bit,+a,+c,+f,+m,+relax,+xesppie,+zicsr,+zifencei,-d,-e,-experimental-zacas,-experimental-zcmop,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicfiss,-experimental-zimop,-experimental-ztso,-experimental-zvfbfmin,-experimental-zvfbfwma,-h,-smaia,-smepmp,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-za128rs,-za64rs,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zca,-zcb,-zcd,-zce,-zcf,-zcmp,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zic64b,-zicbom,-zicbop,-zicboz,-ziccamoa,-ziccif,-zicclsm,-ziccrse,-zicntr,-zicond,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zvbb,-zvbc,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvkb,-zvkg,-zvkn,-zvknc,-zvkned,-zvkng,-zvknha,-zvknhb,-zvks,-zvksc,-zvksed,-zvksg,-zvksh,-zvkt,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b" }
+  
+  !llvm.module.flags = !{!0, !1, !2}
+  !llvm.ident = !{!3}
+  
+  !0 = !{i32 1, !"wchar_size", i32 4}
+  !1 = !{i32 1, !"target-abi", !"ilp32f"}
+  !2 = !{i32 8, !"SmallDataLimit", i32 8}
+  !3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333)"}
+  !4 = !{!5, !5, i64 0}
+  !5 = !{!"float", !6, i64 0}
+  !6 = !{!"omnipotent char", !7, i64 0}
+  !7 = !{!"Simple C/C++ TBAA"}
+  !8 = distinct !{!8, !9}
+  !9 = !{!"llvm.loop.mustprogress"}
+
+...
+---
+name:            dsps_sub_f32_ansi
+alignment:       2
+exposesReturnsTwice: false
+legalized:       false
+regBankSelected: false
+selected:        false
+failedISel:      false
+tracksRegLiveness: true
+hasWinCFI:       false
+callsEHReturn:   false
+callsUnwindInit: false
+hasEHCatchret:   false
+hasEHScopes:     false
+hasEHFunclets:   false
+isOutlined:      false
+debugInstrRef:   false
+failsVerification: false
+tracksDebugUserValues: true
+registers:       []
+liveins:
+  - { reg: '$x10', virtual-reg: '' }
+  - { reg: '$x11', virtual-reg: '' }
+  - { reg: '$x12', virtual-reg: '' }
+  - { reg: '$x13', virtual-reg: '' }
+  - { reg: '$x14', virtual-reg: '' }
+  - { reg: '$x15', virtual-reg: '' }
+  - { reg: '$x16', virtual-reg: '' }
+frameInfo:
+  isFrameAddressTaken: false
+  isReturnAddressTaken: false
+  hasStackMap:     false
+  hasPatchPoint:   false
+  stackSize:       48
+  offsetAdjustment: 0
+  maxAlignment:    4
+  adjustsStack:    false
+  hasCalls:        false
+  stackProtector:  ''
+  functionContext: ''
+  maxCallFrameSize: 0
+  cvBytesOfCalleeSavedRegisters: 0
+  hasOpaqueSPAdjustment: false
+  hasVAStart:      false
+  hasMustTailInVarArgFunc: false
+  hasTailCall:     false
+  localFrameSize:  0
+  savePoint:       ''
+  restorePoint:    ''
+fixedStack:      []
+stack:
+  - { id: 0, name: '', type: spill-slot, offset: -4, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f8_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 1, name: '', type: spill-slot, offset: -8, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f9_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 2, name: '', type: spill-slot, offset: -12, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f18_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 3, name: '', type: spill-slot, offset: -16, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f19_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 4, name: '', type: spill-slot, offset: -20, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f20_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 5, name: '', type: spill-slot, offset: -24, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f21_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 6, name: '', type: spill-slot, offset: -28, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f22_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 7, name: '', type: spill-slot, offset: -32, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f23_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 8, name: '', type: spill-slot, offset: -36, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f24_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 9, name: '', type: spill-slot, offset: -40, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f25_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 10, name: '', type: spill-slot, offset: -44, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f26_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+  - { id: 11, name: '', type: spill-slot, offset: -48, size: 4, alignment: 4, 
+      stack-id: default, callee-saved-register: '$f27_f', callee-saved-restored: true, 
+      debug-info-variable: '', debug-info-expression: '', debug-info-location: '' }
+entry_values:    []
+callSites:       []
+debugValueSubstitutions: []
+constants:       []
+machineFunctionInfo:
+  varArgsFrameIndex: 0
+  varArgsSaveSize: 0
+body:             |
+  bb.0.entry:
+    successors: %bb.15(0x10000000), %bb.1(0x70000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16, $f8_f, $f9_f, $f18_f, $f19_f, $f20_f, $f21_f, $f22_f, $f23_f, $f24_f, $f25_f, $f26_f, $f27_f
+  
+    $x2 = frame-setup ADDI $x2, -48
+    frame-setup CFI_INSTRUCTION def_cfa_offset 48
+    FSW killed $f8_f, $x2, 44 :: (store (s32) into %stack.0)
+    FSW killed $f9_f, $x2, 40 :: (store (s32) into %stack.1)
+    FSW killed $f18_f, $x2, 36 :: (store (s32) into %stack.2)
+    FSW killed $f19_f, $x2, 32 :: (store (s32) into %stack.3)
+    FSW killed $f20_f, $x2, 28 :: (store (s32) into %stack.4)
+    FSW killed $f21_f, $x2, 24 :: (store (s32) into %stack.5)
+    FSW killed $f22_f, $x2, 20 :: (store (s32) into %stack.6)
+    FSW killed $f23_f, $x2, 16 :: (store (s32) into %stack.7)
+    FSW killed $f24_f, $x2, 12 :: (store (s32) into %stack.8)
+    FSW killed $f25_f, $x2, 8 :: (store (s32) into %stack.9)
+    FSW killed $f26_f, $x2, 4 :: (store (s32) into %stack.10)
+    FSW killed $f27_f, $x2, 0 :: (store (s32) into %stack.11)
+    frame-setup CFI_INSTRUCTION offset $f8_h, -4
+    frame-setup CFI_INSTRUCTION offset $f9_h, -8
+    frame-setup CFI_INSTRUCTION offset $f18_h, -12
+    frame-setup CFI_INSTRUCTION offset $f19_h, -16
+    frame-setup CFI_INSTRUCTION offset $f20_h, -20
+    frame-setup CFI_INSTRUCTION offset $f21_h, -24
+    frame-setup CFI_INSTRUCTION offset $f22_h, -28
+    frame-setup CFI_INSTRUCTION offset $f23_h, -32
+    frame-setup CFI_INSTRUCTION offset $f24_h, -36
+    frame-setup CFI_INSTRUCTION offset $f25_h, -40
+    frame-setup CFI_INSTRUCTION offset $f26_h, -44
+    frame-setup CFI_INSTRUCTION offset $f27_h, -48
+    renamable $x17 = LUI 112
+    renamable $x17 = ADDI killed renamable $x17, 3
+    BEQ renamable $x10, $x0, %bb.15
+  
+  bb.1.entry:
+    successors: %bb.15(0x12492492), %bb.2(0x6db6db6e)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16, $x17
+  
+    BEQ renamable $x11, $x0, %bb.15
+  
+  bb.2.entry:
+    successors: %bb.15(0x2aaaaaab), %bb.3(0x55555555)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16, $x17
+  
+    BEQ renamable $x12, $x0, %bb.15
+  
+  bb.3.if.end:
+    successors: %bb.4(0x40000000), %bb.6(0x40000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    renamable $x17 = ADDI $x0, 2
+    BGE killed renamable $x17, renamable $x13, %bb.6
+  
+  bb.4.for.cond.preheader.new:
+    successors: %bb.5(0x40000000), %bb.9(0x40000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    renamable $x17 = ADDI $x0, 16
+    BGEU renamable $x13, killed renamable $x17, %bb.9
+  
+  bb.5:
+    successors: %bb.11(0x80000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    $x17 = ADDI $x0, 0
+    PseudoBR %bb.11
+  
+  bb.6.for.cond.preheader:
+    successors: %bb.7(0x50000000), %bb.14(0x30000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    BGE $x0, renamable $x13, %bb.14
+  
+  bb.7.for.body.clone.preheader:
+    successors: %bb.8(0x80000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    renamable $x16 = SLLI killed renamable $x16, 2
+    renamable $x15 = SLLI killed renamable $x15, 2
+    renamable $x14 = SLLI killed renamable $x14, 2
+  
+  bb.8.for.body.clone:
+    successors: %bb.14(0x04000000), %bb.8(0x7c000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    renamable $f15_f = FLW renamable $x10, 0 :: (load (s32) from %ir.lsr.iv70, !tbaa !4)
+    renamable $f14_f = FLW renamable $x11, 0 :: (load (s32) from %ir.lsr.iv68, !tbaa !4)
+    renamable $f15_f = nofpexcept FSUB_S killed renamable $f15_f, killed renamable $f14_f, 7, implicit $frm
+    FSW killed renamable $f15_f, renamable $x12, 0 :: (store (s32) into %ir.lsr.iv66, !tbaa !4)
+    renamable $x13 = ADDI killed renamable $x13, -1
+    renamable $x12 = ADD killed renamable $x12, renamable $x16
+    renamable $x11 = ADD killed renamable $x11, renamable $x15
+    renamable $x10 = ADD killed renamable $x10, renamable $x14
+    BNE renamable $x13, $x0, %bb.8
+    PseudoBR %bb.14
+  
+  bb.9.for.body.modify.preheader:
+    successors: %bb.10(0x80000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16
+  
+    $x17 = ADDI $x0, 0
+    renamable $x5 = nsw ADDI renamable $x13, -16
+    renamable $x6 = ADDI renamable $x11, 32
+    renamable $x7 = ADDI renamable $x10, 32
+    renamable $x28 = ADDI renamable $x12, 32
+  
+  bb.10.for.body.modify:
+    successors: %bb.11(0x04000000), %bb.10(0x7c000000)
+    liveins: $x5, $x6, $x7, $x10, $x11, $x12, $x13, $x14, $x15, $x16, $x17, $x28
+  
+    renamable $x17 = nuw ADDI killed renamable $x17, 16
+    renamable $f15_f = FLW renamable $x7, -32 :: (load (s32) from %ir.scevgep31, !tbaa !4)
+    renamable $f14_f = FLW renamable $x6, -32 :: (load (s32) from %ir.scevgep14, !tbaa !4)
+    renamable $f13_f = FLW renamable $x7, -28 :: (load (s32) from %ir.scevgep32, !tbaa !4)
+    renamable $f12_f = FLW renamable $x6, -28 :: (load (s32) from %ir.scevgep15, !tbaa !4)
+    renamable $f11_f = FLW renamable $x7, -24 :: (load (s32) from %ir.scevgep33, !tbaa !4)
+    renamable $f10_f = FLW renamable $x6, -24 :: (load (s32) from %ir.scevgep16, !tbaa !4)
+    renamable $f0_f = FLW renamable $x7, -20 :: (load (s32) from %ir.scevgep34, !tbaa !4)
+    renamable $f1_f = FLW renamable $x6, -20 :: (load (s32) from %ir.scevgep17, !tbaa !4)
+    renamable $f2_f = FLW renamable $x7, -16 :: (load (s32) from %ir.scevgep35, !tbaa !4)
+    renamable $f3_f = FLW renamable $x6, -16 :: (load (s32) from %ir.scevgep18, !tbaa !4)
+    renamable $f4_f = FLW renamable $x7, -12 :: (load (s32) from %ir.scevgep36, !tbaa !4)
+    renamable $f5_f = FLW renamable $x6, -12 :: (load (s32) from %ir.scevgep19, !tbaa !4)
+    renamable $f6_f = FLW renamable $x7, -8 :: (load (s32) from %ir.scevgep37, !tbaa !4)
+    renamable $f7_f = FLW renamable $x6, -8 :: (load (s32) from %ir.scevgep20, !tbaa !4)
+    renamable $f16_f = FLW renamable $x7, -4 :: (load (s32) from %ir.scevgep38, !tbaa !4)
+    renamable $f17_f = FLW renamable $x6, -4 :: (load (s32) from %ir.scevgep21, !tbaa !4)
+    renamable $f28_f = FLW renamable $x7, 0 :: (load (s32) from %ir.lsr.iv29, !tbaa !4)
+    renamable $f29_f = FLW renamable $x6, 0 :: (load (s32) from %ir.lsr.iv11, !tbaa !4)
+    renamable $f30_f = FLW renamable $x7, 4 :: (load (s32) from %ir.scevgep39, !tbaa !4)
+    renamable $f31_f = FLW renamable $x6, 4 :: (load (s32) from %ir.scevgep22, !tbaa !4)
+    renamable $f8_f = FLW renamable $x7, 8 :: (load (s32) from %ir.scevgep40, !tbaa !4)
+    renamable $f9_f = FLW renamable $x6, 8 :: (load (s32) from %ir.scevgep23, !tbaa !4)
+    renamable $f18_f = FLW renamable $x7, 12 :: (load (s32) from %ir.scevgep41, !tbaa !4)
+    renamable $f19_f = FLW renamable $x6, 12 :: (load (s32) from %ir.scevgep24, !tbaa !4)
+    renamable $f20_f = FLW renamable $x7, 16 :: (load (s32) from %ir.scevgep42, !tbaa !4)
+    renamable $f21_f = FLW renamable $x6, 16 :: (load (s32) from %ir.scevgep25, !tbaa !4)
+    renamable $f22_f = FLW renamable $x7, 20 :: (load (s32) from %ir.scevgep43, !tbaa !4)
+    renamable $f23_f = FLW renamable $x6, 20 :: (load (s32) from %ir.scevgep26, !tbaa !4)
+    renamable $f24_f = FLW renamable $x7, 24 :: (load (s32) from %ir.scevgep44, !tbaa !4)
+    renamable $f25_f = FLW renamable $x6, 24 :: (load (s32) from %ir.scevgep27, !tbaa !4)
+    renamable $f26_f = FLW renamable $x7, 28 :: (load (s32) from %ir.scevgep45, !tbaa !4)
+    renamable $f27_f = FLW renamable $x6, 28 :: (load (s32) from %ir.scevgep13, !tbaa !4)
+    renamable $f15_f = nofpexcept FSUB_S killed renamable $f15_f, killed renamable $f14_f, 7, implicit $frm
+    renamable $f14_f = nofpexcept FSUB_S killed renamable $f13_f, killed renamable $f12_f, 7, implicit $frm
+    renamable $f13_f = nofpexcept FSUB_S killed renamable $f11_f, killed renamable $f10_f, 7, implicit $frm
+    renamable $f12_f = nofpexcept FSUB_S killed renamable $f0_f, killed renamable $f1_f, 7, implicit $frm
+    renamable $f11_f = nofpexcept FSUB_S killed renamable $f2_f, killed renamable $f3_f, 7, implicit $frm
+    renamable $f10_f = nofpexcept FSUB_S killed renamable $f4_f, killed renamable $f5_f, 7, implicit $frm
+    renamable $f0_f = nofpexcept FSUB_S killed renamable $f6_f, killed renamable $f7_f, 7, implicit $frm
+    renamable $f1_f = nofpexcept FSUB_S killed renamable $f16_f, killed renamable $f17_f, 7, implicit $frm
+    renamable $f2_f = nofpexcept FSUB_S killed renamable $f28_f, killed renamable $f29_f, 7, implicit $frm
+    renamable $f3_f = nofpexcept FSUB_S killed renamable $f30_f, killed renamable $f31_f, 7, implicit $frm
+    renamable $f4_f = nofpexcept FSUB_S killed renamable $f8_f, killed renamable $f9_f, 7, implicit $frm
+    renamable $f5_f = nofpexcept FSUB_S killed renamable $f18_f, killed renamable $f19_f, 7, implicit $frm
+    renamable $f6_f = nofpexcept FSUB_S killed renamable $f20_f, killed renamable $f21_f, 7, implicit $frm
+    renamable $f7_f = nofpexcept FSUB_S killed renamable $f22_f, killed renamable $f23_f, 7, implicit $frm
+    renamable $f16_f = nofpexcept FSUB_S killed renamable $f24_f, killed renamable $f25_f, 7, implicit $frm
+    renamable $f17_f = nofpexcept FSUB_S killed renamable $f26_f, killed renamable $f27_f, 7, implicit $frm
+    FSW killed renamable $f15_f, renamable $x28, -32 :: (store (s32) into %ir.scevgep50, !tbaa !4)
+    FSW killed renamable $f14_f, renamable $x28, -28 :: (store (s32) into %ir.scevgep51, !tbaa !4)
+    FSW killed renamable $f13_f, renamable $x28, -24 :: (store (s32) into %ir.scevgep52, !tbaa !4)
+    FSW killed renamable $f12_f, renamable $x28, -20 :: (store (s32) into %ir.scevgep53, !tbaa !4)
+    FSW killed renamable $f11_f, renamable $x28, -16 :: (store (s32) into %ir.scevgep54, !tbaa !4)
+    FSW killed renamable $f10_f, renamable $x28, -12 :: (store (s32) into %ir.scevgep55, !tbaa !4)
+    FSW killed renamable $f0_f, renamable $x28, -8 :: (store (s32) into %ir.scevgep56, !tbaa !4)
+    FSW killed renamable $f1_f, renamable $x28, -4 :: (store (s32) into %ir.scevgep57, !tbaa !4)
+    FSW killed renamable $f2_f, renamable $x28, 0 :: (store (s32) into %ir.lsr.iv47, !tbaa !4)
+    FSW killed renamable $f3_f, renamable $x28, 4 :: (store (s32) into %ir.scevgep58, !tbaa !4)
+    FSW killed renamable $f4_f, renamable $x28, 8 :: (store (s32) into %ir.scevgep59, !tbaa !4)
+    FSW killed renamable $f5_f, renamable $x28, 12 :: (store (s32) into %ir.scevgep60, !tbaa !4)
+    FSW killed renamable $f6_f, renamable $x28, 16 :: (store (s32) into %ir.scevgep61, !tbaa !4)
+    FSW killed renamable $f7_f, renamable $x28, 20 :: (store (s32) into %ir.scevgep62, !tbaa !4)
+    FSW killed renamable $f16_f, renamable $x28, 24 :: (store (s32) into %ir.scevgep63, !tbaa !4)
+    FSW killed renamable $f17_f, renamable $x28, 28 :: (store (s32) into %ir.scevgep49, !tbaa !4)
+    renamable $x6 = ADDI killed renamable $x6, 64
+    renamable $x7 = ADDI killed renamable $x7, 64
+    renamable $x28 = ADDI killed renamable $x28, 64
+    BGE renamable $x5, renamable $x17, %bb.10
+  
+  bb.11.for.cond.preheader.new2:
+    successors: %bb.12(0x40000000), %bb.14(0x40000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16, $x17
+  
+    BGE renamable $x17, renamable $x13, %bb.14
+  
+  bb.12.for.body.preheader:
+    successors: %bb.13(0x80000000)
+    liveins: $x10, $x11, $x12, $x13, $x14, $x15, $x16, $x17
+  
+    renamable $x5 = SUB killed renamable $x13, renamable $x17
+    renamable $x13 = MUL renamable $x17, renamable $x16
+    renamable $x13 = SLLI killed renamable $x13, 2
+    renamable $x12 = ADD killed renamable $x12, killed renamable $x13
+    renamable $x16 = SLLI killed renamable $x16, 2
+    renamable $x13 = MUL renamable $x17, renamable $x15
+    renamable $x13 = SLLI killed renamable $x13, 2
+    renamable $x11 = ADD killed renamable $x11, killed renamable $x13
+    renamable $x15 = SLLI killed renamable $x15, 2
+    renamable $x13 = MUL killed renamable $x17, renamable $x14
+    renamable $x13 = SLLI killed renamable $x13, 2
+    renamable $x10 = ADD killed renamable $x10, killed renamable $x13
+    renamable $x14 = SLLI killed renamable $x14, 2
+  
+  bb.13.for.body:
+    successors: %bb.14(0x04000000), %bb.13(0x7c000000)
+    liveins: $x5, $x10, $x11, $x12, $x14, $x15, $x16
+  
+    renamable $f15_f = FLW renamable $x10, 0 :: (load (s32) from %ir.lsr.iv8, !tbaa !4)
+    renamable $f14_f = FLW renamable $x11, 0 :: (load (s32) from %ir.lsr.iv5, !tbaa !4)
+    renamable $f15_f = nofpexcept FSUB_S killed renamable $f15_f, killed renamable $f14_f, 7, implicit $frm
+    FSW killed renamable $f15_f, renamable $x12, 0 :: (store (s32) into %ir.lsr.iv2, !tbaa !4)
+    renamable $x5 = ADDI killed renamable $x5, -1
+    renamable $x12 = ADD killed renamable $x12, renamable $x16
+    renamable $x11 = ADD killed renamable $x11, renamable $x15
+    renamable $x10 = ADD killed renamable $x10, renamable $x14
+    BNE renamable $x5, $x0, %bb.13
+  
+  bb.14:
+    successors: %bb.15(0x80000000)
+  
+    $x17 = ADDI $x0, 0
+  
+  bb.15.return:
+    liveins: $x17
+  
+    $x10 = ADDI killed $x17, 0
+    $f8_f = FLW $x2, 44 :: (load (s32) from %stack.0)
+    $f9_f = FLW $x2, 40 :: (load (s32) from %stack.1)
+    $f18_f = FLW $x2, 36 :: (load (s32) from %stack.2)
+    $f19_f = FLW $x2, 32 :: (load (s32) from %stack.3)
+    $f20_f = FLW $x2, 28 :: (load (s32) from %stack.4)
+    $f21_f = FLW $x2, 24 :: (load (s32) from %stack.5)
+    $f22_f = FLW $x2, 20 :: (load (s32) from %stack.6)
+    $f23_f = FLW $x2, 16 :: (load (s32) from %stack.7)
+    $f24_f = FLW $x2, 12 :: (load (s32) from %stack.8)
+    $f25_f = FLW $x2, 8 :: (load (s32) from %stack.9)
+    $f26_f = FLW $x2, 4 :: (load (s32) from %stack.10)
+    $f27_f = FLW $x2, 0 :: (load (s32) from %stack.11)
+    $x2 = frame-destroy ADDI $x2, 48
+    PseudoRET implicit $x10
+
+...

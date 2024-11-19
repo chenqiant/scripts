@@ -11,7 +11,6 @@ dsps_ccorr_f32_ansi.c \
 -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include/ \
 
 
-
 opt  dsps_ccorr_f32_ansi.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-split-loop-by-length -riscv-split-loop-by-length=true -S -o after_splitloopbylength.ll
 
 opt  after_splitloopbylength.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-custom-licm -riscv-custom-licm=true -S -o after_customlicm.ll

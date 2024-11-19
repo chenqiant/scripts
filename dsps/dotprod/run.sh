@@ -1,7 +1,7 @@
 
 rm -rf *.ll *.s
 export PATH=/home/chenqian/Workspace/tool/build_esp_clang/llvm/bin:$PATH
-clang  -fassociative-math -falign-loops=16 -O3 -march=rv32imafc_zicsr_zifencei_xesppie_zcmp -mabi=ilp32f -emit-llvm -S -o dsps_dotprod_f32_ansi.ll \
+clang   -O3 -march=rv32imafc_zicsr_zifencei_xesppie_zcmp -mabi=ilp32f -emit-llvm -S -o dsps_dotprod_f32_ansi.ll \
 dsps_dotprod_f32_ansi.c \
 --target=riscv32-esp-elf \
 -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/dotprod/include \
@@ -30,6 +30,9 @@ opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unroll-and-remainder -ri
 
 
 llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32-esp-unknown-elf --enable-esp32-p4-optimize after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+
+llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll \
+    -O3 -stop-before=riscv-enable-esp-opt -o before_esp_accel.mir
 
 ../preprocess_asm.sh after_loopunrollandremainder.s
 

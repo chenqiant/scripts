@@ -1,7 +1,6 @@
 
-rm -rf *.ll *.s
 export PATH=/home/chenqian/Workspace/tool/build_esp_clang/llvm/bin:$PATH
-clang   -O3 -march=rv32imafc_zicsr_zifencei_xesppie_zcmp -mabi=ilp32f -emit-llvm -S -o dsps_dotprod_f32_ansi.ll \
+clang   -O3 -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -emit-llvm -S -o dsps_dotprod_f32_ansi.ll \
 dsps_dotprod_f32_ansi.c \
 --target=riscv32-esp-elf \
 -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/dotprod/include \

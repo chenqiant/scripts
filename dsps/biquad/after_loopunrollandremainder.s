@@ -1,4 +1,4 @@
-# 2024-11-19 14:52:48
+# 2024-11-21 10:32:30
 	.text
 	.attribute	4, 16
 	#.attribute	5, "rv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zifencei2p0_zca1p0_zcb1p0_zcmp1p0_zcmt1p0_xesppie1p0"
@@ -22,10 +22,9 @@ dsps_biquad_f32_arp4:                   # @dsps_biquad_f32_arp4
 	flw	fa2, 8(a3)
 	fneg.s	fa1, fa1
 	fneg.s	fa0, fa0
-	slli	a2, a2, 2
-	add	a2, a2, a1
 	fmv.s	ft1, fa5
-	esp.lp.setup	 0, a2, .LBB0_3
+	mv	t0, a2
+	esp.lp.setup	 0, t0, .LBB0_3
 .LBB0_2:                                # %for.body
                                         # =>This Inner Loop Header: Depth=1
 	flw	ft2, 0(a0)
@@ -50,9 +49,8 @@ dsps_biquad_f32_arp4:                   # @dsps_biquad_f32_arp4
 .LBB0_5:                                # %for.body.lr.ph.clone
 	flw	fa4, 0(a4)
 	flw	fa5, 4(a4)
-	slli	a2, a2, 2
-	add	a2, a2, a1
-	esp.lp.setup	 0, a2, .LBB0_7
+	mv	t0, a2
+	esp.lp.setup	 0, t0, .LBB0_7
 .LBB0_6:                                # %for.body.clone
                                         # =>This Inner Loop Header: Depth=1
 	flw	fa3, 0(a0)

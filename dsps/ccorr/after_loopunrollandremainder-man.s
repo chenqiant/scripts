@@ -79,9 +79,9 @@ dsps_ccorr_f32_arp4:                    # @dsps_ccorr_f32_arp4
 	fmv.s	ft0, fa5
 	fmv.s	ft1, fa5
 	fmv.s	ft2, fa5
-	sub t0, s1, a5      # t0 = s1 - a5 (得到总差值)
-	srli t0, t0, 5      # t0 = t0 >> 5 (相当于除以32)	
-	esp.lp.setup 0, t0, .test_loop2
+	sub s1, s1, a5      # s1 = s1 - a5 (得到总差值)
+	srli s1, s1, 5      # s1 = s1 >> 5 (相当于除以32)	
+	esp.lp.setup 0, s1, .test_loop2
 .LBB0_10:                               # %for.body14.7
                                         #   Parent Loop BB0_8 Depth=1
                                         # =>  This Inner Loop Header: Depth=2
@@ -188,9 +188,9 @@ dsps_ccorr_f32_arp4:                    # @dsps_ccorr_f32_arp4
 	fmv.s	fa6, fa5
 	fmv.s	fa7, fa5
 	fmv.s	ft8, fa5
-	sub t0, a5, a0      # t0 = a5 - a0 (得到总差值)
-	srli t0, t0, 4      # t0 = t0 >> 4 (相当于除以16)	
-	esp.lp.setup 0, t0, .test_loop3
+	sub a5, a5, a0      # a5 = a5 - a0 (得到总差值)
+	srli a5, a5, 4      # a5 = a5 >> 4 (相当于除以16)	
+	esp.lp.setup 0, a5, .test_loop3
 .LBB0_20:                               # %for.body33.15
                                         #   Parent Loop BB0_18 Depth=1
                                         # =>  This Inner Loop Header: Depth=2
@@ -340,9 +340,9 @@ dsps_ccorr_f32_arp4:                    # @dsps_ccorr_f32_arp4
 	fmv.s	ft0, fa5
 	fmv.s	ft1, fa5
 	fmv.s	ft2, fa5
-	sub t3, a0, s1      # t0 = a0 - s1 (得到总差值)
-	srli t3, t3, 3      # t0 = t0 >> 3 (相当于除以8)	
-	esp.lp.setup 0, t3, .test_loop4
+	sub a0, a0, s1      # a0 = a0 - s1 (得到总差值)
+	srli a0, a0, 3      # a0 = a0 >> 3 (相当于除以8)	
+	esp.lp.setup 0, a0, .test_loop4
 .LBB0_31:                               # %for.body60.7
                                         #   Parent Loop BB0_29 Depth=1
                                         # =>  This Inner Loop Header: Depth=2

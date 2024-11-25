@@ -16,7 +16,7 @@ opt  after_splitloopbylength.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-c
 opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unroll-and-remainder -riscv-loop-unroll-and-remainder=true  -S -o after_loopunrollandremainder.ll
 
 
-llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+llc --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
 ../preprocess_asm.sh after_loopunrollandremainder.s
 

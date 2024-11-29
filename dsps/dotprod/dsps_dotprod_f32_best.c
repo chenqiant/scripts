@@ -24,45 +24,67 @@
 //     return ESP_OK;
 // }
 
-esp_err_t dsps_dotprod_f32_ansi(const float *restrict src1, const float *restrict src2, float *restrict dest, int len)
+// esp_err_t dsps_dotprod_f32_ansi(const float *restrict src1, const float *restrict src2, float *restrict dest, int len)
+// {
+
+//     if(len > 2){
+//         float acc0 = 0, acc1 = 0, acc2 = 0, acc3 = 0;
+//         float acc4 = 0, acc5 = 0, acc6 = 0, acc7 = 0;
+//         int i;
+//         // Main loop with 8x unrolling
+//         for (i = 0; i < len - 7; i += 8) {
+//             acc0 += src1[i] * src2[i];
+//             acc1 += src1[i+1] * src2[i+1];
+//             acc2 += src1[i+2] * src2[i+2];
+//             acc3 += src1[i+3] * src2[i+3];
+//             acc4 += src1[i+4] * src2[i+4];
+//             acc5 += src1[i+5] * src2[i+5];
+//             acc6 += src1[i+6] * src2[i+6];
+//             acc7 += src1[i+7] * src2[i+7];
+//         }
+
+//         // Handle remaining elements
+//         for (; i < len; i++) {
+//             acc0 += src1[i] * src2[i];
+//         }
+//         float temp1 = acc0 + acc1;
+//         float temp2 = acc2 + acc3;
+//         float temp3 = acc4 + acc5;
+//         float temp4 = acc6 + acc7;
+//         float temp5 = temp1 + temp2;
+//         float temp6 = temp3 + temp4;
+//         *dest = temp5 + temp6;
+//     }else{
+//         float acc = 0;
+//         for (int i = 0; i < len; i++) {
+//             acc += src1[i] * src2[i];
+//         }
+//         *dest = acc;        
+//     }
+//     return ESP_OK;
+// }
+
+
+
+esp_err_t dsps_dotprod_f32_ansi(const float *src1, const float *src2, float *dest, int len)
 {
-
-    if(len > 2){
-        float acc0 = 0, acc1 = 0, acc2 = 0, acc3 = 0;
-        float acc4 = 0, acc5 = 0, acc6 = 0, acc7 = 0;
-        int i;
-        // Main loop with 8x unrolling
-        for (i = 0; i < len - 7; i += 8) {
-            acc0 += src1[i] * src2[i];
-            acc1 += src1[i+1] * src2[i+1];
-            acc2 += src1[i+2] * src2[i+2];
-            acc3 += src1[i+3] * src2[i+3];
-            acc4 += src1[i+4] * src2[i+4];
-            acc5 += src1[i+5] * src2[i+5];
-            acc6 += src1[i+6] * src2[i+6];
-            acc7 += src1[i+7] * src2[i+7];
-        }
-
-        // Handle remaining elements
-        for (; i < len; i++) {
-            acc0 += src1[i] * src2[i];
-        }
-        float temp1 = acc0 + acc1;
-        float temp2 = acc2 + acc3;
-        float temp3 = acc4 + acc5;
-        float temp4 = acc6 + acc7;
-        float temp5 = temp1 + temp2;
-        float temp6 = temp3 + temp4;
-        *dest = temp5 + temp6;
-    }else{
-        float acc = 0;
-        for (int i = 0; i < len; i++) {
-            acc += src1[i] * src2[i];
-        }
-        *dest = acc;        
+    float acc = 0;
+    int i;
+    for (i = 0; i < len - 7; i += 8) {
+        acc += src1[i] * src2[i];
+        acc += src1[i+1] * src2[i+1]; 
+        acc += src1[i+2] * src2[i+2];
+        acc += src1[i+3] * src2[i+3];
+        acc += src1[i+4] * src2[i+4];
+        acc += src1[i+5] * src2[i+5];
+        acc += src1[i+6] * src2[i+6];
+        acc += src1[i+7] * src2[i+7];
     }
+    // 处理剩余元素
+    for (; i < len; i++) {
+        acc += src1[i] * src2[i];
+    }
+
+    *dest = acc;
     return ESP_OK;
 }
-
-
-

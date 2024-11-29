@@ -10,8 +10,8 @@ entry:
   %shr = lshr i32 32767, %conv
   %conv1 = zext nneg i32 %shr to i64
   %and = and i32 %len, -8
-  %cmp154 = icmp sgt i32 %and, 0
-  br i1 %cmp154, label %for.body.preheader, label %for.cond73.preheader
+  %cmp146 = icmp sgt i32 %and, 0
+  br i1 %cmp146, label %for.body.preheader, label %for.cond73.preheader
 
 for.body.preheader:                               ; preds = %entry
   %0 = add nsw i32 %and, -1
@@ -23,38 +23,24 @@ for.cond73.preheader.loopexit:                    ; preds = %for.body
   br label %for.cond73.preheader
 
 for.cond73.preheader:                             ; preds = %for.cond73.preheader.loopexit, %entry
-  %acc1.0.lcssa = phi i64 [ 0, %entry ], [ %add17, %for.cond73.preheader.loopexit ]
-  %acc2.0.lcssa = phi i64 [ 0, %entry ], [ %add26, %for.cond73.preheader.loopexit ]
-  %acc3.0.lcssa = phi i64 [ 0, %entry ], [ %add35, %for.cond73.preheader.loopexit ]
-  %acc4.0.lcssa = phi i64 [ 0, %entry ], [ %add44, %for.cond73.preheader.loopexit ]
-  %acc5.0.lcssa = phi i64 [ 0, %entry ], [ %add53, %for.cond73.preheader.loopexit ]
-  %acc6.0.lcssa = phi i64 [ 0, %entry ], [ %add62, %for.cond73.preheader.loopexit ]
-  %acc7.0.lcssa = phi i64 [ 0, %entry ], [ %add71, %for.cond73.preheader.loopexit ]
   %i.0.lcssa = phi i32 [ 0, %entry ], [ %2, %for.cond73.preheader.loopexit ]
-  %acc0.0.lcssa = phi i64 [ %conv1, %entry ], [ %add8, %for.cond73.preheader.loopexit ]
-  %cmp74172 = icmp slt i32 %i.0.lcssa, %len
-  br i1 %cmp74172, label %for.body76, label %for.end85
+  %acc.0.lcssa = phi i64 [ %conv1, %entry ], [ %add71, %for.cond73.preheader.loopexit ]
+  %cmp74150 = icmp slt i32 %i.0.lcssa, %len
+  br i1 %cmp74150, label %for.body76, label %for.end85
 
 for.body:                                         ; preds = %for.body.preheader, %for.body
-  %acc0.0163 = phi i64 [ %add8, %for.body ], [ %conv1, %for.body.preheader ]
-  %i.0162 = phi i32 [ %add72, %for.body ], [ 0, %for.body.preheader ]
-  %acc7.0161 = phi i64 [ %add71, %for.body ], [ 0, %for.body.preheader ]
-  %acc6.0160 = phi i64 [ %add62, %for.body ], [ 0, %for.body.preheader ]
-  %acc5.0159 = phi i64 [ %add53, %for.body ], [ 0, %for.body.preheader ]
-  %acc4.0158 = phi i64 [ %add44, %for.body ], [ 0, %for.body.preheader ]
-  %acc3.0157 = phi i64 [ %add35, %for.body ], [ 0, %for.body.preheader ]
-  %acc2.0156 = phi i64 [ %add26, %for.body ], [ 0, %for.body.preheader ]
-  %acc1.0155 = phi i64 [ %add17, %for.body ], [ 0, %for.body.preheader ]
-  %arrayidx = getelementptr inbounds i16, ptr %src1, i32 %i.0162
+  %acc.0148 = phi i64 [ %add71, %for.body ], [ %conv1, %for.body.preheader ]
+  %i.0147 = phi i32 [ %add72, %for.body ], [ 0, %for.body.preheader ]
+  %arrayidx = getelementptr inbounds i16, ptr %src1, i32 %i.0147
   %3 = load i16, ptr %arrayidx, align 2, !tbaa !4
   %conv3 = sext i16 %3 to i32
-  %arrayidx5 = getelementptr inbounds i16, ptr %src2, i32 %i.0162
+  %arrayidx5 = getelementptr inbounds i16, ptr %src2, i32 %i.0147
   %4 = load i16, ptr %arrayidx5, align 2, !tbaa !4
   %conv6 = sext i16 %4 to i32
   %mul = mul nsw i32 %conv6, %conv3
   %conv7 = sext i32 %mul to i64
-  %add8 = add nsw i64 %acc0.0163, %conv7
-  %add9 = or disjoint i32 %i.0162, 1
+  %add8 = add nsw i64 %acc.0148, %conv7
+  %add9 = or disjoint i32 %i.0147, 1
   %arrayidx10 = getelementptr inbounds i16, ptr %src1, i32 %add9
   %5 = load i16, ptr %arrayidx10, align 2, !tbaa !4
   %conv11 = sext i16 %5 to i32
@@ -63,8 +49,8 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv14 = sext i16 %6 to i32
   %mul15 = mul nsw i32 %conv14, %conv11
   %conv16 = sext i32 %mul15 to i64
-  %add17 = add nsw i64 %acc1.0155, %conv16
-  %add18 = or disjoint i32 %i.0162, 2
+  %add17 = add nsw i64 %add8, %conv16
+  %add18 = or disjoint i32 %i.0147, 2
   %arrayidx19 = getelementptr inbounds i16, ptr %src1, i32 %add18
   %7 = load i16, ptr %arrayidx19, align 2, !tbaa !4
   %conv20 = sext i16 %7 to i32
@@ -73,8 +59,8 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv23 = sext i16 %8 to i32
   %mul24 = mul nsw i32 %conv23, %conv20
   %conv25 = sext i32 %mul24 to i64
-  %add26 = add nsw i64 %acc2.0156, %conv25
-  %add27 = or disjoint i32 %i.0162, 3
+  %add26 = add nsw i64 %add17, %conv25
+  %add27 = or disjoint i32 %i.0147, 3
   %arrayidx28 = getelementptr inbounds i16, ptr %src1, i32 %add27
   %9 = load i16, ptr %arrayidx28, align 2, !tbaa !4
   %conv29 = sext i16 %9 to i32
@@ -83,8 +69,8 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv32 = sext i16 %10 to i32
   %mul33 = mul nsw i32 %conv32, %conv29
   %conv34 = sext i32 %mul33 to i64
-  %add35 = add nsw i64 %acc3.0157, %conv34
-  %add36 = or disjoint i32 %i.0162, 4
+  %add35 = add nsw i64 %add26, %conv34
+  %add36 = or disjoint i32 %i.0147, 4
   %arrayidx37 = getelementptr inbounds i16, ptr %src1, i32 %add36
   %11 = load i16, ptr %arrayidx37, align 2, !tbaa !4
   %conv38 = sext i16 %11 to i32
@@ -93,8 +79,8 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv41 = sext i16 %12 to i32
   %mul42 = mul nsw i32 %conv41, %conv38
   %conv43 = sext i32 %mul42 to i64
-  %add44 = add nsw i64 %acc4.0158, %conv43
-  %add45 = or disjoint i32 %i.0162, 5
+  %add44 = add nsw i64 %add35, %conv43
+  %add45 = or disjoint i32 %i.0147, 5
   %arrayidx46 = getelementptr inbounds i16, ptr %src1, i32 %add45
   %13 = load i16, ptr %arrayidx46, align 2, !tbaa !4
   %conv47 = sext i16 %13 to i32
@@ -103,8 +89,8 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv50 = sext i16 %14 to i32
   %mul51 = mul nsw i32 %conv50, %conv47
   %conv52 = sext i32 %mul51 to i64
-  %add53 = add nsw i64 %acc5.0159, %conv52
-  %add54 = or disjoint i32 %i.0162, 6
+  %add53 = add nsw i64 %add44, %conv52
+  %add54 = or disjoint i32 %i.0147, 6
   %arrayidx55 = getelementptr inbounds i16, ptr %src1, i32 %add54
   %15 = load i16, ptr %arrayidx55, align 2, !tbaa !4
   %conv56 = sext i16 %15 to i32
@@ -113,8 +99,8 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv59 = sext i16 %16 to i32
   %mul60 = mul nsw i32 %conv59, %conv56
   %conv61 = sext i32 %mul60 to i64
-  %add62 = add nsw i64 %acc6.0160, %conv61
-  %add63 = or disjoint i32 %i.0162, 7
+  %add62 = add nsw i64 %add53, %conv61
+  %add63 = or disjoint i32 %i.0147, 7
   %arrayidx64 = getelementptr inbounds i16, ptr %src1, i32 %add63
   %17 = load i16, ptr %arrayidx64, align 2, !tbaa !4
   %conv65 = sext i16 %17 to i32
@@ -123,56 +109,49 @@ for.body:                                         ; preds = %for.body.preheader,
   %conv68 = sext i16 %18 to i32
   %mul69 = mul nsw i32 %conv68, %conv65
   %conv70 = sext i32 %mul69 to i64
-  %add71 = add nsw i64 %acc7.0161, %conv70
-  %add72 = add nuw nsw i32 %i.0162, 8
+  %add71 = add nsw i64 %add62, %conv70
+  %add72 = add nuw nsw i32 %i.0147, 8
   %cmp = icmp slt i32 %add72, %and
   br i1 %cmp, label %for.body, label %for.cond73.preheader.loopexit, !llvm.loop !8
 
 for.body76:                                       ; preds = %for.cond73.preheader, %for.body76
-  %acc0.1174 = phi i64 [ %add83, %for.body76 ], [ %acc0.0.lcssa, %for.cond73.preheader ]
-  %i.1173 = phi i32 [ %inc, %for.body76 ], [ %i.0.lcssa, %for.cond73.preheader ]
-  %arrayidx77 = getelementptr inbounds i16, ptr %src1, i32 %i.1173
+  %acc.1152 = phi i64 [ %add83, %for.body76 ], [ %acc.0.lcssa, %for.cond73.preheader ]
+  %i.1151 = phi i32 [ %inc, %for.body76 ], [ %i.0.lcssa, %for.cond73.preheader ]
+  %arrayidx77 = getelementptr inbounds i16, ptr %src1, i32 %i.1151
   %19 = load i16, ptr %arrayidx77, align 2, !tbaa !4
   %conv78 = sext i16 %19 to i32
-  %arrayidx79 = getelementptr inbounds i16, ptr %src2, i32 %i.1173
+  %arrayidx79 = getelementptr inbounds i16, ptr %src2, i32 %i.1151
   %20 = load i16, ptr %arrayidx79, align 2, !tbaa !4
   %conv80 = sext i16 %20 to i32
   %mul81 = mul nsw i32 %conv80, %conv78
   %conv82 = sext i32 %mul81 to i64
-  %add83 = add nsw i64 %acc0.1174, %conv82
-  %inc = add nuw nsw i32 %i.1173, 1
+  %add83 = add nsw i64 %acc.1152, %conv82
+  %inc = add nuw nsw i32 %i.1151, 1
   %exitcond.not = icmp eq i32 %inc, %len
   br i1 %exitcond.not, label %for.end85, label %for.body76, !llvm.loop !10
 
 for.end85:                                        ; preds = %for.body76, %for.cond73.preheader
-  %acc0.1.lcssa = phi i64 [ %acc0.0.lcssa, %for.cond73.preheader ], [ %add83, %for.body76 ]
-  %add86 = add i64 %acc2.0.lcssa, %acc1.0.lcssa
-  %add87 = add i64 %add86, %acc3.0.lcssa
-  %add88 = add i64 %add87, %acc4.0.lcssa
-  %add89 = add i64 %add88, %acc5.0.lcssa
-  %add90 = add i64 %add89, %acc6.0.lcssa
-  %add91 = add i64 %add90, %acc7.0.lcssa
-  %add92 = add i64 %add91, %acc0.1.lcssa
-  %cmp94 = icmp sgt i8 %shift, 15
-  br i1 %cmp94, label %if.then, label %if.else
+  %acc.1.lcssa = phi i64 [ %acc.0.lcssa, %for.cond73.preheader ], [ %add83, %for.body76 ]
+  %cmp87 = icmp sgt i8 %shift, 15
+  br i1 %cmp87, label %if.then, label %if.else
 
 if.then:                                          ; preds = %for.end85
   %sub = add nsw i32 %conv, -15
   %sh_prom = zext nneg i32 %sub to i64
-  %shl = shl i64 %add92, %sh_prom
-  %extract.t178 = trunc i64 %shl to i16
+  %shl = shl i64 %acc.1.lcssa, %sh_prom
+  %extract.t156 = trunc i64 %shl to i16
   br label %if.end
 
 if.else:                                          ; preds = %for.end85
-  %sub97 = sub nsw i32 15, %conv
-  %sh_prom98 = zext nneg i32 %sub97 to i64
-  %shr99 = ashr i64 %add92, %sh_prom98
-  %extract.t177 = trunc i64 %shr99 to i16
+  %sub90 = sub nsw i32 15, %conv
+  %sh_prom91 = zext nneg i32 %sub90 to i64
+  %shr92 = ashr i64 %acc.1.lcssa, %sh_prom91
+  %extract.t155 = trunc i64 %shr92 to i16
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %shr99.sink.off0 = phi i16 [ %extract.t177, %if.else ], [ %extract.t178, %if.then ]
-  store i16 %shr99.sink.off0, ptr %dest, align 2, !tbaa !4
+  %shr92.sink.off0 = phi i16 [ %extract.t155, %if.else ], [ %extract.t156, %if.then ]
+  store i16 %shr92.sink.off0, ptr %dest, align 2, !tbaa !4
   ret i32 0
 }
 
@@ -184,7 +163,7 @@ attributes #0 = { nofree norecurse nosync nounwind memory(argmem: readwrite) "no
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 1, !"target-abi", !"ilp32f"}
 !2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6)"}
+!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6 esp-18.1.2_20240912-14-g8070eda esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-22-gda2052a)"}
 !4 = !{!5, !5, i64 0}
 !5 = !{!"short", !6, i64 0}
 !6 = !{!"omnipotent char", !7, i64 0}

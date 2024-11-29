@@ -1,0 +1,193 @@
+Pass Arguments:  -targetlibinfo -targetpassconfig -machinemoduleinfo -tti -assumption-cache-tracker -profile-summary-info -tbaa -scoped-noalias-aa -collector-metadata -machine-branch-prob -regalloc-evict -regalloc-priority -pre-isel-intrinsic-lowering -expand-large-div-rem -expand-large-fp-convert -atomic-expand -domtree -loops -loop-simplify -lazy-branch-prob -lazy-block-freq -opt-remark-emitter -scalar-evolution -loop-data-prefetch -riscv-gather-scatter-lowering -interleaved-access -riscv-codegenprepare -verify -basic-aa -loop-simplify -scalar-evolution -canon-freeze -iv-users -loop-reduce -basic-aa -aa -mergeicmps -loops -lazy-branch-prob -lazy-block-freq -expand-memcmp -gc-lowering -shadow-stack-gc-lowering -lower-constant-intrinsics -unreachableblockelim -loops -postdomtree -branch-prob -block-freq -consthoist -replace-with-veclib -partially-inline-libcalls -expandvp -scalarize-masked-mem-intrin -expand-reductions -loops -tlshoist -codegenprepare -domtree -dwarf-eh-prepare -barrier -callbrprepare -safe-stack -stack-protector -verify -domtree -basic-aa -aa -loops -postdomtree -branch-prob -debug-ata -lazy-branch-prob -lazy-block-freq -riscv-isel -finalize-isel -riscv-fold-masks -lazy-machine-block-freq -early-tailduplication -opt-phis -slotindexes -stack-coloring -localstackalloc -dead-mi-elimination -machinedomtree -machine-loops -machine-block-freq -early-machinelicm -machinedomtree -machine-block-freq -machine-cse -machinepostdomtree -machine-cycles -machine-sink -peephole-opt -dead-mi-elimination -machine-trace-metrics -lazy-machine-block-freq -machine-combiner -riscv-prera-expand-pseudo -riscv-merge-base-offset -riscv-insert-vsetvli -riscv-dead-defs -riscv-insert-read-write-csr -riscv-insert-write-vxrm -detect-dead-lanes -riscv-init-undef -processimpdefs -unreachable-mbb-elimination -livevars -phi-node-elimination -twoaddressinstruction -machinedomtree -slotindexes -liveintervals -register-coalescer -rename-independent-subregs -machine-scheduler -machine-block-freq -livedebugvars -livestacks -virtregmap -liveregmatrix -edge-bundles -spill-code-placement -lazy-machine-block-freq -machine-opt-remark-emitter -greedy -virtregrewriter -virtregmap -liveregmatrix -greedy -virtregrewriter -regallocscoringpass -stack-slot-coloring -machine-cp -machinelicm -riscv-copyelim -removeredundantdebugvalues -fixup-statepoint-caller-saved -postra-machine-sink -machinedomtree -machine-loops -machine-block-freq -machinepostdomtree -lazy-machine-block-freq -machine-opt-remark-emitter -shrink-wrap -prologepilog -machine-latecleanup -branch-folder -lazy-machine-block-freq -tailduplication -machine-cp -postrapseudos -riscv-expand-pseudolisimm32 -kcfi -machinedomtree -machine-loops -postmisched -gc-analysis -machine-block-freq -machinepostdomtree -block-placement -fentry-insert -xray-instrumentation -patchable-function -branch-relaxation -riscv-make-compressible -machine-cp -funclet-layout -stackmap-liveness -livedebugvalues -machine-sanmd -machine-outliner -lazy-machine-block-freq -machine-opt-remark-emitter -stack-frame-layout -riscv-move-merge -riscv-push-pop-opt -riscv-expand-pseudo -riscv-expand-atomic-pseudo -unpack-mi-bundles -lazy-machine-block-freq -machine-opt-remark-emitter
+Target Library Information
+Target Pass Configuration
+Machine Module Information
+Target Transform Information
+Assumption Cache Tracker
+Profile summary info
+Type-Based Alias Analysis
+Scoped NoAlias Alias Analysis
+Create Garbage Collector Module Metadata
+Machine Branch Probability Analysis
+Default Regalloc Eviction Advisor
+Default Regalloc Priority Advisor
+  ModulePass Manager
+    Pre-ISel Intrinsic Lowering
+    FunctionPass Manager
+      Expand large div/rem
+      Expand large fp convert
+      Expand Atomic instructions
+      Dominator Tree Construction
+      Natural Loop Information
+      Canonicalize natural loops
+      Lazy Branch Probability Analysis
+      Lazy Block Frequency Analysis
+      Optimization Remark Emitter
+      Scalar Evolution Analysis
+      Loop Data Prefetch
+      RISC-V gather/scatter lowering
+      Interleaved Access Pass
+      RISC-V CodeGenPrepare
+      Module Verifier
+      Basic Alias Analysis (stateless AA impl)
+      Canonicalize natural loops
+      Scalar Evolution Analysis
+      Loop Pass Manager
+        Canonicalize Freeze Instructions in Loops
+        Induction Variable Users
+        Loop Strength Reduction
+      Basic Alias Analysis (stateless AA impl)
+      Function Alias Analysis Results
+      Merge contiguous icmps into a memcmp
+      Natural Loop Information
+      Lazy Branch Probability Analysis
+      Lazy Block Frequency Analysis
+      Expand memcmp() to load/stores
+      Lower Garbage Collection Instructions
+      Shadow Stack GC Lowering
+      Lower constant intrinsics
+      Remove unreachable blocks from the CFG
+      Natural Loop Information
+      Post-Dominator Tree Construction
+      Branch Probability Analysis
+      Block Frequency Analysis
+      Constant Hoisting
+      Replace intrinsics with calls to vector library
+      Partially inline calls to library functions
+      Expand vector predication intrinsics
+      Scalarize Masked Memory Intrinsics
+      Expand reduction intrinsics
+      Natural Loop Information
+      TLS Variable Hoist
+      CodeGen Prepare
+      Dominator Tree Construction
+      Exception handling preparation
+    A No-Op Barrier Pass
+    FunctionPass Manager
+      Prepare callbr
+      Safe Stack instrumentation pass
+      Insert stack protectors
+      Module Verifier
+      Dominator Tree Construction
+      Basic Alias Analysis (stateless AA impl)
+      Function Alias Analysis Results
+      Natural Loop Information
+      Post-Dominator Tree Construction
+      Branch Probability Analysis
+      Assignment Tracking Analysis
+      Lazy Branch Probability Analysis
+      Lazy Block Frequency Analysis
+      RISC-V DAG->DAG Pattern Instruction Selection
+      Finalize ISel and expand pseudo-instructions
+      RISC-V Fold Masks
+      Lazy Machine Block Frequency Analysis
+      Early Tail Duplication
+      Optimize machine instruction PHIs
+      Slot index numbering
+      Merge disjoint stack slots
+      Local Stack Slot Allocation
+      Remove dead machine instructions
+      MachineDominator Tree Construction
+      Machine Natural Loop Construction
+      Machine Block Frequency Analysis
+      Early Machine Loop Invariant Code Motion
+      MachineDominator Tree Construction
+      Machine Block Frequency Analysis
+      Machine Common Subexpression Elimination
+      MachinePostDominator Tree Construction
+      Machine Cycle Info Analysis
+      Machine code sinking
+      Peephole Optimizations
+      Remove dead machine instructions
+      Machine Trace Metrics
+      Lazy Machine Block Frequency Analysis
+      Machine InstCombiner
+      RISC-V Pre-RA pseudo instruction expansion pass
+      RISC-V Merge Base Offset
+      RISC-V Insert VSETVLI pass
+      RISC-V Dead register definitions
+      RISC-V Insert Read/Write CSR Pass
+      RISC-V Insert Write VXRM Pass
+      Detect Dead Lanes
+      RISC-V init undef pass
+      Process Implicit Definitions
+      Remove unreachable machine basic blocks
+      Live Variable Analysis
+      Eliminate PHI nodes for register allocation
+      Two-Address instruction pass
+      MachineDominator Tree Construction
+      Slot index numbering
+      Live Interval Analysis
+      Register Coalescer
+      Rename Disconnected Subregister Components
+      Machine Instruction Scheduler
+      Machine Block Frequency Analysis
+      Debug Variable Analysis
+      Live Stack Slot Analysis
+      Virtual Register Map
+      Live Register Matrix
+      Bundle Machine CFG Edges
+      Spill Code Placement Analysis
+      Lazy Machine Block Frequency Analysis
+      Machine Optimization Remark Emitter
+      Greedy Register Allocator
+      Virtual Register Rewriter
+      Virtual Register Map
+      Live Register Matrix
+      Greedy Register Allocator
+      Virtual Register Rewriter
+      Register Allocation Pass Scoring
+      Stack Slot Coloring
+      Machine Copy Propagation Pass
+      Machine Loop Invariant Code Motion
+      RISC-V Redundant Copy Elimination
+      Remove Redundant DEBUG_VALUE analysis
+      Fixup Statepoint Caller Saved
+      PostRA Machine Sink
+      MachineDominator Tree Construction
+      Machine Natural Loop Construction
+      Machine Block Frequency Analysis
+      MachinePostDominator Tree Construction
+      Lazy Machine Block Frequency Analysis
+      Machine Optimization Remark Emitter
+      Shrink Wrapping analysis
+      Prologue/Epilogue Insertion & Frame Finalization
+      Machine Late Instructions Cleanup Pass
+      Control Flow Optimizer
+      Lazy Machine Block Frequency Analysis
+      Tail Duplication
+      Machine Copy Propagation Pass
+      Post-RA pseudo instruction expansion pass
+      RISC-V post-regalloc pseudo instruction expansion pass
+      Insert KCFI indirect call checks
+      MachineDominator Tree Construction
+      Machine Natural Loop Construction
+      PostRA Machine Instruction Scheduler
+      Analyze Machine Code For Garbage Collection
+      Machine Block Frequency Analysis
+      MachinePostDominator Tree Construction
+      Branch Probability Basic Block Placement
+      Insert fentry calls
+      Insert XRay ops
+      Implement the 'patchable-function' attribute
+      Branch relaxation pass
+      RISC-V Make Compressible
+      Machine Copy Propagation Pass
+      Contiguously Lay Out Funclets
+      StackMap Liveness Analysis
+      Live DEBUG_VALUE analysis
+      Machine Sanitizer Binary Metadata
+    Machine Outliner
+    FunctionPass Manager
+      Lazy Machine Block Frequency Analysis
+      Machine Optimization Remark Emitter
+      Stack Frame Layout Analysis
+      RISC-V Zcmp move merging pass
+      RISC-V Zcmp Push/Pop optimization pass
+      RISC-V pseudo instruction expansion pass
+      RISC-V atomic pseudo instruction expansion pass
+      Unpack machine instruction bundles
+      Lazy Machine Block Frequency Analysis
+      Machine Optimization Remark Emitter
+      RISC-V Assembly Printer
+      Free MachineFunction

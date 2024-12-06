@@ -28,10 +28,12 @@ opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-custom-licm -riscv-custom-lic
 opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unroll-and-remainder -riscv-loop-unroll-and-remainder=true after_customlicm.ll  -S -o after_loopunrollandremainder.ll
 
 
-llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32-esp-unknown-elf --enable-esp32-p4-optimize after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32-esp-unknown-elf after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
-llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll \
-    -O3 -stop-before=riscv-enable-esp-opt -o before_esp_accel.mir
+# llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32-esp-unknown-elf dsps_dotprod_f32_ansi.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+
+# llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll \
+#     -O3 -stop-before=riscv-enable-esp-opt -o before_esp_accel.mir
 
 ../preprocess_asm.sh after_loopunrollandremainder.s
 

@@ -8,7 +8,7 @@ dsps_ccorr_f32_ansi.c \
 -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include_sim \
 -I/usr/include \
 -I/usr/include/x86_64-linux-gnu \
--I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include/ \
+-I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include/
 
 
 opt  dsps_ccorr_f32_ansi.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-split-loop-by-length -riscv-split-loop-by-length=true -S -o after_splitloopbylength.ll

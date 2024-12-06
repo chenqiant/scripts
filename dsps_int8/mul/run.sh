@@ -10,7 +10,9 @@ dsps_mul_s8_ansi.c \
 -I /usr/include/ \
 -I /home/chenqian/esp/esp-idf/components/nvs_flash/test_nvs_host/ \
 
-opt  dsps_mul_s8_ansi.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-int-loop-unroll-and-remainder -riscv-int-loop-unroll-and-remainder=true  -S -o after_loopunrollandremainder.ll
+opt dsps_mul_s8_ansi.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-custom-licm -riscv-custom-licm=true   -S -o after_customlicm.ll
+
+opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-int-loop-unroll-and-remainder -riscv-int-loop-unroll-and-remainder=true  -S -o after_loopunrollandremainder.ll
 
 llc --mcpu=esp32p4 --mtriple=riscv32 --enable-esp32-p4-optimize after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 

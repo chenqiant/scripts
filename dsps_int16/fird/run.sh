@@ -26,16 +26,16 @@ opt  dsps_fird_s16_ansi.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-custom
 opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-int-loop-unroll-and-remainder -riscv-int-loop-unroll-and-remainder=true  -S -o after_loopunrollandremainder.ll
 
 
-
+# opt -O3 after_loopunrollandremainder.ll -S -o after_o3.ll
 llc --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
 ../preprocess_asm.sh after_loopunrollandremainder.s
 
 cp after_loopunrollandremainder.s /home/chenqian/esp/esp-idf/components/esp-dsp/modules/fir/fixed/dsps_fird_s16_arp4.S
 
-opt -passes=dot-cfg debug-man.ll
-dot -Tpng .dsps_fird_s16_ansi.dot -o debug-man.png
+# opt -passes=dot-cfg debug-man.ll
+# dot -Tpng .dsps_fird_s16_ansi.dot -o debug-man.png
 
 
-opt -passes=dot-cfg dsps_fird_s16_ansi-best.ll
-dot -Tpng .dsps_fird_s16_ansi.dot -o dsps_fird_s16_best.png
+# opt -passes=dot-cfg after_loopunrollandremainder.ll
+# dot -Tpng .dsps_fird_s16_ansi.dot -o after_loopunrollandremainder.png

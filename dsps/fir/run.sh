@@ -1,6 +1,6 @@
 # rm -rf *.ll *.s
 export PATH=/home/chenqian/Workspace/tool/build_esp_clang/llvm/bin:$PATH
-clang  -O3 -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -emit-llvm -S -o dsps_fir_f32_ansi.ll \
+clang -mllvm -enable-esp32-p4-optimize -O3 -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -emit-llvm -S -o dsps_fir_f32_ansi.ll \
 dsps_fir_f32_ansi.c \
 --target=riscv32-esp-elf \
 -I /home/chenqian/esp/esp-idf/components/esp-dsp/modules/fir/include \
@@ -16,7 +16,7 @@ opt  after_splitloopbylength.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-c
 opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unroll-and-remainder -riscv-loop-unroll-and-remainder=true  -S -o after_loopunrollandremainder.ll
 
 
-llc --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+llc --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
 ../preprocess_asm.sh after_loopunrollandremainder.s
 

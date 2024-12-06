@@ -9,249 +9,148 @@ entry:
   %conv = sext i8 %shift to i32
   %shr = lshr i32 32767, %conv
   %conv1 = zext nneg i32 %shr to i64
-  %cmp24 = icmp sgt i32 %len, 0
-  br i1 %cmp24, label %for.body.preheader, label %for.cond.cleanup
+  %and = and i32 %len, -8
+  %cmp24 = icmp sgt i32 %and, 0
+  br i1 %cmp24, label %for.body.preheader, label %for.cond73.preheader
 
 for.body.preheader:                               ; preds = %entry
-  %0 = add i32 %len, -1
-  %xtraiter = and i32 %len, 7
-  %1 = icmp ult i32 %0, 7
-  br i1 %1, label %for.cond.cleanup.loopexit.unr-lcssa, label %for.body.preheader.new
+  %0 = add i32 %and, -1
+  %1 = and i32 %0, -8
+  br label %for.body.7
 
-for.body.preheader.new:                           ; preds = %for.body.preheader
-  %unroll_iter = sub i32 %len, %xtraiter
-  br label %for.body
+for.cond.cleanup.loopexit:                        ; preds = %for.body.7
+  %2 = add i32 %1, 8
+  br label %for.cond73.preheader
 
-for.cond.cleanup.loopexit.unr-lcssa.loopexit:     ; preds = %for.body
-  %add.lcssa.ph.ph = phi i64 [ %add.7, %for.body ]
-  %acc.026.unr.ph = phi i64 [ %add.7, %for.body ]
-  %i.025.unr.ph = phi i32 [ %inc.7, %for.body ]
-  br label %for.cond.cleanup.loopexit.unr-lcssa
+for.cond73.preheader:                             ; preds = %entry, %for.cond.cleanup.loopexit
+  %i.0.lcssa = phi i32 [ 0, %entry ], [ %2, %for.cond.cleanup.loopexit ]
+  %result0.0.lcssa = phi i64 [ %conv1, %entry ], [ %add.7, %for.cond.cleanup.loopexit ]
+  %cmp74172 = icmp slt i32 %i.0.lcssa, %len
+  br i1 %cmp74172, label %for.body.clone, label %for.end85
 
-for.cond.cleanup.loopexit.unr-lcssa:              ; preds = %for.cond.cleanup.loopexit.unr-lcssa.loopexit, %for.body.preheader
-  %add.lcssa.ph = phi i64 [ undef, %for.body.preheader ], [ %add.lcssa.ph.ph, %for.cond.cleanup.loopexit.unr-lcssa.loopexit ]
-  %acc.026.unr = phi i64 [ %conv1, %for.body.preheader ], [ %acc.026.unr.ph, %for.cond.cleanup.loopexit.unr-lcssa.loopexit ]
-  %i.025.unr = phi i32 [ 0, %for.body.preheader ], [ %i.025.unr.ph, %for.cond.cleanup.loopexit.unr-lcssa.loopexit ]
-  %lcmp.mod = icmp ne i32 %xtraiter, 0
-  br i1 %lcmp.mod, label %for.body.epil.preheader, label %for.cond.cleanup.loopexit
+for.body.7:                                       ; preds = %for.body.7, %for.body.preheader
+  %result0.0 = phi i64 [ %conv1, %for.body.preheader ], [ %add.7, %for.body.7 ]
+  %i.025 = phi i32 [ 0, %for.body.preheader ], [ %inc.7, %for.body.7 ]
+  %add2 = or disjoint i32 %i.025, 1
+  %add4 = or disjoint i32 %i.025, 2
+  %add6 = or disjoint i32 %i.025, 3
+  %add8 = or disjoint i32 %i.025, 4
+  %add10 = or disjoint i32 %i.025, 5
+  %add12 = or disjoint i32 %i.025, 6
+  %add14 = or disjoint i32 %i.025, 7
+  %arrayidx = getelementptr inbounds i16, ptr %src1, i32 %i.025
+  %arrayidx4 = getelementptr inbounds i16, ptr %src2, i32 %i.025
+  %arrayidx.1 = getelementptr inbounds i16, ptr %src1, i32 %add2
+  %arrayidx4.1 = getelementptr inbounds i16, ptr %src2, i32 %add2
+  %arrayidx.2 = getelementptr inbounds i16, ptr %src1, i32 %add4
+  %arrayidx4.2 = getelementptr inbounds i16, ptr %src2, i32 %add4
+  %arrayidx.3 = getelementptr inbounds i16, ptr %src1, i32 %add6
+  %arrayidx4.3 = getelementptr inbounds i16, ptr %src2, i32 %add6
+  %arrayidx.4 = getelementptr inbounds i16, ptr %src1, i32 %add8
+  %arrayidx4.4 = getelementptr inbounds i16, ptr %src2, i32 %add8
+  %arrayidx.5 = getelementptr inbounds i16, ptr %src1, i32 %add10
+  %arrayidx4.5 = getelementptr inbounds i16, ptr %src2, i32 %add10
+  %arrayidx.6 = getelementptr inbounds i16, ptr %src1, i32 %add12
+  %arrayidx4.6 = getelementptr inbounds i16, ptr %src2, i32 %add12
+  %arrayidx.7 = getelementptr inbounds i16, ptr %src1, i32 %add14
+  %arrayidx4.7 = getelementptr inbounds i16, ptr %src2, i32 %add14
+  %3 = load i16, ptr %arrayidx, align 2, !tbaa !4
+  %4 = load i16, ptr %arrayidx4, align 2, !tbaa !4
+  %5 = load i16, ptr %arrayidx.1, align 2, !tbaa !4
+  %6 = load i16, ptr %arrayidx4.1, align 2, !tbaa !4
+  %7 = load i16, ptr %arrayidx.2, align 2, !tbaa !4
+  %8 = load i16, ptr %arrayidx4.2, align 2, !tbaa !4
+  %9 = load i16, ptr %arrayidx.3, align 2, !tbaa !4
+  %10 = load i16, ptr %arrayidx4.3, align 2, !tbaa !4
+  %11 = load i16, ptr %arrayidx.4, align 2, !tbaa !4
+  %12 = load i16, ptr %arrayidx4.4, align 2, !tbaa !4
+  %13 = load i16, ptr %arrayidx.5, align 2, !tbaa !4
+  %14 = load i16, ptr %arrayidx4.5, align 2, !tbaa !4
+  %15 = load i16, ptr %arrayidx.6, align 2, !tbaa !4
+  %16 = load i16, ptr %arrayidx4.6, align 2, !tbaa !4
+  %17 = load i16, ptr %arrayidx.7, align 2, !tbaa !4
+  %18 = load i16, ptr %arrayidx4.7, align 2, !tbaa !4
+  %conv3 = sext i16 %3 to i32
+  %conv5 = sext i16 %4 to i32
+  %conv3.1 = sext i16 %5 to i32
+  %conv5.1 = sext i16 %6 to i32
+  %conv3.2 = sext i16 %7 to i32
+  %conv5.2 = sext i16 %8 to i32
+  %conv3.3 = sext i16 %9 to i32
+  %conv5.3 = sext i16 %10 to i32
+  %conv3.4 = sext i16 %11 to i32
+  %conv5.4 = sext i16 %12 to i32
+  %conv3.5 = sext i16 %13 to i32
+  %conv5.5 = sext i16 %14 to i32
+  %conv3.6 = sext i16 %15 to i32
+  %conv5.6 = sext i16 %16 to i32
+  %conv3.7 = sext i16 %17 to i32
+  %conv5.7 = sext i16 %18 to i32
+  %mul = mul nsw i32 %conv5, %conv3
+  %mul.1 = mul nsw i32 %conv5.1, %conv3.1
+  %mul.2 = mul nsw i32 %conv5.2, %conv3.2
+  %mul.3 = mul nsw i32 %conv5.3, %conv3.3
+  %mul.4 = mul nsw i32 %conv5.4, %conv3.4
+  %mul.5 = mul nsw i32 %conv5.5, %conv3.5
+  %mul.6 = mul nsw i32 %conv5.6, %conv3.6
+  %mul.7 = mul nsw i32 %conv5.7, %conv3.7
+  %conv6 = sext i32 %mul to i64
+  %conv6.1 = sext i32 %mul.1 to i64
+  %conv6.2 = sext i32 %mul.2 to i64
+  %conv6.3 = sext i32 %mul.3 to i64
+  %conv6.4 = sext i32 %mul.4 to i64
+  %conv6.5 = sext i32 %mul.5 to i64
+  %conv6.6 = sext i32 %mul.6 to i64
+  %conv6.7 = sext i32 %mul.7 to i64
+  %add = add nsw i64 %result0.0, %conv6
+  %add.1 = add nsw i64 %add, %conv6.1
+  %add.2 = add nsw i64 %add.1, %conv6.2
+  %add.3 = add nsw i64 %add.2, %conv6.3
+  %add.4 = add nsw i64 %add.3, %conv6.4
+  %add.5 = add nsw i64 %add.4, %conv6.5
+  %add.6 = add nsw i64 %add.5, %conv6.6
+  %add.7 = add nsw i64 %add.6, %conv6.7
+  %inc.7 = add nuw nsw i32 %i.025, 8
+  %exitcond.not.7 = icmp slt i32 %inc.7, %and
+  br i1 %exitcond.not.7, label %for.body.7, label %for.cond.cleanup.loopexit, !llvm.loop !8
 
-for.body.epil.preheader:                          ; preds = %for.cond.cleanup.loopexit.unr-lcssa
-  br label %for.body.epil
+for.body.clone:                                   ; preds = %for.body.clone, %for.cond73.preheader
+  %19 = phi i64 [ %result0.0.lcssa, %for.cond73.preheader ], [ %add.clone, %for.body.clone ]
+  %i.025.clone = phi i32 [ %inc.clone, %for.body.clone ], [ %i.0.lcssa, %for.cond73.preheader ]
+  %arrayidx.clone = getelementptr inbounds i16, ptr %src1, i32 %i.025.clone
+  %20 = load i16, ptr %arrayidx.clone, align 2, !tbaa !4
+  %conv3.clone = sext i16 %20 to i32
+  %arrayidx4.clone = getelementptr inbounds i16, ptr %src2, i32 %i.025.clone
+  %21 = load i16, ptr %arrayidx4.clone, align 2, !tbaa !4
+  %conv5.clone = sext i16 %21 to i32
+  %mul.clone = mul nsw i32 %conv5.clone, %conv3.clone
+  %conv6.clone = sext i32 %mul.clone to i64
+  %add.clone = add nsw i64 %19, %conv6.clone
+  %inc.clone = add nuw nsw i32 %i.025.clone, 1
+  %exitcond.not.clone = icmp eq i32 %inc.clone, %len
+  br i1 %exitcond.not.clone, label %for.end85, label %for.body.clone, !llvm.loop !8
 
-for.body.epil:                                    ; preds = %for.body.epil.preheader
-  %arrayidx.epil = getelementptr inbounds i16, ptr %src1, i32 %i.025.unr
-  %2 = load i16, ptr %arrayidx.epil, align 2, !tbaa !4
-  %conv3.epil = sext i16 %2 to i32
-  %arrayidx4.epil = getelementptr inbounds i16, ptr %src2, i32 %i.025.unr
-  %3 = load i16, ptr %arrayidx4.epil, align 2, !tbaa !4
-  %conv5.epil = sext i16 %3 to i32
-  %mul.epil = mul nsw i32 %conv5.epil, %conv3.epil
-  %conv6.epil = sext i32 %mul.epil to i64
-  %add.epil = add nsw i64 %acc.026.unr, %conv6.epil
-  %inc.epil = add nuw nsw i32 %i.025.unr, 1
-  %epil.iter.cmp = icmp ne i32 1, %xtraiter
-  br i1 %epil.iter.cmp, label %for.body.epil.1, label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.body.epil.1:                                  ; preds = %for.body.epil
-  %arrayidx.epil.1 = getelementptr inbounds i16, ptr %src1, i32 %inc.epil
-  %4 = load i16, ptr %arrayidx.epil.1, align 2, !tbaa !4
-  %conv3.epil.1 = sext i16 %4 to i32
-  %arrayidx4.epil.1 = getelementptr inbounds i16, ptr %src2, i32 %inc.epil
-  %5 = load i16, ptr %arrayidx4.epil.1, align 2, !tbaa !4
-  %conv5.epil.1 = sext i16 %5 to i32
-  %mul.epil.1 = mul nsw i32 %conv5.epil.1, %conv3.epil.1
-  %conv6.epil.1 = sext i32 %mul.epil.1 to i64
-  %add.epil.1 = add nsw i64 %add.epil, %conv6.epil.1
-  %inc.epil.1 = add nuw nsw i32 %i.025.unr, 2
-  %epil.iter.cmp.1 = icmp ne i32 2, %xtraiter
-  br i1 %epil.iter.cmp.1, label %for.body.epil.2, label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.body.epil.2:                                  ; preds = %for.body.epil.1
-  %arrayidx.epil.2 = getelementptr inbounds i16, ptr %src1, i32 %inc.epil.1
-  %6 = load i16, ptr %arrayidx.epil.2, align 2, !tbaa !4
-  %conv3.epil.2 = sext i16 %6 to i32
-  %arrayidx4.epil.2 = getelementptr inbounds i16, ptr %src2, i32 %inc.epil.1
-  %7 = load i16, ptr %arrayidx4.epil.2, align 2, !tbaa !4
-  %conv5.epil.2 = sext i16 %7 to i32
-  %mul.epil.2 = mul nsw i32 %conv5.epil.2, %conv3.epil.2
-  %conv6.epil.2 = sext i32 %mul.epil.2 to i64
-  %add.epil.2 = add nsw i64 %add.epil.1, %conv6.epil.2
-  %inc.epil.2 = add nuw nsw i32 %i.025.unr, 3
-  %epil.iter.cmp.2 = icmp ne i32 3, %xtraiter
-  br i1 %epil.iter.cmp.2, label %for.body.epil.3, label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.body.epil.3:                                  ; preds = %for.body.epil.2
-  %arrayidx.epil.3 = getelementptr inbounds i16, ptr %src1, i32 %inc.epil.2
-  %8 = load i16, ptr %arrayidx.epil.3, align 2, !tbaa !4
-  %conv3.epil.3 = sext i16 %8 to i32
-  %arrayidx4.epil.3 = getelementptr inbounds i16, ptr %src2, i32 %inc.epil.2
-  %9 = load i16, ptr %arrayidx4.epil.3, align 2, !tbaa !4
-  %conv5.epil.3 = sext i16 %9 to i32
-  %mul.epil.3 = mul nsw i32 %conv5.epil.3, %conv3.epil.3
-  %conv6.epil.3 = sext i32 %mul.epil.3 to i64
-  %add.epil.3 = add nsw i64 %add.epil.2, %conv6.epil.3
-  %inc.epil.3 = add nuw nsw i32 %i.025.unr, 4
-  %epil.iter.cmp.3 = icmp ne i32 4, %xtraiter
-  br i1 %epil.iter.cmp.3, label %for.body.epil.4, label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.body.epil.4:                                  ; preds = %for.body.epil.3
-  %arrayidx.epil.4 = getelementptr inbounds i16, ptr %src1, i32 %inc.epil.3
-  %10 = load i16, ptr %arrayidx.epil.4, align 2, !tbaa !4
-  %conv3.epil.4 = sext i16 %10 to i32
-  %arrayidx4.epil.4 = getelementptr inbounds i16, ptr %src2, i32 %inc.epil.3
-  %11 = load i16, ptr %arrayidx4.epil.4, align 2, !tbaa !4
-  %conv5.epil.4 = sext i16 %11 to i32
-  %mul.epil.4 = mul nsw i32 %conv5.epil.4, %conv3.epil.4
-  %conv6.epil.4 = sext i32 %mul.epil.4 to i64
-  %add.epil.4 = add nsw i64 %add.epil.3, %conv6.epil.4
-  %inc.epil.4 = add nuw nsw i32 %i.025.unr, 5
-  %epil.iter.cmp.4 = icmp ne i32 5, %xtraiter
-  br i1 %epil.iter.cmp.4, label %for.body.epil.5, label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.body.epil.5:                                  ; preds = %for.body.epil.4
-  %arrayidx.epil.5 = getelementptr inbounds i16, ptr %src1, i32 %inc.epil.4
-  %12 = load i16, ptr %arrayidx.epil.5, align 2, !tbaa !4
-  %conv3.epil.5 = sext i16 %12 to i32
-  %arrayidx4.epil.5 = getelementptr inbounds i16, ptr %src2, i32 %inc.epil.4
-  %13 = load i16, ptr %arrayidx4.epil.5, align 2, !tbaa !4
-  %conv5.epil.5 = sext i16 %13 to i32
-  %mul.epil.5 = mul nsw i32 %conv5.epil.5, %conv3.epil.5
-  %conv6.epil.5 = sext i32 %mul.epil.5 to i64
-  %add.epil.5 = add nsw i64 %add.epil.4, %conv6.epil.5
-  %inc.epil.5 = add nuw nsw i32 %i.025.unr, 6
-  %epil.iter.cmp.5 = icmp ne i32 6, %xtraiter
-  br i1 %epil.iter.cmp.5, label %for.body.epil.6, label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.body.epil.6:                                  ; preds = %for.body.epil.5
-  %arrayidx.epil.6 = getelementptr inbounds i16, ptr %src1, i32 %inc.epil.5
-  %14 = load i16, ptr %arrayidx.epil.6, align 2, !tbaa !4
-  %conv3.epil.6 = sext i16 %14 to i32
-  %arrayidx4.epil.6 = getelementptr inbounds i16, ptr %src2, i32 %inc.epil.5
-  %15 = load i16, ptr %arrayidx4.epil.6, align 2, !tbaa !4
-  %conv5.epil.6 = sext i16 %15 to i32
-  %mul.epil.6 = mul nsw i32 %conv5.epil.6, %conv3.epil.6
-  %conv6.epil.6 = sext i32 %mul.epil.6 to i64
-  %add.epil.6 = add nsw i64 %add.epil.5, %conv6.epil.6
-  br label %for.cond.cleanup.loopexit.epilog-lcssa
-
-for.cond.cleanup.loopexit.epilog-lcssa:           ; preds = %for.body.epil.6, %for.body.epil.5, %for.body.epil.4, %for.body.epil.3, %for.body.epil.2, %for.body.epil.1, %for.body.epil
-  %add.lcssa.ph1 = phi i64 [ %add.epil, %for.body.epil ], [ %add.epil.1, %for.body.epil.1 ], [ %add.epil.2, %for.body.epil.2 ], [ %add.epil.3, %for.body.epil.3 ], [ %add.epil.4, %for.body.epil.4 ], [ %add.epil.5, %for.body.epil.5 ], [ %add.epil.6, %for.body.epil.6 ]
-  br label %for.cond.cleanup.loopexit
-
-for.cond.cleanup.loopexit:                        ; preds = %for.cond.cleanup.loopexit.unr-lcssa, %for.cond.cleanup.loopexit.epilog-lcssa
-  %add.lcssa = phi i64 [ %add.lcssa.ph, %for.cond.cleanup.loopexit.unr-lcssa ], [ %add.lcssa.ph1, %for.cond.cleanup.loopexit.epilog-lcssa ]
-  br label %for.cond.cleanup
-
-for.cond.cleanup:                                 ; preds = %for.cond.cleanup.loopexit, %entry
-  %acc.0.lcssa = phi i64 [ %conv1, %entry ], [ %add.lcssa, %for.cond.cleanup.loopexit ]
+for.end85:                                        ; preds = %for.body.clone, %for.cond73.preheader
+  %acc.0.lcssa = phi i64 [ %result0.0.lcssa, %for.cond73.preheader ], [ %add.clone, %for.body.clone ]
   %cmp8 = icmp sgt i8 %shift, 15
   br i1 %cmp8, label %if.then, label %if.else
 
-for.body:                                         ; preds = %for.body, %for.body.preheader.new
-  %acc.026 = phi i64 [ %conv1, %for.body.preheader.new ], [ %add.7, %for.body ]
-  %i.025 = phi i32 [ 0, %for.body.preheader.new ], [ %inc.7, %for.body ]
-  %niter = phi i32 [ 0, %for.body.preheader.new ], [ %niter.next.7, %for.body ]
-  %arrayidx = getelementptr inbounds i16, ptr %src1, i32 %i.025
-  %16 = load i16, ptr %arrayidx, align 2, !tbaa !4
-  %conv3 = sext i16 %16 to i32
-  %arrayidx4 = getelementptr inbounds i16, ptr %src2, i32 %i.025
-  %17 = load i16, ptr %arrayidx4, align 2, !tbaa !4
-  %conv5 = sext i16 %17 to i32
-  %mul = mul nsw i32 %conv5, %conv3
-  %conv6 = sext i32 %mul to i64
-  %add = add nsw i64 %acc.026, %conv6
-  %inc = add nuw nsw i32 %i.025, 1
-  %arrayidx.1 = getelementptr inbounds i16, ptr %src1, i32 %inc
-  %18 = load i16, ptr %arrayidx.1, align 2, !tbaa !4
-  %conv3.1 = sext i16 %18 to i32
-  %arrayidx4.1 = getelementptr inbounds i16, ptr %src2, i32 %inc
-  %19 = load i16, ptr %arrayidx4.1, align 2, !tbaa !4
-  %conv5.1 = sext i16 %19 to i32
-  %mul.1 = mul nsw i32 %conv5.1, %conv3.1
-  %conv6.1 = sext i32 %mul.1 to i64
-  %add.1 = add nsw i64 %add, %conv6.1
-  %inc.1 = add nuw nsw i32 %i.025, 2
-  %arrayidx.2 = getelementptr inbounds i16, ptr %src1, i32 %inc.1
-  %20 = load i16, ptr %arrayidx.2, align 2, !tbaa !4
-  %conv3.2 = sext i16 %20 to i32
-  %arrayidx4.2 = getelementptr inbounds i16, ptr %src2, i32 %inc.1
-  %21 = load i16, ptr %arrayidx4.2, align 2, !tbaa !4
-  %conv5.2 = sext i16 %21 to i32
-  %mul.2 = mul nsw i32 %conv5.2, %conv3.2
-  %conv6.2 = sext i32 %mul.2 to i64
-  %add.2 = add nsw i64 %add.1, %conv6.2
-  %inc.2 = add nuw nsw i32 %i.025, 3
-  %arrayidx.3 = getelementptr inbounds i16, ptr %src1, i32 %inc.2
-  %22 = load i16, ptr %arrayidx.3, align 2, !tbaa !4
-  %conv3.3 = sext i16 %22 to i32
-  %arrayidx4.3 = getelementptr inbounds i16, ptr %src2, i32 %inc.2
-  %23 = load i16, ptr %arrayidx4.3, align 2, !tbaa !4
-  %conv5.3 = sext i16 %23 to i32
-  %mul.3 = mul nsw i32 %conv5.3, %conv3.3
-  %conv6.3 = sext i32 %mul.3 to i64
-  %add.3 = add nsw i64 %add.2, %conv6.3
-  %inc.3 = add nuw nsw i32 %i.025, 4
-  %arrayidx.4 = getelementptr inbounds i16, ptr %src1, i32 %inc.3
-  %24 = load i16, ptr %arrayidx.4, align 2, !tbaa !4
-  %conv3.4 = sext i16 %24 to i32
-  %arrayidx4.4 = getelementptr inbounds i16, ptr %src2, i32 %inc.3
-  %25 = load i16, ptr %arrayidx4.4, align 2, !tbaa !4
-  %conv5.4 = sext i16 %25 to i32
-  %mul.4 = mul nsw i32 %conv5.4, %conv3.4
-  %conv6.4 = sext i32 %mul.4 to i64
-  %add.4 = add nsw i64 %add.3, %conv6.4
-  %inc.4 = add nuw nsw i32 %i.025, 5
-  %arrayidx.5 = getelementptr inbounds i16, ptr %src1, i32 %inc.4
-  %26 = load i16, ptr %arrayidx.5, align 2, !tbaa !4
-  %conv3.5 = sext i16 %26 to i32
-  %arrayidx4.5 = getelementptr inbounds i16, ptr %src2, i32 %inc.4
-  %27 = load i16, ptr %arrayidx4.5, align 2, !tbaa !4
-  %conv5.5 = sext i16 %27 to i32
-  %mul.5 = mul nsw i32 %conv5.5, %conv3.5
-  %conv6.5 = sext i32 %mul.5 to i64
-  %add.5 = add nsw i64 %add.4, %conv6.5
-  %inc.5 = add nuw nsw i32 %i.025, 6
-  %arrayidx.6 = getelementptr inbounds i16, ptr %src1, i32 %inc.5
-  %28 = load i16, ptr %arrayidx.6, align 2, !tbaa !4
-  %conv3.6 = sext i16 %28 to i32
-  %arrayidx4.6 = getelementptr inbounds i16, ptr %src2, i32 %inc.5
-  %29 = load i16, ptr %arrayidx4.6, align 2, !tbaa !4
-  %conv5.6 = sext i16 %29 to i32
-  %mul.6 = mul nsw i32 %conv5.6, %conv3.6
-  %conv6.6 = sext i32 %mul.6 to i64
-  %add.6 = add nsw i64 %add.5, %conv6.6
-  %inc.6 = add nuw nsw i32 %i.025, 7
-  %arrayidx.7 = getelementptr inbounds i16, ptr %src1, i32 %inc.6
-  %30 = load i16, ptr %arrayidx.7, align 2, !tbaa !4
-  %conv3.7 = sext i16 %30 to i32
-  %arrayidx4.7 = getelementptr inbounds i16, ptr %src2, i32 %inc.6
-  %31 = load i16, ptr %arrayidx4.7, align 2, !tbaa !4
-  %conv5.7 = sext i16 %31 to i32
-  %mul.7 = mul nsw i32 %conv5.7, %conv3.7
-  %conv6.7 = sext i32 %mul.7 to i64
-  %add.7 = add nsw i64 %add.6, %conv6.7
-  %inc.7 = add nuw nsw i32 %i.025, 8
-  %niter.next.7 = add i32 %niter, 8
-  %niter.ncmp.7 = icmp eq i32 %niter.next.7, %unroll_iter
-  br i1 %niter.ncmp.7, label %for.cond.cleanup.loopexit.unr-lcssa.loopexit, label %for.body, !llvm.loop !8
-
-if.then:                                          ; preds = %for.cond.cleanup
+if.then:                                          ; preds = %for.end85
   %sub = add nsw i32 %conv, -15
   %sh_prom = zext nneg i32 %sub to i64
   %shl = shl i64 %acc.0.lcssa, %sh_prom
-  %extract.t29 = trunc i64 %shl to i16
   br label %if.end
 
-if.else:                                          ; preds = %for.cond.cleanup
+if.else:                                          ; preds = %for.end85
   %sub11 = sub nsw i32 15, %conv
   %sh_prom12 = zext nneg i32 %sub11 to i64
   %shr13 = ashr i64 %acc.0.lcssa, %sh_prom12
-  %extract.t28 = trunc i64 %shr13 to i16
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %shr13.sink.off0 = phi i16 [ %extract.t28, %if.else ], [ %extract.t29, %if.then ]
-  store i16 %shr13.sink.off0, ptr %dest, align 2, !tbaa !4
+  %shr13.sink = phi i64 [ %shr13, %if.else ], [ %shl, %if.then ]
+  %extract.t28 = trunc i64 %shr13.sink to i16
+  store i16 %extract.t28, ptr %dest, align 2, !tbaa !4
   ret i32 0
 }
 
@@ -263,7 +162,7 @@ attributes #0 = { nofree norecurse nosync nounwind memory(argmem: readwrite) "no
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 1, !"target-abi", !"ilp32f"}
 !2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6)"}
+!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6 esp-18.1.2_20240912-14-g8070eda esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-22-gda2052a esp-18.1.2_20240912-29-ga622597 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-32-g01e9072 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-34-gf41581d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-40-g376cafb esp-18.1.2_20240912-41-g0acc41e esp-18.1.2_20240912-597-g19b0b49)"}
 !4 = !{!5, !5, i64 0}
 !5 = !{!"short", !6, i64 0}
 !6 = !{!"omnipotent char", !7, i64 0}

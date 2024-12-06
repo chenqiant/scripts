@@ -24,7 +24,7 @@ dsps_dotprod_s16_ansi.c \
 # opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-split-loop-by-length -riscv-split-loop-by-length=true dsps_dotprod_s16_ansi.ll  -S -o after_splitloopbylength.ll
 
 
-opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-custom-licm -riscv-custom-licm=true after_splitloopbylength.ll  -S -o after_customlicm.ll
+opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-custom-licm -riscv-custom-licm=true dsps_dotprod_s16_ansi.ll  -S -o after_customlicm.ll
 
 opt -mtriple=riscv32-esp-unknown-elf -passes=riscv-int-loop-unroll-and-remainder -riscv-int-loop-unroll-and-remainder=true after_customlicm.ll  -S -o after_loopunrollandremainder.ll
 

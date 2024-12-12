@@ -1,4 +1,4 @@
-; ModuleID = 'dspi_dotprod_s16_ansi.c'
+; ModuleID = 'dspi_dotprod_s16_ansi.ll'
 source_filename = "dspi_dotprod_s16_ansi.c"
 target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
 target triple = "riscv32-esp-unknown-elf"
@@ -47,23 +47,49 @@ if.end16:                                         ; preds = %if.end10
   %mul20 = mul nsw i32 %2, %1
   %mul23 = mul nsw i32 %6, %5
   %cmp2476 = icmp sgt i32 %count_y, 0
-  br i1 %cmp2476, label %for.cond25.preheader.lr.ph, label %for.cond.cleanup
-
-for.cond25.preheader.lr.ph:                       ; preds = %if.end16
-  %8 = load ptr, ptr %filter, align 4, !tbaa !13
-  %9 = load ptr, ptr %in_image, align 4, !tbaa !13
   %cmp2673 = icmp sgt i32 %count_x, 0
-  br label %for.cond25.preheader
+  %or.cond = and i1 %cmp2476, %cmp2673
+  br i1 %or.cond, label %for.cond25.preheader.us.preheader, label %for.cond.cleanup
 
-for.cond25.preheader:                             ; preds = %for.cond25.preheader.lr.ph, %for.cond.cleanup27
-  %y.080 = phi i32 [ 0, %for.cond25.preheader.lr.ph ], [ %inc39, %for.cond.cleanup27 ]
-  %acc.079 = phi i64 [ 0, %for.cond25.preheader.lr.ph ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
-  %i_data.078 = phi ptr [ %9, %for.cond25.preheader.lr.ph ], [ %add.ptr, %for.cond.cleanup27 ]
-  %f_data.077 = phi ptr [ %8, %for.cond25.preheader.lr.ph ], [ %add.ptr37, %for.cond.cleanup27 ]
-  br i1 %cmp2673, label %for.body28, label %for.cond.cleanup27
+for.cond25.preheader.us.preheader:                ; preds = %if.end16
+  %8 = load ptr, ptr %in_image, align 4, !tbaa !13
+  %9 = load ptr, ptr %filter, align 4, !tbaa !13
+  br label %for.cond25.preheader.us
 
-for.cond.cleanup:                                 ; preds = %for.cond.cleanup27, %if.end16
-  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
+for.cond25.preheader.us:                          ; preds = %for.cond25.for.cond.cleanup27_crit_edge.us, %for.cond25.preheader.us.preheader
+  %y.080.us = phi i32 [ %inc39.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ 0, %for.cond25.preheader.us.preheader ]
+  %acc.079.us = phi i64 [ %add.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ 0, %for.cond25.preheader.us.preheader ]
+  %i_data.078.us = phi ptr [ %add.ptr.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ %8, %for.cond25.preheader.us.preheader ]
+  %f_data.077.us = phi ptr [ %add.ptr37.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ %9, %for.cond25.preheader.us.preheader ]
+  br label %for.body28.us
+
+for.body28.us:                                    ; preds = %for.body28.us, %for.cond25.preheader.us
+  %x.075.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %inc.us, %for.body28.us ]
+  %acc.174.us = phi i64 [ %acc.079.us, %for.cond25.preheader.us ], [ %add.us, %for.body28.us ]
+  %mul30.us = mul nsw i32 %x.075.us, %0
+  %arrayidx.us = getelementptr inbounds i16, ptr %i_data.078.us, i32 %mul30.us
+  %10 = load i16, ptr %arrayidx.us, align 2, !tbaa !14
+  %conv.us = sext i16 %10 to i32
+  %mul32.us = mul nsw i32 %x.075.us, %4
+  %arrayidx33.us = getelementptr inbounds i16, ptr %f_data.077.us, i32 %mul32.us
+  %11 = load i16, ptr %arrayidx33.us, align 2, !tbaa !14
+  %conv34.us = sext i16 %11 to i32
+  %mul35.us = mul nsw i32 %conv34.us, %conv.us
+  %conv36.us = sext i32 %mul35.us to i64
+  %add.us = add nsw i64 %acc.174.us, %conv36.us
+  %inc.us = add nuw nsw i32 %x.075.us, 1
+  %exitcond.not = icmp eq i32 %inc.us, %count_x
+  br i1 %exitcond.not, label %for.cond25.for.cond.cleanup27_crit_edge.us, label %for.body28.us, !llvm.loop !16
+
+for.cond25.for.cond.cleanup27_crit_edge.us:       ; preds = %for.body28.us
+  %add.ptr.us = getelementptr inbounds i16, ptr %i_data.078.us, i32 %mul20
+  %add.ptr37.us = getelementptr inbounds i16, ptr %f_data.077.us, i32 %mul23
+  %inc39.us = add nuw nsw i32 %y.080.us, 1
+  %exitcond83.not = icmp eq i32 %inc39.us, %count_y
+  br i1 %exitcond83.not, label %for.cond.cleanup, label %for.cond25.preheader.us, !llvm.loop !18
+
+for.cond.cleanup:                                 ; preds = %for.cond25.for.cond.cleanup27_crit_edge.us, %if.end16
+  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %add.us, %for.cond25.for.cond.cleanup27_crit_edge.us ]
   %sub = add nsw i32 %shift, -1
   %shl = shl nuw i32 1, %sub
   %conv41 = sext i32 %shl to i64
@@ -74,33 +100,7 @@ for.cond.cleanup:                                 ; preds = %for.cond.cleanup27,
   store i16 %conv43, ptr %out_value, align 2, !tbaa !14
   br label %return
 
-for.cond.cleanup27:                               ; preds = %for.body28, %for.cond25.preheader
-  %acc.1.lcssa = phi i64 [ %acc.079, %for.cond25.preheader ], [ %add, %for.body28 ]
-  %add.ptr = getelementptr inbounds i16, ptr %i_data.078, i32 %mul20
-  %add.ptr37 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul23
-  %inc39 = add nuw nsw i32 %y.080, 1
-  %exitcond82.not = icmp eq i32 %inc39, %count_y
-  br i1 %exitcond82.not, label %for.cond.cleanup, label %for.cond25.preheader, !llvm.loop !16
-
-for.body28:                                       ; preds = %for.cond25.preheader, %for.body28
-  %x.075 = phi i32 [ %inc, %for.body28 ], [ 0, %for.cond25.preheader ]
-  %acc.174 = phi i64 [ %add, %for.body28 ], [ %acc.079, %for.cond25.preheader ]
-  %mul30 = mul nsw i32 %x.075, %0
-  %arrayidx = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30
-  %10 = load i16, ptr %arrayidx, align 2, !tbaa !14
-  %conv = sext i16 %10 to i32
-  %mul32 = mul nsw i32 %x.075, %4
-  %arrayidx33 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32
-  %11 = load i16, ptr %arrayidx33, align 2, !tbaa !14
-  %conv34 = sext i16 %11 to i32
-  %mul35 = mul nsw i32 %conv34, %conv
-  %conv36 = sext i32 %mul35 to i64
-  %add = add nsw i64 %acc.174, %conv36
-  %inc = add nuw nsw i32 %x.075, 1
-  %exitcond.not = icmp eq i32 %inc, %count_x
-  br i1 %exitcond.not, label %for.cond.cleanup27, label %for.body28, !llvm.loop !18
-
-return:                                           ; preds = %if.end10, %if.end4, %if.end, %entry, %for.cond.cleanup
+return:                                           ; preds = %for.cond.cleanup, %if.end10, %if.end4, %if.end, %entry
   %retval.0 = phi i32 [ 0, %for.cond.cleanup ], [ 458755, %entry ], [ 458755, %if.end ], [ 458755, %if.end4 ], [ 458755, %if.end10 ]
   ret i32 %retval.0
 }

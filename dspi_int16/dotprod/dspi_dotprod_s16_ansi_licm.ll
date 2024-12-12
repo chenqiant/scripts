@@ -1,5 +1,5 @@
-; ModuleID = 'dspi_dotprod_s16_ansi.c'
-source_filename = "dspi_dotprod_s16_ansi.c"
+; ModuleID = 'dspi_dotprod_s16_ansi_licm.c'
+source_filename = "dspi_dotprod_s16_ansi_licm.c"
 target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
 target triple = "riscv32-esp-unknown-elf"
 
@@ -10,99 +10,99 @@ define dso_local noundef i32 @dspi_dotprod_s16_ansi(ptr nocapture noundef readon
 entry:
   %step_x = getelementptr inbounds %struct.image2d_s, ptr %in_image, i32 0, i32 1
   %0 = load i32, ptr %step_x, align 4, !tbaa !4
-  %mul = mul nsw i32 %0, %count_x
   %stride_x = getelementptr inbounds %struct.image2d_s, ptr %in_image, i32 0, i32 3
   %1 = load i32, ptr %stride_x, align 4, !tbaa !10
+  %mul = mul nsw i32 %0, %count_x
   %cmp = icmp sgt i32 %mul, %1
-  br i1 %cmp, label %return, label %if.end
+  br i1 %cmp, label %cleanup43, label %if.end
 
 if.end:                                           ; preds = %entry
   %step_y = getelementptr inbounds %struct.image2d_s, ptr %in_image, i32 0, i32 2
   %2 = load i32, ptr %step_y, align 4, !tbaa !11
-  %mul1 = mul nsw i32 %2, %count_y
   %stride_y = getelementptr inbounds %struct.image2d_s, ptr %in_image, i32 0, i32 4
   %3 = load i32, ptr %stride_y, align 4, !tbaa !12
+  %mul1 = mul nsw i32 %2, %count_y
   %cmp2 = icmp sgt i32 %mul1, %3
-  br i1 %cmp2, label %return, label %if.end4
+  br i1 %cmp2, label %cleanup43, label %if.end4
 
 if.end4:                                          ; preds = %if.end
   %step_x5 = getelementptr inbounds %struct.image2d_s, ptr %filter, i32 0, i32 1
   %4 = load i32, ptr %step_x5, align 4, !tbaa !4
-  %mul6 = mul nsw i32 %4, %count_x
-  %stride_x7 = getelementptr inbounds %struct.image2d_s, ptr %filter, i32 0, i32 3
-  %5 = load i32, ptr %stride_x7, align 4, !tbaa !10
-  %cmp8 = icmp sgt i32 %mul6, %5
-  br i1 %cmp8, label %return, label %if.end10
+  %stride_x6 = getelementptr inbounds %struct.image2d_s, ptr %filter, i32 0, i32 3
+  %5 = load i32, ptr %stride_x6, align 4, !tbaa !10
+  %mul7 = mul nsw i32 %4, %count_x
+  %cmp8 = icmp sgt i32 %mul7, %5
+  br i1 %cmp8, label %cleanup43, label %if.end10
 
 if.end10:                                         ; preds = %if.end4
   %step_y11 = getelementptr inbounds %struct.image2d_s, ptr %filter, i32 0, i32 2
   %6 = load i32, ptr %step_y11, align 4, !tbaa !11
-  %mul12 = mul nsw i32 %6, %count_y
-  %stride_y13 = getelementptr inbounds %struct.image2d_s, ptr %filter, i32 0, i32 4
-  %7 = load i32, ptr %stride_y13, align 4, !tbaa !12
-  %cmp14 = icmp sgt i32 %mul12, %7
-  br i1 %cmp14, label %return, label %if.end16
+  %stride_y12 = getelementptr inbounds %struct.image2d_s, ptr %filter, i32 0, i32 4
+  %7 = load i32, ptr %stride_y12, align 4, !tbaa !12
+  %mul13 = mul nsw i32 %6, %count_y
+  %cmp14 = icmp sgt i32 %mul13, %7
+  br i1 %cmp14, label %cleanup43, label %if.end16
 
 if.end16:                                         ; preds = %if.end10
-  %mul20 = mul nsw i32 %2, %1
-  %mul23 = mul nsw i32 %6, %5
-  %cmp2476 = icmp sgt i32 %count_y, 0
-  br i1 %cmp2476, label %for.cond25.preheader.lr.ph, label %for.cond.cleanup
+  %mul18 = mul nsw i32 %2, %1
+  %mul19 = mul nsw i32 %6, %5
+  %cmp2077 = icmp sgt i32 %count_y, 0
+  %cmp2274 = icmp sgt i32 %count_x, 0
+  %or.cond = and i1 %cmp2077, %cmp2274
+  br i1 %or.cond, label %for.cond21.preheader.us.preheader, label %for.cond.cleanup
 
-for.cond25.preheader.lr.ph:                       ; preds = %if.end16
-  %8 = load ptr, ptr %filter, align 4, !tbaa !13
-  %9 = load ptr, ptr %in_image, align 4, !tbaa !13
-  %cmp2673 = icmp sgt i32 %count_x, 0
-  br label %for.cond25.preheader
+for.cond21.preheader.us.preheader:                ; preds = %if.end16
+  %8 = load ptr, ptr %in_image, align 4, !tbaa !13
+  %9 = load ptr, ptr %filter, align 4, !tbaa !13
+  br label %for.cond21.preheader.us
 
-for.cond25.preheader:                             ; preds = %for.cond25.preheader.lr.ph, %for.cond.cleanup27
-  %y.080 = phi i32 [ 0, %for.cond25.preheader.lr.ph ], [ %inc39, %for.cond.cleanup27 ]
-  %acc.079 = phi i64 [ 0, %for.cond25.preheader.lr.ph ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
-  %i_data.078 = phi ptr [ %9, %for.cond25.preheader.lr.ph ], [ %add.ptr, %for.cond.cleanup27 ]
-  %f_data.077 = phi ptr [ %8, %for.cond25.preheader.lr.ph ], [ %add.ptr37, %for.cond.cleanup27 ]
-  br i1 %cmp2673, label %for.body28, label %for.cond.cleanup27
+for.cond21.preheader.us:                          ; preds = %for.cond21.preheader.us.preheader, %for.cond21.for.cond.cleanup23_crit_edge.us
+  %y.081.us = phi i32 [ %inc33.us, %for.cond21.for.cond.cleanup23_crit_edge.us ], [ 0, %for.cond21.preheader.us.preheader ]
+  %acc.080.us = phi i64 [ %add.us, %for.cond21.for.cond.cleanup23_crit_edge.us ], [ 0, %for.cond21.preheader.us.preheader ]
+  %f_data.079.us = phi ptr [ %add.ptr31.us, %for.cond21.for.cond.cleanup23_crit_edge.us ], [ %9, %for.cond21.preheader.us.preheader ]
+  %i_data.078.us = phi ptr [ %add.ptr.us, %for.cond21.for.cond.cleanup23_crit_edge.us ], [ %8, %for.cond21.preheader.us.preheader ]
+  br label %for.body24.us
 
-for.cond.cleanup:                                 ; preds = %for.cond.cleanup27, %if.end16
-  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
+for.body24.us:                                    ; preds = %for.cond21.preheader.us, %for.body24.us
+  %x.076.us = phi i32 [ 0, %for.cond21.preheader.us ], [ %inc.us, %for.body24.us ]
+  %acc.175.us = phi i64 [ %acc.080.us, %for.cond21.preheader.us ], [ %add.us, %for.body24.us ]
+  %mul25.us = mul nsw i32 %x.076.us, %0
+  %arrayidx.us = getelementptr inbounds i16, ptr %i_data.078.us, i32 %mul25.us
+  %10 = load i16, ptr %arrayidx.us, align 2, !tbaa !14
+  %conv.us = sext i16 %10 to i32
+  %mul26.us = mul nsw i32 %x.076.us, %4
+  %arrayidx27.us = getelementptr inbounds i16, ptr %f_data.079.us, i32 %mul26.us
+  %11 = load i16, ptr %arrayidx27.us, align 2, !tbaa !14
+  %conv28.us = sext i16 %11 to i32
+  %mul29.us = mul nsw i32 %conv28.us, %conv.us
+  %conv30.us = sext i32 %mul29.us to i64
+  %add.us = add nsw i64 %acc.175.us, %conv30.us
+  %inc.us = add nuw nsw i32 %x.076.us, 1
+  %exitcond.not = icmp eq i32 %inc.us, %count_x
+  br i1 %exitcond.not, label %for.cond21.for.cond.cleanup23_crit_edge.us, label %for.body24.us, !llvm.loop !16
+
+for.cond21.for.cond.cleanup23_crit_edge.us:       ; preds = %for.body24.us
+  %add.ptr.us = getelementptr inbounds i16, ptr %i_data.078.us, i32 %mul18
+  %add.ptr31.us = getelementptr inbounds i16, ptr %f_data.079.us, i32 %mul19
+  %inc33.us = add nuw nsw i32 %y.081.us, 1
+  %exitcond84.not = icmp eq i32 %inc33.us, %count_y
+  br i1 %exitcond84.not, label %for.cond.cleanup, label %for.cond21.preheader.us, !llvm.loop !18
+
+for.cond.cleanup:                                 ; preds = %for.cond21.for.cond.cleanup23_crit_edge.us, %if.end16
+  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %add.us, %for.cond21.for.cond.cleanup23_crit_edge.us ]
   %sub = add nsw i32 %shift, -1
   %shl = shl nuw i32 1, %sub
-  %conv41 = sext i32 %shl to i64
-  %add42 = add nsw i64 %acc.0.lcssa, %conv41
+  %conv35 = sext i32 %shl to i64
+  %add36 = add nsw i64 %acc.0.lcssa, %conv35
   %sh_prom = zext nneg i32 %shift to i64
-  %shr = ashr i64 %add42, %sh_prom
-  %conv43 = trunc i64 %shr to i16
-  store i16 %conv43, ptr %out_value, align 2, !tbaa !14
-  br label %return
+  %shr = ashr i64 %add36, %sh_prom
+  %conv37 = trunc i64 %shr to i16
+  store i16 %conv37, ptr %out_value, align 2, !tbaa !14
+  br label %cleanup43
 
-for.cond.cleanup27:                               ; preds = %for.body28, %for.cond25.preheader
-  %acc.1.lcssa = phi i64 [ %acc.079, %for.cond25.preheader ], [ %add, %for.body28 ]
-  %add.ptr = getelementptr inbounds i16, ptr %i_data.078, i32 %mul20
-  %add.ptr37 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul23
-  %inc39 = add nuw nsw i32 %y.080, 1
-  %exitcond82.not = icmp eq i32 %inc39, %count_y
-  br i1 %exitcond82.not, label %for.cond.cleanup, label %for.cond25.preheader, !llvm.loop !16
-
-for.body28:                                       ; preds = %for.cond25.preheader, %for.body28
-  %x.075 = phi i32 [ %inc, %for.body28 ], [ 0, %for.cond25.preheader ]
-  %acc.174 = phi i64 [ %add, %for.body28 ], [ %acc.079, %for.cond25.preheader ]
-  %mul30 = mul nsw i32 %x.075, %0
-  %arrayidx = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30
-  %10 = load i16, ptr %arrayidx, align 2, !tbaa !14
-  %conv = sext i16 %10 to i32
-  %mul32 = mul nsw i32 %x.075, %4
-  %arrayidx33 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32
-  %11 = load i16, ptr %arrayidx33, align 2, !tbaa !14
-  %conv34 = sext i16 %11 to i32
-  %mul35 = mul nsw i32 %conv34, %conv
-  %conv36 = sext i32 %mul35 to i64
-  %add = add nsw i64 %acc.174, %conv36
-  %inc = add nuw nsw i32 %x.075, 1
-  %exitcond.not = icmp eq i32 %inc, %count_x
-  br i1 %exitcond.not, label %for.cond.cleanup27, label %for.body28, !llvm.loop !18
-
-return:                                           ; preds = %if.end10, %if.end4, %if.end, %entry, %for.cond.cleanup
-  %retval.0 = phi i32 [ 0, %for.cond.cleanup ], [ 458755, %entry ], [ 458755, %if.end ], [ 458755, %if.end4 ], [ 458755, %if.end10 ]
-  ret i32 %retval.0
+cleanup43:                                        ; preds = %if.end, %for.cond.cleanup, %if.end10, %if.end4, %entry
+  %retval.3 = phi i32 [ 458755, %entry ], [ 458755, %if.end ], [ 458755, %if.end4 ], [ 0, %for.cond.cleanup ], [ 458755, %if.end10 ]
+  ret i32 %retval.3
 }
 
 attributes #0 = { nofree norecurse nosync nounwind memory(read, argmem: readwrite, inaccessiblemem: none) "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="generic-rv32" "target-features"="+32bit,+a,+c,+f,+m,+relax,+xesppie,+zca,+zcmp,+zicsr,+zifencei,-d,-e,-experimental-zacas,-experimental-zcmop,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicfiss,-experimental-zimop,-experimental-ztso,-experimental-zvfbfmin,-experimental-zvfbfwma,-h,-smaia,-smepmp,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-za128rs,-za64rs,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zcb,-zcd,-zce,-zcf,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zic64b,-zicbom,-zicbop,-zicboz,-ziccamoa,-ziccif,-zicclsm,-ziccrse,-zicntr,-zicond,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zvbb,-zvbc,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvkb,-zvkg,-zvkn,-zvknc,-zvkned,-zvkng,-zvknha,-zvknhb,-zvks,-zvksc,-zvksed,-zvksg,-zvksh,-zvkt,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b" }

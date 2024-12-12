@@ -1,4 +1,4 @@
-; ModuleID = 'dspi_dotprod_s16_ansi.ll'
+; ModuleID = 'after_customlicm.ll'
 source_filename = "dspi_dotprod_s16_ansi.c"
 target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
 target triple = "riscv32-esp-unknown-elf"
@@ -6,7 +6,7 @@ target triple = "riscv32-esp-unknown-elf"
 %struct.image2d_s = type { ptr, i32, i32, i32, i32, i32, i32 }
 
 ; Function Attrs: nofree norecurse nosync nounwind memory(read, argmem: readwrite, inaccessiblemem: none)
-define dso_local noundef i32 @dspi_dotprod_s16_ansi(ptr nocapture noundef readonly %in_image, ptr nocapture noundef readonly %filter, ptr nocapture noundef writeonly %out_value, i32 noundef %count_x, i32 noundef %count_y, i32 noundef %shift) local_unnamed_addr #0 {
+define dso_local noundef i32 @dspi_dotprod_s16_ansi(ptr noalias nocapture noundef readonly %in_image, ptr noalias nocapture noundef readonly %filter, ptr noalias nocapture noundef writeonly %out_value, i32 noundef %count_x, i32 noundef %count_y, i32 noundef %shift) local_unnamed_addr #0 {
 entry:
   %step_x = getelementptr inbounds %struct.image2d_s, ptr %in_image, i32 0, i32 1
   %0 = load i32, ptr %step_x, align 4, !tbaa !4
@@ -52,18 +52,20 @@ if.end16:                                         ; preds = %if.end10
 for.cond25.preheader.lr.ph:                       ; preds = %if.end16
   %8 = load ptr, ptr %filter, align 4, !tbaa !13
   %9 = load ptr, ptr %in_image, align 4, !tbaa !13
-  %cmp2673 = icmp sgt i32 %count_x, 0
+  %sub1 = add nsw i32 %count_x, -7
+  %10 = and i32 %count_x, -8
+  %cmp2673 = icmp sgt i32 %count_x, 7
   br label %for.cond25.preheader
 
 for.cond25.preheader:                             ; preds = %for.cond.cleanup27, %for.cond25.preheader.lr.ph
   %y.080 = phi i32 [ 0, %for.cond25.preheader.lr.ph ], [ %inc39, %for.cond.cleanup27 ]
-  %acc.079 = phi i64 [ 0, %for.cond25.preheader.lr.ph ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
+  %acc.079 = phi i64 [ 0, %for.cond25.preheader.lr.ph ], [ %final.sum, %for.cond.cleanup27 ]
   %i_data.078 = phi ptr [ %9, %for.cond25.preheader.lr.ph ], [ %add.ptr, %for.cond.cleanup27 ]
   %f_data.077 = phi ptr [ %8, %for.cond25.preheader.lr.ph ], [ %add.ptr37, %for.cond.cleanup27 ]
-  br i1 %cmp2673, label %for.body28, label %for.cond.cleanup27
+  br i1 %cmp2673, label %for.body28.7, label %for.cond128.preheader
 
 for.cond.cleanup:                                 ; preds = %for.cond.cleanup27, %if.end16
-  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
+  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %final.sum, %for.cond.cleanup27 ]
   %sub = add nsw i32 %shift, -1
   %shl = shl nuw i32 1, %sub
   %conv41 = sext i32 %shl to i64
@@ -74,36 +76,176 @@ for.cond.cleanup:                                 ; preds = %for.cond.cleanup27,
   store i16 %conv43, ptr %out_value, align 2, !tbaa !14
   br label %return
 
-for.cond.cleanup27:                               ; preds = %for.body28, %for.cond25.preheader
-  %acc.1.lcssa = phi i64 [ %acc.079, %for.cond25.preheader ], [ %add, %for.body28 ]
+for.cond128.preheader:                            ; preds = %for.body28.7, %for.cond25.preheader
+  %x.0.lcssa = phi i32 [ 0, %for.cond25.preheader ], [ %10, %for.body28.7 ]
+  %acc0.0.lcssa = phi i32 [ 0, %for.cond25.preheader ], [ %add, %for.body28.7 ]
+  %acc0.0.lcssa3 = phi i32 [ 0, %for.cond25.preheader ], [ %add.1, %for.body28.7 ]
+  %acc0.0.lcssa5 = phi i32 [ 0, %for.cond25.preheader ], [ %add.2, %for.body28.7 ]
+  %acc0.0.lcssa7 = phi i32 [ 0, %for.cond25.preheader ], [ %add.3, %for.body28.7 ]
+  %acc0.0.lcssa9 = phi i32 [ 0, %for.cond25.preheader ], [ %add.4, %for.body28.7 ]
+  %acc0.0.lcssa11 = phi i32 [ 0, %for.cond25.preheader ], [ %add.5, %for.body28.7 ]
+  %acc0.0.lcssa13 = phi i32 [ 0, %for.cond25.preheader ], [ %add.6, %for.body28.7 ]
+  %acc0.0.lcssa15 = phi i32 [ 0, %for.cond25.preheader ], [ %add.7, %for.body28.7 ]
+  %cmp129268 = icmp slt i32 %x.0.lcssa, %count_x
+  br i1 %cmp129268, label %for.body28.clone, label %for.cond.cleanup27
+
+for.body28.7:                                     ; preds = %for.body28.7, %for.cond25.preheader
+  %x.075 = phi i32 [ %inc.7, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  ;%acc.174 = phi i32 [ %add.7, %for.body28.7 ], [ %acc.079, %for.cond25.preheader ]
+  %acc = phi i32 [ %add, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc2 = phi i32 [ %add.1, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc4 = phi i32 [ %add.2, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc6 = phi i32 [ %add.3, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc8 = phi i32 [ %add.4, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc10 = phi i32 [ %add.5, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc12 = phi i32 [ %add.6, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %acc14 = phi i32 [ %add.7, %for.body28.7 ], [ 0, %for.cond25.preheader ]
+  %mul30 = mul nsw i32 %x.075, %0
+  %arrayidx = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30
+  %11 = load i16, ptr %arrayidx, align 2, !tbaa !14
+  %conv = sext i16 %11 to i32
+  %mul32 = mul nsw i32 %x.075, %4
+  %arrayidx33 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32
+  %12 = load i16, ptr %arrayidx33, align 2, !tbaa !14
+  %conv34 = sext i16 %12 to i32
+  %mul35 = mul nsw i32 %conv34, %conv
+  %conv36 = sext i32 %mul35 to i64
+  %add = add i32 %acc, %mul35
+  %inc = add nuw nsw i32 %x.075, 1
+  %exitcond.not = icmp eq i32 %inc, %count_x
+  %mul30.1 = mul nsw i32 %inc, %0
+  %arrayidx.1 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.1
+  %13 = load i16, ptr %arrayidx.1, align 2, !tbaa !14
+  %conv.1 = sext i16 %13 to i32
+  %mul32.1 = mul nsw i32 %inc, %4
+  %arrayidx33.1 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.1
+  %14 = load i16, ptr %arrayidx33.1, align 2, !tbaa !14
+  %conv34.1 = sext i16 %14 to i32
+  %mul35.1 = mul nsw i32 %conv34.1, %conv.1
+  %conv36.1 = sext i32 %mul35.1 to i64
+  %add.1 = add i32 %acc2, %mul35.1
+  %inc.1 = add nuw nsw i32 %x.075, 2
+  %exitcond.not.1 = icmp eq i32 %inc.1, %count_x
+  %mul30.2 = mul nsw i32 %inc.1, %0
+  %arrayidx.2 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.2
+  %15 = load i16, ptr %arrayidx.2, align 2, !tbaa !14
+  %conv.2 = sext i16 %15 to i32
+  %mul32.2 = mul nsw i32 %inc.1, %4
+  %arrayidx33.2 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.2
+  %16 = load i16, ptr %arrayidx33.2, align 2, !tbaa !14
+  %conv34.2 = sext i16 %16 to i32
+  %mul35.2 = mul nsw i32 %conv34.2, %conv.2
+  %conv36.2 = sext i32 %mul35.2 to i64
+  %add.2 = add i32 %acc4, %mul35.2
+  %inc.2 = add nuw nsw i32 %x.075, 3
+  %exitcond.not.2 = icmp eq i32 %inc.2, %count_x
+  %mul30.3 = mul nsw i32 %inc.2, %0
+  %arrayidx.3 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.3
+  %17 = load i16, ptr %arrayidx.3, align 2, !tbaa !14
+  %conv.3 = sext i16 %17 to i32
+  %mul32.3 = mul nsw i32 %inc.2, %4
+  %arrayidx33.3 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.3
+  %18 = load i16, ptr %arrayidx33.3, align 2, !tbaa !14
+  %conv34.3 = sext i16 %18 to i32
+  %mul35.3 = mul nsw i32 %conv34.3, %conv.3
+  %conv36.3 = sext i32 %mul35.3 to i64
+  %add.3 = add i32 %acc6, %mul35.3
+  %inc.3 = add nuw nsw i32 %x.075, 4
+  %exitcond.not.3 = icmp eq i32 %inc.3, %count_x
+  %mul30.4 = mul nsw i32 %inc.3, %0
+  %arrayidx.4 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.4
+  %19 = load i16, ptr %arrayidx.4, align 2, !tbaa !14
+  %conv.4 = sext i16 %19 to i32
+  %mul32.4 = mul nsw i32 %inc.3, %4
+  %arrayidx33.4 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.4
+  %20 = load i16, ptr %arrayidx33.4, align 2, !tbaa !14
+  %conv34.4 = sext i16 %20 to i32
+  %mul35.4 = mul nsw i32 %conv34.4, %conv.4
+  %conv36.4 = sext i32 %mul35.4 to i64
+  %add.4 = add i32 %acc8, %mul35.4
+  %inc.4 = add nuw nsw i32 %x.075, 5
+  %exitcond.not.4 = icmp eq i32 %inc.4, %count_x
+  %mul30.5 = mul nsw i32 %inc.4, %0
+  %arrayidx.5 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.5
+  %21 = load i16, ptr %arrayidx.5, align 2, !tbaa !14
+  %conv.5 = sext i16 %21 to i32
+  %mul32.5 = mul nsw i32 %inc.4, %4
+  %arrayidx33.5 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.5
+  %22 = load i16, ptr %arrayidx33.5, align 2, !tbaa !14
+  %conv34.5 = sext i16 %22 to i32
+  %mul35.5 = mul nsw i32 %conv34.5, %conv.5
+  %conv36.5 = sext i32 %mul35.5 to i64
+  %add.5 = add i32 %acc10, %mul35.5
+  %inc.5 = add nuw nsw i32 %x.075, 6
+  %exitcond.not.5 = icmp eq i32 %inc.5, %count_x
+  %mul30.6 = mul nsw i32 %inc.5, %0
+  %arrayidx.6 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.6
+  %23 = load i16, ptr %arrayidx.6, align 2, !tbaa !14
+  %conv.6 = sext i16 %23 to i32
+  %mul32.6 = mul nsw i32 %inc.5, %4
+  %arrayidx33.6 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.6
+  %24 = load i16, ptr %arrayidx33.6, align 2, !tbaa !14
+  %conv34.6 = sext i16 %24 to i32
+  %mul35.6 = mul nsw i32 %conv34.6, %conv.6
+  %conv36.6 = sext i32 %mul35.6 to i64
+  %add.6 = add i32 %acc12, %mul35.6
+  %inc.6 = add nuw nsw i32 %x.075, 7
+  %exitcond.not.6 = icmp eq i32 %inc.6, %count_x
+  %mul30.7 = mul nsw i32 %inc.6, %0
+  %arrayidx.7 = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.7
+  %25 = load i16, ptr %arrayidx.7, align 2, !tbaa !14
+  %conv.7 = sext i16 %25 to i32
+  %mul32.7 = mul nsw i32 %inc.6, %4
+  %arrayidx33.7 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.7
+  %26 = load i16, ptr %arrayidx33.7, align 2, !tbaa !14
+  %conv34.7 = sext i16 %26 to i32
+  %mul35.7 = mul nsw i32 %conv34.7, %conv.7
+  %conv36.7 = sext i32 %mul35.7 to i64
+  %add.7 = add i32 %acc14, %mul35.7
+  %inc.7 = add nuw nsw i32 %x.075, 8
+  %exitcond.not.7 = icmp slt i32 %inc.7, %sub1
+  br i1 %exitcond.not.7, label %for.body28.7, label %for.cond128.preheader, !llvm.loop !16
+
+for.body28.clone:                                 ; preds = %for.body28.clone, %for.cond128.preheader
+  %x.075.clone = phi i32 [ %inc.clone, %for.body28.clone ], [ %x.0.lcssa, %for.cond128.preheader ]
+  %acc.174.clone = phi i64 [ %add.clone, %for.body28.clone ], [ %acc.079, %for.cond128.preheader ]
+  %mul30.clone = mul nsw i32 %x.075.clone, %0
+  %arrayidx.clone = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30.clone
+  %27 = load i16, ptr %arrayidx.clone, align 2, !tbaa !14
+  %conv.clone = sext i16 %27 to i32
+  %mul32.clone = mul nsw i32 %x.075.clone, %4
+  %arrayidx33.clone = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32.clone
+  %28 = load i16, ptr %arrayidx33.clone, align 2, !tbaa !14
+  %conv34.clone = sext i16 %28 to i32
+  %mul35.clone = mul nsw i32 %conv34.clone, %conv.clone
+  %conv36.clone = sext i32 %mul35.clone to i64
+  %add.clone = add nsw i64 %acc.174.clone, %conv36.clone
+  %inc.clone = add nuw nsw i32 %x.075.clone, 1
+  %exitcond.not.clone = icmp eq i32 %inc.clone, %count_x
+  br i1 %exitcond.not.clone, label %for.cond.cleanup27, label %for.body28.clone, !llvm.loop !16
+
+for.cond.cleanup27:                               ; preds = %for.cond128.preheader, %for.body28.clone
+  %29 = phi i64 [ %add.clone, %for.body28.clone ], [ %acc.079, %for.cond128.preheader ]
+  %pairwise.sum = add i32 %acc0.0.lcssa, %acc0.0.lcssa3
+  %pairwise.sum16 = add i32 %acc0.0.lcssa5, %acc0.0.lcssa7
+  %pairwise.sum17 = add i32 %acc0.0.lcssa9, %acc0.0.lcssa11
+  %pairwise.sum18 = add i32 %acc0.0.lcssa13, %acc0.0.lcssa15
+  %pairwise.sum19 = add i32 %pairwise.sum, %pairwise.sum16
+  %pairwise.sum20 = add i32 %pairwise.sum17, %pairwise.sum18
+  %pairwise.sum21 = add i32 %pairwise.sum19, %pairwise.sum20
+  %conv156 = sext i32 %pairwise.sum21 to i64
+  %final.sum = add nsw i64 %conv156, %29
   %add.ptr = getelementptr inbounds i16, ptr %i_data.078, i32 %mul20
   %add.ptr37 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul23
   %inc39 = add nuw nsw i32 %y.080, 1
   %exitcond82.not = icmp eq i32 %inc39, %count_y
-  br i1 %exitcond82.not, label %for.cond.cleanup, label %for.cond25.preheader, !llvm.loop !16
-
-for.body28:                                       ; preds = %for.body28, %for.cond25.preheader
-  %x.075 = phi i32 [ %inc, %for.body28 ], [ 0, %for.cond25.preheader ]
-  %acc.174 = phi i64 [ %add, %for.body28 ], [ %acc.079, %for.cond25.preheader ]
-  %mul30 = mul nsw i32 %x.075, %0
-  %arrayidx = getelementptr inbounds i16, ptr %i_data.078, i32 %mul30
-  %10 = load i16, ptr %arrayidx, align 2, !tbaa !14
-  %conv = sext i16 %10 to i32
-  %mul32 = mul nsw i32 %x.075, %4
-  %arrayidx33 = getelementptr inbounds i16, ptr %f_data.077, i32 %mul32
-  %11 = load i16, ptr %arrayidx33, align 2, !tbaa !14
-  %conv34 = sext i16 %11 to i32
-  %mul35 = mul nsw i32 %conv34, %conv
-  %conv36 = sext i32 %mul35 to i64
-  %add = add nsw i64 %acc.174, %conv36
-  %inc = add nuw nsw i32 %x.075, 1
-  %exitcond.not = icmp eq i32 %inc, %count_x
-  br i1 %exitcond.not, label %for.cond.cleanup27, label %for.body28, !llvm.loop !18
+  br i1 %exitcond82.not, label %for.cond.cleanup, label %for.cond25.preheader, !llvm.loop !18
 
 return:                                           ; preds = %for.cond.cleanup, %if.end10, %if.end4, %if.end, %entry
   %retval.0 = phi i32 [ 0, %for.cond.cleanup ], [ 458755, %entry ], [ 458755, %if.end ], [ 458755, %if.end4 ], [ 458755, %if.end10 ]
   ret i32 %retval.0
 }
+
 
 attributes #0 = { nofree norecurse nosync nounwind memory(read, argmem: readwrite, inaccessiblemem: none) "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="generic-rv32" "target-features"="+32bit,+a,+c,+f,+m,+relax,+xesppie,+zca,+zcmp,+zicsr,+zifencei,-d,-e,-experimental-zacas,-experimental-zcmop,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicfiss,-experimental-zimop,-experimental-ztso,-experimental-zvfbfmin,-experimental-zvfbfwma,-h,-smaia,-smepmp,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-za128rs,-za64rs,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zcb,-zcd,-zce,-zcf,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zic64b,-zicbom,-zicbop,-zicboz,-ziccamoa,-ziccif,-zicclsm,-ziccrse,-zicntr,-zicond,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zvbb,-zvbc,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvkb,-zvkg,-zvkn,-zvknc,-zvkned,-zvkng,-zvknha,-zvknhb,-zvks,-zvksc,-zvksed,-zvksg,-zvksh,-zvkt,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b" }
 

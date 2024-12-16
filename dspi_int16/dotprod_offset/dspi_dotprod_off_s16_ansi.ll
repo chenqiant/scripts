@@ -50,50 +50,21 @@ if.end16:                                         ; preds = %if.end10
   br i1 %cmp2478, label %for.cond25.preheader.lr.ph, label %for.cond.cleanup
 
 for.cond25.preheader.lr.ph:                       ; preds = %if.end16
+  %8 = load ptr, ptr %filter, align 4, !tbaa !13
+  %9 = load ptr, ptr %in_image, align 4, !tbaa !13
   %cmp2675 = icmp sgt i32 %count_x, 0
   %conv35 = sext i16 %offset to i32
-  br i1 %cmp2675, label %for.cond25.preheader.us.preheader, label %for.cond.cleanup
+  br label %for.cond25.preheader
 
-for.cond25.preheader.us.preheader:                ; preds = %for.cond25.preheader.lr.ph
-  %8 = load ptr, ptr %in_image, align 4, !tbaa !13
-  %9 = load ptr, ptr %filter, align 4, !tbaa !13
-  br label %for.cond25.preheader.us
+for.cond25.preheader:                             ; preds = %for.cond25.preheader.lr.ph, %for.cond.cleanup27
+  %y.082 = phi i32 [ 0, %for.cond25.preheader.lr.ph ], [ %inc41, %for.cond.cleanup27 ]
+  %acc.081 = phi i64 [ 0, %for.cond25.preheader.lr.ph ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
+  %i_data.080 = phi ptr [ %9, %for.cond25.preheader.lr.ph ], [ %add.ptr, %for.cond.cleanup27 ]
+  %f_data.079 = phi ptr [ %8, %for.cond25.preheader.lr.ph ], [ %add.ptr39, %for.cond.cleanup27 ]
+  br i1 %cmp2675, label %for.body28, label %for.cond.cleanup27
 
-for.cond25.preheader.us:                          ; preds = %for.cond25.preheader.us.preheader, %for.cond25.for.cond.cleanup27_crit_edge.us
-  %y.082.us = phi i32 [ %inc41.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ 0, %for.cond25.preheader.us.preheader ]
-  %acc.081.us = phi i64 [ %add38.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ 0, %for.cond25.preheader.us.preheader ]
-  %i_data.080.us = phi ptr [ %add.ptr.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ %8, %for.cond25.preheader.us.preheader ]
-  %f_data.079.us = phi ptr [ %add.ptr39.us, %for.cond25.for.cond.cleanup27_crit_edge.us ], [ %9, %for.cond25.preheader.us.preheader ]
-  br label %for.body28.us
-
-for.body28.us:                                    ; preds = %for.cond25.preheader.us, %for.body28.us
-  %x.077.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %inc.us, %for.body28.us ]
-  %acc.176.us = phi i64 [ %acc.081.us, %for.cond25.preheader.us ], [ %add38.us, %for.body28.us ]
-  %mul30.us = mul nsw i32 %x.077.us, %0
-  %arrayidx.us = getelementptr inbounds i16, ptr %i_data.080.us, i32 %mul30.us
-  %10 = load i16, ptr %arrayidx.us, align 2, !tbaa !14
-  %conv.us = sext i16 %10 to i32
-  %mul32.us = mul nsw i32 %x.077.us, %4
-  %arrayidx33.us = getelementptr inbounds i16, ptr %f_data.079.us, i32 %mul32.us
-  %11 = load i16, ptr %arrayidx33.us, align 2, !tbaa !14
-  %conv34.us = sext i16 %11 to i32
-  %add.us = add nsw i32 %conv34.us, %conv35
-  %mul36.us = mul nsw i32 %add.us, %conv.us
-  %conv37.us = sext i32 %mul36.us to i64
-  %add38.us = add nsw i64 %acc.176.us, %conv37.us
-  %inc.us = add nuw nsw i32 %x.077.us, 1
-  %exitcond.not = icmp eq i32 %inc.us, %count_x
-  br i1 %exitcond.not, label %for.cond25.for.cond.cleanup27_crit_edge.us, label %for.body28.us, !llvm.loop !16
-
-for.cond25.for.cond.cleanup27_crit_edge.us:       ; preds = %for.body28.us
-  %add.ptr.us = getelementptr inbounds i16, ptr %i_data.080.us, i32 %mul20
-  %add.ptr39.us = getelementptr inbounds i16, ptr %f_data.079.us, i32 %mul23
-  %inc41.us = add nuw nsw i32 %y.082.us, 1
-  %exitcond85.not = icmp eq i32 %inc41.us, %count_y
-  br i1 %exitcond85.not, label %for.cond.cleanup, label %for.cond25.preheader.us, !llvm.loop !18
-
-for.cond.cleanup:                                 ; preds = %for.cond25.for.cond.cleanup27_crit_edge.us, %for.cond25.preheader.lr.ph, %if.end16
-  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ 0, %for.cond25.preheader.lr.ph ], [ %add38.us, %for.cond25.for.cond.cleanup27_crit_edge.us ]
+for.cond.cleanup:                                 ; preds = %for.cond.cleanup27, %if.end16
+  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %acc.1.lcssa, %for.cond.cleanup27 ]
   %sub = add nsw i32 %shift, -1
   %shl = shl nuw i32 1, %sub
   %conv43 = sext i32 %shl to i64
@@ -103,6 +74,33 @@ for.cond.cleanup:                                 ; preds = %for.cond25.for.cond
   %conv45 = trunc i64 %shr to i16
   store i16 %conv45, ptr %out_value, align 2, !tbaa !14
   br label %return
+
+for.cond.cleanup27:                               ; preds = %for.body28, %for.cond25.preheader
+  %acc.1.lcssa = phi i64 [ %acc.081, %for.cond25.preheader ], [ %add38, %for.body28 ]
+  %add.ptr = getelementptr inbounds i16, ptr %i_data.080, i32 %mul20
+  %add.ptr39 = getelementptr inbounds i16, ptr %f_data.079, i32 %mul23
+  %inc41 = add nuw nsw i32 %y.082, 1
+  %exitcond84.not = icmp eq i32 %inc41, %count_y
+  br i1 %exitcond84.not, label %for.cond.cleanup, label %for.cond25.preheader, !llvm.loop !16
+
+for.body28:                                       ; preds = %for.cond25.preheader, %for.body28
+  %x.077 = phi i32 [ %inc, %for.body28 ], [ 0, %for.cond25.preheader ]
+  %acc.176 = phi i64 [ %add38, %for.body28 ], [ %acc.081, %for.cond25.preheader ]
+  %mul30 = mul nsw i32 %x.077, %0
+  %arrayidx = getelementptr inbounds i16, ptr %i_data.080, i32 %mul30
+  %10 = load i16, ptr %arrayidx, align 2, !tbaa !14
+  %conv = sext i16 %10 to i32
+  %mul32 = mul nsw i32 %x.077, %4
+  %arrayidx33 = getelementptr inbounds i16, ptr %f_data.079, i32 %mul32
+  %11 = load i16, ptr %arrayidx33, align 2, !tbaa !14
+  %conv34 = sext i16 %11 to i32
+  %add = add nsw i32 %conv34, %conv35
+  %mul36 = mul nsw i32 %add, %conv
+  %conv37 = sext i32 %mul36 to i64
+  %add38 = add nsw i64 %acc.176, %conv37
+  %inc = add nuw nsw i32 %x.077, 1
+  %exitcond.not = icmp eq i32 %inc, %count_x
+  br i1 %exitcond.not, label %for.cond.cleanup27, label %for.body28, !llvm.loop !18
 
 return:                                           ; preds = %if.end10, %if.end4, %if.end, %entry, %for.cond.cleanup
   %retval.0 = phi i32 [ 0, %for.cond.cleanup ], [ 458755, %entry ], [ 458755, %if.end ], [ 458755, %if.end4 ], [ 458755, %if.end10 ]
@@ -117,7 +115,7 @@ attributes #0 = { nofree norecurse nosync nounwind memory(read, argmem: readwrit
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 1, !"target-abi", !"ilp32f"}
 !2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6 esp-18.1.2_20240912-14-g8070eda)"}
+!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6 esp-18.1.2_20240912-14-g8070eda esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-22-gda2052a esp-18.1.2_20240912-29-ga622597 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-32-g01e9072 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-34-gf41581d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-40-g376cafb esp-18.1.2_20240912-41-g0acc41e esp-18.1.2_20240912-597-g19b0b49 esp-18.1.2_20240912-599-gb58e197 esp-18.1.2_20240912-602-g324d9ea esp-18.1.2_20240912-602-g324d9ea esp-18.1.2_20240912-602-g324d9ea)"}
 !4 = !{!5, !9, i64 4}
 !5 = !{!"image2d_s", !6, i64 0, !9, i64 4, !9, i64 8, !9, i64 12, !9, i64 16, !9, i64 20, !9, i64 24}
 !6 = !{!"any pointer", !7, i64 0}

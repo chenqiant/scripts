@@ -10,14 +10,18 @@ dspi_dotprod_s16_ansi.c \
 -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include/ 
 
 
-# clang -O2 -march=rv32imafc_zicsr_zifencei_xesppie_zcmp -mabi=ilp32f -emit-llvm -S -o after_loopunrollandremainder.ll \
+# clang -O2 -march=rv32imafc_zicsr_zifencei_xesppie_zcmp -mabi=ilp32f -emit-llvm -S -o dspi_dotprod_s16_ansi_best.ll \
 # dspi_dotprod_s16_ansi_best.c \
 # --target=riscv32-esp-elf \
 # -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/dotprod/include \
 # -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include_sim \
 # -I/usr/include \
 # -I/usr/include/x86_64-linux-gnu \
-# -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include/ 
+# -I/home/chenqian/esp/esp-idf/components/esp-dsp/modules/common/include/
+
+# #-mllvm -print-before-all -mllvm -print-after-all 2> passes.txt
+# llc  --mcpu=esp32p4 --mtriple=riscv32-esp-unknown-elf dspi_dotprod_s16_ansi_best.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+
 
 # opt -O3 -S -o dspi_dotprod_s16_ansi_best.ll dspi_dotprod_s16_ansi_best2.ll
 

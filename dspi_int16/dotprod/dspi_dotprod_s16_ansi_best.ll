@@ -44,216 +44,171 @@ if.end10:                                         ; preds = %if.end4
   br i1 %cmp14, label %return, label %if.end16
 
 if.end16:                                         ; preds = %if.end10
-  %8 = load ptr, ptr %in_image, align 4, !tbaa !13
-  %9 = load ptr, ptr %filter, align 4, !tbaa !13
   %mul20 = mul nsw i32 %2, %1
   %mul23 = mul nsw i32 %6, %5
-  %cmp24277 = icmp sgt i32 %count_y, 0
-  br i1 %cmp24277, label %for.cond25.preheader.lr.ph, label %for.cond.cleanup
+  %cmp24249 = icmp sgt i32 %count_y, 0
+  br i1 %cmp24249, label %for.cond25.preheader.lr.ph, label %for.cond.cleanup
 
 for.cond25.preheader.lr.ph:                       ; preds = %if.end16
+  %8 = load ptr, ptr %filter, align 4, !tbaa !13
+  %9 = load ptr, ptr %in_image, align 4, !tbaa !13
   %sub = add nsw i32 %count_x, -7
-  %cmp26255 = icmp sgt i32 %count_x, 7
-  br i1 %cmp26255, label %for.cond25.preheader.us.preheader, label %for.cond25.preheader.lr.ph.split
+  %cmp26241 = icmp sgt i32 %count_x, 7
+  %10 = and i32 %count_x, -8
+  br label %for.cond25.preheader
 
-for.cond25.preheader.us.preheader:                ; preds = %for.cond25.preheader.lr.ph
-  %10 = and i32 %count_x, 2147483640
-  %cmp129273.us = icmp slt i32 %10, %count_x
-  br label %for.cond25.preheader.us
+for.cond25.preheader:                             ; preds = %for.cond25.preheader.lr.ph, %for.end144
+  %y.0253 = phi i32 [ 0, %for.cond25.preheader.lr.ph ], [ %inc147, %for.end144 ]
+  %acc.0252 = phi i64 [ 0, %for.cond25.preheader.lr.ph ], [ %acc.2.lcssa, %for.end144 ]
+  %i_data.0251 = phi ptr [ %9, %for.cond25.preheader.lr.ph ], [ %add.ptr, %for.end144 ]
+  %f_data.0250 = phi ptr [ %8, %for.cond25.preheader.lr.ph ], [ %add.ptr145, %for.end144 ]
+  br i1 %cmp26241, label %for.body27, label %for.cond128.preheader
 
-for.cond25.preheader.us:                          ; preds = %for.cond25.preheader.us.preheader, %for.end144.us
-  %i_data.0281.us = phi ptr [ %add.ptr.us, %for.end144.us ], [ %8, %for.cond25.preheader.us.preheader ]
-  %f_data.0280.us = phi ptr [ %add.ptr158.us, %for.end144.us ], [ %9, %for.cond25.preheader.us.preheader ]
-  %acc.0279.us = phi i64 [ %add157.us, %for.end144.us ], [ 0, %for.cond25.preheader.us.preheader ]
-  %y.0278.us = phi i32 [ %inc160.us, %for.end144.us ], [ 0, %for.cond25.preheader.us.preheader ]
-  br label %for.body27.us
-
-for.end144.us:                                    ; preds = %for.body131.us, %for.cond25.for.cond128.preheader_crit_edge.us
-  %acc.1.lcssa.us = phi i64 [ %acc.0279.us, %for.cond25.for.cond128.preheader_crit_edge.us ], [ %add142.us, %for.body131.us ]
-  %add145.us = add i32 %add74.us, %add61.us
-  %add147.us = add i32 %add145.us, %add87.us
-  %add153.us = add i32 %add147.us, %add100.us
-  %add151.us = add i32 %add153.us, %add113.us
-  %add149.us = add i32 %add151.us, %add126.us
-  %add154.us = add i32 %add149.us, %add48.us
-  %add155.us = add i32 %add154.us, %add.us
-  %conv156.us = sext i32 %add155.us to i64
-  %add157.us = add nsw i64 %acc.1.lcssa.us, %conv156.us
-  %add.ptr.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul20
-  %add.ptr158.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul23
-  %inc160.us = add nuw nsw i32 %y.0278.us, 1
-  %exitcond317.not = icmp eq i32 %inc160.us, %count_y
-  br i1 %exitcond317.not, label %for.cond.cleanup, label %for.cond25.preheader.us, !llvm.loop !14
-
-for.body131.us:                                   ; preds = %for.cond25.for.cond128.preheader_crit_edge.us, %for.body131.us
-  %acc.1275.us = phi i64 [ %add142.us, %for.body131.us ], [ %acc.0279.us, %for.cond25.for.cond128.preheader_crit_edge.us ]
-  %x.1274.us = phi i32 [ %inc.us, %for.body131.us ], [ %10, %for.cond25.for.cond128.preheader_crit_edge.us ]
-  %mul133.us = mul nsw i32 %x.1274.us, %0
-  %arrayidx134.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul133.us
-  %11 = load i16, ptr %arrayidx134.us, align 2, !tbaa !16
-  %conv135.us = sext i16 %11 to i32
-  %mul137.us = mul nsw i32 %x.1274.us, %4
-  %arrayidx138.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul137.us
-  %12 = load i16, ptr %arrayidx138.us, align 2, !tbaa !16
-  %conv139.us = sext i16 %12 to i32
-  %mul140.us = mul nsw i32 %conv139.us, %conv135.us
-  %conv141.us = sext i32 %mul140.us to i64
-  %add142.us = add nsw i64 %acc.1275.us, %conv141.us
-  %inc.us = add nuw nsw i32 %x.1274.us, 1
-  %exitcond316.not = icmp eq i32 %inc.us, %count_x
-  br i1 %exitcond316.not, label %for.end144.us, label %for.body131.us, !llvm.loop !18
-
-for.body27.us:                                    ; preds = %for.cond25.preheader.us, %for.body27.us
-  %acc0.0264.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add.us, %for.body27.us ]
-  %acc1.0263.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add48.us, %for.body27.us ]
-  %x.0262.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add127.us, %for.body27.us ]
-  %acc7.0261.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add126.us, %for.body27.us ]
-  %acc6.0260.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add113.us, %for.body27.us ]
-  %acc5.0259.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add100.us, %for.body27.us ]
-  %acc4.0258.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add87.us, %for.body27.us ]
-  %acc3.0257.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add74.us, %for.body27.us ]
-  %acc2.0256.us = phi i32 [ 0, %for.cond25.preheader.us ], [ %add61.us, %for.body27.us ]
-  %mul29.us = mul nsw i32 %x.0262.us, %0
-  %arrayidx.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul29.us
-  %13 = load i16, ptr %arrayidx.us, align 2, !tbaa !16
-  %conv.us = sext i16 %13 to i32
-  %mul31.us = mul nsw i32 %x.0262.us, %4
-  %arrayidx32.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul31.us
-  %14 = load i16, ptr %arrayidx32.us, align 2, !tbaa !16
-  %conv33.us = sext i16 %14 to i32
-  %mul34.us = mul nsw i32 %conv33.us, %conv.us
-  %add.us = add i32 %mul34.us, %acc0.0264.us
-  %add37.us = or disjoint i32 %x.0262.us, 1
-  %mul38.us = mul nsw i32 %add37.us, %0
-  %arrayidx39.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul38.us
-  %15 = load i16, ptr %arrayidx39.us, align 2, !tbaa !16
-  %conv40.us = sext i16 %15 to i32
-  %mul43.us = mul nsw i32 %add37.us, %4
-  %arrayidx44.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul43.us
-  %16 = load i16, ptr %arrayidx44.us, align 2, !tbaa !16
-  %conv45.us = sext i16 %16 to i32
-  %mul46.us = mul nsw i32 %conv45.us, %conv40.us
-  %add48.us = add i32 %mul46.us, %acc1.0263.us
-  %add50.us = or disjoint i32 %x.0262.us, 2
-  %mul51.us = mul nsw i32 %add50.us, %0
-  %arrayidx52.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul51.us
-  %17 = load i16, ptr %arrayidx52.us, align 2, !tbaa !16
-  %conv53.us = sext i16 %17 to i32
-  %mul56.us = mul nsw i32 %add50.us, %4
-  %arrayidx57.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul56.us
-  %18 = load i16, ptr %arrayidx57.us, align 2, !tbaa !16
-  %conv58.us = sext i16 %18 to i32
-  %mul59.us = mul nsw i32 %conv58.us, %conv53.us
-  %add61.us = add i32 %mul59.us, %acc2.0256.us
-  %add63.us = or disjoint i32 %x.0262.us, 3
-  %mul64.us = mul nsw i32 %add63.us, %0
-  %arrayidx65.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul64.us
-  %19 = load i16, ptr %arrayidx65.us, align 2, !tbaa !16
-  %conv66.us = sext i16 %19 to i32
-  %mul69.us = mul nsw i32 %add63.us, %4
-  %arrayidx70.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul69.us
-  %20 = load i16, ptr %arrayidx70.us, align 2, !tbaa !16
-  %conv71.us = sext i16 %20 to i32
-  %mul72.us = mul nsw i32 %conv71.us, %conv66.us
-  %add74.us = add i32 %mul72.us, %acc3.0257.us
-  %add76.us = or disjoint i32 %x.0262.us, 4
-  %mul77.us = mul nsw i32 %add76.us, %0
-  %arrayidx78.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul77.us
-  %21 = load i16, ptr %arrayidx78.us, align 2, !tbaa !16
-  %conv79.us = sext i16 %21 to i32
-  %mul82.us = mul nsw i32 %add76.us, %4
-  %arrayidx83.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul82.us
-  %22 = load i16, ptr %arrayidx83.us, align 2, !tbaa !16
-  %conv84.us = sext i16 %22 to i32
-  %mul85.us = mul nsw i32 %conv84.us, %conv79.us
-  %add87.us = add i32 %mul85.us, %acc4.0258.us
-  %add89.us = or disjoint i32 %x.0262.us, 5
-  %mul90.us = mul nsw i32 %add89.us, %0
-  %arrayidx91.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul90.us
-  %23 = load i16, ptr %arrayidx91.us, align 2, !tbaa !16
-  %conv92.us = sext i16 %23 to i32
-  %mul95.us = mul nsw i32 %add89.us, %4
-  %arrayidx96.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul95.us
-  %24 = load i16, ptr %arrayidx96.us, align 2, !tbaa !16
-  %conv97.us = sext i16 %24 to i32
-  %mul98.us = mul nsw i32 %conv97.us, %conv92.us
-  %add100.us = add i32 %mul98.us, %acc5.0259.us
-  %add102.us = or disjoint i32 %x.0262.us, 6
-  %mul103.us = mul nsw i32 %add102.us, %0
-  %arrayidx104.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul103.us
-  %25 = load i16, ptr %arrayidx104.us, align 2, !tbaa !16
-  %conv105.us = sext i16 %25 to i32
-  %mul108.us = mul nsw i32 %add102.us, %4
-  %arrayidx109.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul108.us
-  %26 = load i16, ptr %arrayidx109.us, align 2, !tbaa !16
-  %conv110.us = sext i16 %26 to i32
-  %mul111.us = mul nsw i32 %conv110.us, %conv105.us
-  %add113.us = add i32 %mul111.us, %acc6.0260.us
-  %add115.us = or disjoint i32 %x.0262.us, 7
-  %mul116.us = mul nsw i32 %add115.us, %0
-  %arrayidx117.us = getelementptr inbounds i16, ptr %i_data.0281.us, i32 %mul116.us
-  %27 = load i16, ptr %arrayidx117.us, align 2, !tbaa !16
-  %conv118.us = sext i16 %27 to i32
-  %mul121.us = mul nsw i32 %add115.us, %4
-  %arrayidx122.us = getelementptr inbounds i16, ptr %f_data.0280.us, i32 %mul121.us
-  %28 = load i16, ptr %arrayidx122.us, align 2, !tbaa !16
-  %conv123.us = sext i16 %28 to i32
-  %mul124.us = mul nsw i32 %conv123.us, %conv118.us
-  %add126.us = add i32 %mul124.us, %acc7.0261.us
-  %add127.us = add nuw nsw i32 %x.0262.us, 8
-  %cmp26.us = icmp slt i32 %add127.us, %sub
-  br i1 %cmp26.us, label %for.body27.us, label %for.cond25.for.cond128.preheader_crit_edge.us, !llvm.loop !19
-
-for.cond25.for.cond128.preheader_crit_edge.us:    ; preds = %for.body27.us
-  br i1 %cmp129273.us, label %for.body131.us, label %for.end144.us
-
-for.cond25.preheader.lr.ph.split:                 ; preds = %for.cond25.preheader.lr.ph
-  %cmp129273 = icmp sgt i32 %count_x, 0
-  br i1 %cmp129273, label %for.cond25.preheader.us283, label %for.cond.cleanup
-
-for.cond25.preheader.us283:                       ; preds = %for.cond25.preheader.lr.ph.split, %for.cond128.for.end144_crit_edge.us309
-  %i_data.0281.us284 = phi ptr [ %add.ptr.us290, %for.cond128.for.end144_crit_edge.us309 ], [ %8, %for.cond25.preheader.lr.ph.split ]
-  %f_data.0280.us285 = phi ptr [ %add.ptr158.us291, %for.cond128.for.end144_crit_edge.us309 ], [ %9, %for.cond25.preheader.lr.ph.split ]
-  %acc.0279.us286 = phi i64 [ %add142.us305, %for.cond128.for.end144_crit_edge.us309 ], [ 0, %for.cond25.preheader.lr.ph.split ]
-  %y.0278.us287 = phi i32 [ %inc160.us292, %for.cond128.for.end144_crit_edge.us309 ], [ 0, %for.cond25.preheader.lr.ph.split ]
-  br label %for.body131.us294
-
-for.body131.us294:                                ; preds = %for.cond25.preheader.us283, %for.body131.us294
-  %acc.1275.us295 = phi i64 [ %acc.0279.us286, %for.cond25.preheader.us283 ], [ %add142.us305, %for.body131.us294 ]
-  %x.1274.us296 = phi i32 [ 0, %for.cond25.preheader.us283 ], [ %inc.us306, %for.body131.us294 ]
-  %mul133.us297 = mul nsw i32 %x.1274.us296, %0
-  %arrayidx134.us298 = getelementptr inbounds i16, ptr %i_data.0281.us284, i32 %mul133.us297
-  %29 = load i16, ptr %arrayidx134.us298, align 2, !tbaa !16
-  %conv135.us299 = sext i16 %29 to i32
-  %mul137.us300 = mul nsw i32 %x.1274.us296, %4
-  %arrayidx138.us301 = getelementptr inbounds i16, ptr %f_data.0280.us285, i32 %mul137.us300
-  %30 = load i16, ptr %arrayidx138.us301, align 2, !tbaa !16
-  %conv139.us302 = sext i16 %30 to i32
-  %mul140.us303 = mul nsw i32 %conv139.us302, %conv135.us299
-  %conv141.us304 = sext i32 %mul140.us303 to i64
-  %add142.us305 = add nsw i64 %acc.1275.us295, %conv141.us304
-  %inc.us306 = add nuw nsw i32 %x.1274.us296, 1
-  %exitcond.not = icmp eq i32 %inc.us306, %count_x
-  br i1 %exitcond.not, label %for.cond128.for.end144_crit_edge.us309, label %for.body131.us294, !llvm.loop !18
-
-for.cond128.for.end144_crit_edge.us309:           ; preds = %for.body131.us294
-  %add.ptr.us290 = getelementptr inbounds i16, ptr %i_data.0281.us284, i32 %mul20
-  %add.ptr158.us291 = getelementptr inbounds i16, ptr %f_data.0280.us285, i32 %mul23
-  %inc160.us292 = add nuw nsw i32 %y.0278.us287, 1
-  %exitcond315.not = icmp eq i32 %inc160.us292, %count_y
-  br i1 %exitcond315.not, label %for.cond.cleanup, label %for.cond25.preheader.us283, !llvm.loop !14
-
-for.cond.cleanup:                                 ; preds = %for.cond128.for.end144_crit_edge.us309, %for.end144.us, %for.cond25.preheader.lr.ph.split, %if.end16
-  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ 0, %for.cond25.preheader.lr.ph.split ], [ %add157.us, %for.end144.us ], [ %add142.us305, %for.cond128.for.end144_crit_edge.us309 ]
-  %sub162 = add nsw i32 %shift, -1
-  %shl = shl nuw i32 1, %sub162
-  %conv163 = sext i32 %shl to i64
-  %add164 = add nsw i64 %acc.0.lcssa, %conv163
+for.cond.cleanup:                                 ; preds = %for.end144, %if.end16
+  %acc.0.lcssa = phi i64 [ 0, %if.end16 ], [ %acc.2.lcssa, %for.end144 ]
+  %sub149 = add nsw i32 %shift, -1
+  %shl = shl nuw i32 1, %sub149
+  %conv150 = sext i32 %shl to i64
+  %add151 = add nsw i64 %acc.0.lcssa, %conv150
   %sh_prom = zext nneg i32 %shift to i64
-  %shr = ashr i64 %add164, %sh_prom
-  %conv165 = trunc i64 %shr to i16
-  store i16 %conv165, ptr %out_value, align 2, !tbaa !16
+  %shr = ashr i64 %add151, %sh_prom
+  %conv152 = trunc i64 %shr to i16
+  store i16 %conv152, ptr %out_value, align 2, !tbaa !14
   br label %return
+
+for.cond128.preheader:                            ; preds = %for.body27, %for.cond25.preheader
+  %acc.1.lcssa = phi i64 [ %acc.0252, %for.cond25.preheader ], [ %add126, %for.body27 ]
+  %x.0.lcssa = phi i32 [ 0, %for.cond25.preheader ], [ %10, %for.body27 ]
+  %cmp129245 = icmp slt i32 %x.0.lcssa, %count_x
+  br i1 %cmp129245, label %for.body131, label %for.end144
+
+for.body27:                                       ; preds = %for.cond25.preheader, %for.body27
+  %x.0243 = phi i32 [ %add127, %for.body27 ], [ 0, %for.cond25.preheader ]
+  %acc.1242 = phi i64 [ %add126, %for.body27 ], [ %acc.0252, %for.cond25.preheader ]
+  %mul29 = mul nsw i32 %x.0243, %0
+  %arrayidx = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul29
+  %11 = load i16, ptr %arrayidx, align 2, !tbaa !14
+  %conv = sext i16 %11 to i32
+  %mul31 = mul nsw i32 %x.0243, %4
+  %arrayidx32 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul31
+  %12 = load i16, ptr %arrayidx32, align 2, !tbaa !14
+  %conv33 = sext i16 %12 to i32
+  %mul34 = mul nsw i32 %conv33, %conv
+  %conv35 = sext i32 %mul34 to i64
+  %add = add nsw i64 %acc.1242, %conv35
+  %add37 = or disjoint i32 %x.0243, 1
+  %mul38 = mul nsw i32 %add37, %0
+  %arrayidx39 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul38
+  %13 = load i16, ptr %arrayidx39, align 2, !tbaa !14
+  %conv40 = sext i16 %13 to i32
+  %mul43 = mul nsw i32 %add37, %4
+  %arrayidx44 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul43
+  %14 = load i16, ptr %arrayidx44, align 2, !tbaa !14
+  %conv45 = sext i16 %14 to i32
+  %mul46 = mul nsw i32 %conv45, %conv40
+  %conv47 = sext i32 %mul46 to i64
+  %add48 = add nsw i64 %add, %conv47
+  %add50 = or disjoint i32 %x.0243, 2
+  %mul51 = mul nsw i32 %add50, %0
+  %arrayidx52 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul51
+  %15 = load i16, ptr %arrayidx52, align 2, !tbaa !14
+  %conv53 = sext i16 %15 to i32
+  %mul56 = mul nsw i32 %add50, %4
+  %arrayidx57 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul56
+  %16 = load i16, ptr %arrayidx57, align 2, !tbaa !14
+  %conv58 = sext i16 %16 to i32
+  %mul59 = mul nsw i32 %conv58, %conv53
+  %conv60 = sext i32 %mul59 to i64
+  %add61 = add nsw i64 %add48, %conv60
+  %add63 = or disjoint i32 %x.0243, 3
+  %mul64 = mul nsw i32 %add63, %0
+  %arrayidx65 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul64
+  %17 = load i16, ptr %arrayidx65, align 2, !tbaa !14
+  %conv66 = sext i16 %17 to i32
+  %mul69 = mul nsw i32 %add63, %4
+  %arrayidx70 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul69
+  %18 = load i16, ptr %arrayidx70, align 2, !tbaa !14
+  %conv71 = sext i16 %18 to i32
+  %mul72 = mul nsw i32 %conv71, %conv66
+  %conv73 = sext i32 %mul72 to i64
+  %add74 = add nsw i64 %add61, %conv73
+  %add76 = or disjoint i32 %x.0243, 4
+  %mul77 = mul nsw i32 %add76, %0
+  %arrayidx78 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul77
+  %19 = load i16, ptr %arrayidx78, align 2, !tbaa !14
+  %conv79 = sext i16 %19 to i32
+  %mul82 = mul nsw i32 %add76, %4
+  %arrayidx83 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul82
+  %20 = load i16, ptr %arrayidx83, align 2, !tbaa !14
+  %conv84 = sext i16 %20 to i32
+  %mul85 = mul nsw i32 %conv84, %conv79
+  %conv86 = sext i32 %mul85 to i64
+  %add87 = add nsw i64 %add74, %conv86
+  %add89 = or disjoint i32 %x.0243, 5
+  %mul90 = mul nsw i32 %add89, %0
+  %arrayidx91 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul90
+  %21 = load i16, ptr %arrayidx91, align 2, !tbaa !14
+  %conv92 = sext i16 %21 to i32
+  %mul95 = mul nsw i32 %add89, %4
+  %arrayidx96 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul95
+  %22 = load i16, ptr %arrayidx96, align 2, !tbaa !14
+  %conv97 = sext i16 %22 to i32
+  %mul98 = mul nsw i32 %conv97, %conv92
+  %conv99 = sext i32 %mul98 to i64
+  %add100 = add nsw i64 %add87, %conv99
+  %add102 = or disjoint i32 %x.0243, 6
+  %mul103 = mul nsw i32 %add102, %0
+  %arrayidx104 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul103
+  %23 = load i16, ptr %arrayidx104, align 2, !tbaa !14
+  %conv105 = sext i16 %23 to i32
+  %mul108 = mul nsw i32 %add102, %4
+  %arrayidx109 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul108
+  %24 = load i16, ptr %arrayidx109, align 2, !tbaa !14
+  %conv110 = sext i16 %24 to i32
+  %mul111 = mul nsw i32 %conv110, %conv105
+  %conv112 = sext i32 %mul111 to i64
+  %add113 = add nsw i64 %add100, %conv112
+  %add115 = or disjoint i32 %x.0243, 7
+  %mul116 = mul nsw i32 %add115, %0
+  %arrayidx117 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul116
+  %25 = load i16, ptr %arrayidx117, align 2, !tbaa !14
+  %conv118 = sext i16 %25 to i32
+  %mul121 = mul nsw i32 %add115, %4
+  %arrayidx122 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul121
+  %26 = load i16, ptr %arrayidx122, align 2, !tbaa !14
+  %conv123 = sext i16 %26 to i32
+  %mul124 = mul nsw i32 %conv123, %conv118
+  %conv125 = sext i32 %mul124 to i64
+  %add126 = add nsw i64 %add113, %conv125
+  %add127 = add nuw nsw i32 %x.0243, 8
+  %cmp26 = icmp slt i32 %add127, %sub
+  br i1 %cmp26, label %for.body27, label %for.cond128.preheader, !llvm.loop !16
+
+for.body131:                                      ; preds = %for.cond128.preheader, %for.body131
+  %x.1247 = phi i32 [ %inc, %for.body131 ], [ %x.0.lcssa, %for.cond128.preheader ]
+  %acc.2246 = phi i64 [ %add142, %for.body131 ], [ %acc.1.lcssa, %for.cond128.preheader ]
+  %mul133 = mul nsw i32 %x.1247, %0
+  %arrayidx134 = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul133
+  %27 = load i16, ptr %arrayidx134, align 2, !tbaa !14
+  %conv135 = sext i16 %27 to i32
+  %mul137 = mul nsw i32 %x.1247, %4
+  %arrayidx138 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul137
+  %28 = load i16, ptr %arrayidx138, align 2, !tbaa !14
+  %conv139 = sext i16 %28 to i32
+  %mul140 = mul nsw i32 %conv139, %conv135
+  %conv141 = sext i32 %mul140 to i64
+  %add142 = add nsw i64 %acc.2246, %conv141
+  %inc = add nuw nsw i32 %x.1247, 1
+  %exitcond.not = icmp eq i32 %inc, %count_x
+  br i1 %exitcond.not, label %for.end144, label %for.body131, !llvm.loop !18
+
+for.end144:                                       ; preds = %for.body131, %for.cond128.preheader
+  %acc.2.lcssa = phi i64 [ %acc.1.lcssa, %for.cond128.preheader ], [ %add142, %for.body131 ]
+  %add.ptr = getelementptr inbounds i16, ptr %i_data.0251, i32 %mul20
+  %add.ptr145 = getelementptr inbounds i16, ptr %f_data.0250, i32 %mul23
+  %inc147 = add nuw nsw i32 %y.0253, 1
+  %exitcond255.not = icmp eq i32 %inc147, %count_y
+  br i1 %exitcond255.not, label %for.cond.cleanup, label %for.cond25.preheader, !llvm.loop !19
 
 return:                                           ; preds = %if.end10, %if.end4, %if.end, %entry, %for.cond.cleanup
   %retval.0 = phi i32 [ 0, %for.cond.cleanup ], [ 458755, %entry ], [ 458755, %if.end ], [ 458755, %if.end4 ], [ 458755, %if.end10 ]
@@ -268,7 +223,7 @@ attributes #0 = { nofree norecurse nosync nounwind memory(read, argmem: readwrit
 !0 = !{i32 1, !"wchar_size", i32 4}
 !1 = !{i32 1, !"target-abi", !"ilp32f"}
 !2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6 esp-18.1.2_20240912-14-g8070eda esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-22-gda2052a esp-18.1.2_20240912-29-ga622597 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-32-g01e9072 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-34-gf41581d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-40-g376cafb esp-18.1.2_20240912-41-g0acc41e esp-18.1.2_20240912-597-g19b0b49 esp-18.1.2_20240912-599-gb58e197 esp-18.1.2_20240912-602-g324d9ea esp-18.1.2_20240912-602-g324d9ea)"}
+!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-173-ga680c2f esp-18.1.2_20240912-159-g1d4d6ed esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240912-159-g7f41e83 esp-18.1.2_20240829 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240829 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g19b0f98 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-182-g14aa699 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-g2ce75d8 esp-18.1.2_20240912-2-g4fd8338 esp-18.1.2_20240912-173-g279ba15 esp-18.1.2_20240912-174-gea75913 esp-18.1.2_20240912-188-g4fb459e esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-201-gd45e9b3 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-177-g05a8c17 esp-18.1.2_20240912-202-gc0d5d19 esp-18.1.2_20240912-1-g6d9b6c0 esp-18.1.2_20240912-2-g8cbccfa esp-18.1.2_20240912-2-g0e0e2c1 esp-18.1.2_20240912-2-gff36117 esp-18.1.2_20240912-178-g344e70f esp-18.1.2_20240912-2-g033ac4d esp-18.1.2_20240912-2-g0a05e54 esp-18.1.2_20240912-2-g2639da8 esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-180-gd5bd65d esp-18.1.2_20240912-183-gaf4b702 esp-18.1.2_20240912-5-g39bbb32f esp-18.1.2_20240912-5-gede6d43 esp-18.1.2_20240912-5-gd4169ab esp-18.1.2_20240912-5-ge743d5e esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-204-gb719e68 esp-18.1.2_20240912-6-g07a121a esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-217-g1614480 esp-18.1.2_20240912-224-g675f4cd esp-18.1.2_20240912-227-g17a3e8a esp-18.1.2_20240912-230-gaa5e53d esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-238-g8482f1f esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-239-g9c7dcf0 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-240-g66b4681 esp-18.1.2_20240912-205-g328bc73 esp-18.1.2_20240912-242-gf3b3614 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-243-g1c09333 esp-18.1.2_20240912-275-g0371b99 esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-553-ga5c3c9c esp-18.1.2_20240912-9-gf06e8b6 esp-18.1.2_20240912-14-g8070eda esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-22-gda2052a esp-18.1.2_20240912-29-ga622597 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-30-gc7afa9d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-32-g01e9072 esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-34-gf41581d esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-40-g376cafb esp-18.1.2_20240912-41-g0acc41e esp-18.1.2_20240912-597-g19b0b49 esp-18.1.2_20240912-599-gb58e197 esp-18.1.2_20240912-602-g324d9ea esp-18.1.2_20240912-602-g324d9ea esp-18.1.2_20240912-602-g324d9ea)"}
 !4 = !{!5, !9, i64 4}
 !5 = !{!"image2d_s", !6, i64 0, !9, i64 4, !9, i64 8, !9, i64 12, !9, i64 16, !9, i64 20, !9, i64 24}
 !6 = !{!"any pointer", !7, i64 0}
@@ -279,9 +234,9 @@ attributes #0 = { nofree norecurse nosync nounwind memory(read, argmem: readwrit
 !11 = !{!5, !9, i64 8}
 !12 = !{!5, !9, i64 16}
 !13 = !{!5, !6, i64 0}
-!14 = distinct !{!14, !15}
-!15 = !{!"llvm.loop.mustprogress"}
-!16 = !{!17, !17, i64 0}
-!17 = !{!"short", !7, i64 0}
-!18 = distinct !{!18, !15}
-!19 = distinct !{!19, !15}
+!14 = !{!15, !15, i64 0}
+!15 = !{!"short", !7, i64 0}
+!16 = distinct !{!16, !17}
+!17 = !{!"llvm.loop.mustprogress"}
+!18 = distinct !{!18, !17}
+!19 = distinct !{!19, !17}

@@ -1,5 +1,5 @@
 .option	arch, -zcb, +zcmp
-# 2024-12-16 17:16:36
+# 2024-12-18 17:25:40
 	.text
 	.attribute	4, 16
 	#.attribute	5, "rv32i2p1_m2p0_a2p1_f2p2_c2p0_zicsr2p0_zifencei2p0_zca1p0_zcb1p0_zcmp1p0_zcmt1p0_xesppie1p0"
@@ -11,66 +11,49 @@
 	.type	dspm_mult_s16_arp4,@function
 dspm_mult_s16_arp4:                     # @dspm_mult_s16_arp4
 # %bb.0:                                # %entry
-	addi	sp, sp, -112
-	sw	ra, 108(sp)                     # 4-byte Folded Spill
-	sw	s0, 104(sp)                     # 4-byte Folded Spill
-	sw	s1, 100(sp)                     # 4-byte Folded Spill
-	sw	s2, 96(sp)                      # 4-byte Folded Spill
-	sw	s3, 92(sp)                      # 4-byte Folded Spill
-	sw	s4, 88(sp)                      # 4-byte Folded Spill
-	sw	s5, 84(sp)                      # 4-byte Folded Spill
-	sw	s6, 80(sp)                      # 4-byte Folded Spill
-	sw	s7, 76(sp)                      # 4-byte Folded Spill
-	sw	s8, 72(sp)                      # 4-byte Folded Spill
-	sw	s9, 68(sp)                      # 4-byte Folded Spill
-	sw	s10, 64(sp)                     # 4-byte Folded Spill
-	sw	s11, 60(sp)                     # 4-byte Folded Spill
-	sw	a2, 12(sp)                      # 4-byte Folded Spill
-	sw	a1, 8(sp)                       # 4-byte Folded Spill
-	sw	a0, 16(sp)                      # 4-byte Folded Spill
-	sw	a3, 20(sp)                      # 4-byte Folded Spill
+	addi	sp, sp, -80
+	sw	ra, 76(sp)                      # 4-byte Folded Spill
+	sw	s0, 72(sp)                      # 4-byte Folded Spill
+	sw	s1, 68(sp)                      # 4-byte Folded Spill
+	sw	s2, 64(sp)                      # 4-byte Folded Spill
+	sw	s3, 60(sp)                      # 4-byte Folded Spill
+	sw	s4, 56(sp)                      # 4-byte Folded Spill
+	sw	s5, 52(sp)                      # 4-byte Folded Spill
+	sw	s6, 48(sp)                      # 4-byte Folded Spill
+	sw	s7, 44(sp)                      # 4-byte Folded Spill
+	sw	s8, 40(sp)                      # 4-byte Folded Spill
+	sw	s9, 36(sp)                      # 4-byte Folded Spill
+	sw	s10, 32(sp)                     # 4-byte Folded Spill
+	sw	s11, 28(sp)                     # 4-byte Folded Spill
+	sw	a2, 16(sp)                      # 4-byte Folded Spill
+	sw	a1, 12(sp)                      # 4-byte Folded Spill
+	sw	a3, 24(sp)                      # 4-byte Folded Spill
 	blez	a3, .LBB0_18
 # %bb.1:                                # %for.cond1.preheader.lr.ph
-	sw	zero, 28(sp)                    # 4-byte Folded Spill
-	addi	a0, a6, -15
-	sw	a0, 40(sp)                      # 4-byte Folded Spill
-	lui	a0, 8
-	addi	a0, a0, -1
-	srl	t1, a0, a6
-	andi	a0, a4, -8
-	sw	a0, 32(sp)                      # 4-byte Folded Spill
-	li	a7, 15
-	sub	t4, a7, a6
-	slli	t5, a5, 4
-	lw	a1, 16(sp)                      # 4-byte Folded Reload
-	addi	a0, a1, 8
-	sw	a0, 56(sp)                      # 4-byte Folded Spill
-	slli	a0, a4, 1
-	slli	s10, a5, 1
-	sw	a0, 24(sp)                      # 4-byte Folded Spill
-	addi	a0, a0, -16
-	andi	a0, a0, -16
-	addi	a0, a0, 24
-	sw	a0, 4(sp)                       # 4-byte Folded Spill
-	li	t0, 8
-	sw	a1, 52(sp)                      # 4-byte Folded Spill
-	sw	a5, 44(sp)                      # 4-byte Folded Spill
-	sw	a6, 36(sp)                      # 4-byte Folded Spill
+	li	a7, 0
+	addi	t0, a6, -15
+	lui	s1, 8
+	addi	s1, s1, -1
+	srl	t1, s1, a6
+	addi	t2, a4, -7
+	andi	t3, a4, -8
+	li	t4, 15
+	sub	t5, t4, a6
+	slli	t6, a5, 4
+	addi	s4, a0, 8
+	slli	a1, a4, 1
+	sw	a1, 20(sp)                      # 4-byte Folded Spill
+	slli	s8, a5, 1
+	li	s3, 8
 	j	.LBB0_3
 .LBB0_2:                                # %for.cond.cleanup3
                                         #   in Loop: Header=BB0_3 Depth=1
-	lw	a1, 28(sp)                      # 4-byte Folded Reload
-	addi	a1, a1, 1
-	lw	a0, 56(sp)                      # 4-byte Folded Reload
-	lw	a2, 24(sp)                      # 4-byte Folded Reload
-	add	a0, a0, a2
-	sw	a0, 56(sp)                      # 4-byte Folded Spill
-	lw	a0, 52(sp)                      # 4-byte Folded Reload
-	add	a0, a0, a2
-	sw	a0, 52(sp)                      # 4-byte Folded Spill
-	lw	a0, 20(sp)                      # 4-byte Folded Reload
-	sw	a1, 28(sp)                      # 4-byte Folded Spill
-	beq	a1, a0, .LBB0_18
+	addi	a7, a7, 1
+	lw	a1, 20(sp)                      # 4-byte Folded Reload
+	add	s4, s4, a1
+	add	a0, a0, a1
+	lw	a1, 24(sp)                      # 4-byte Folded Reload
+	beq	a7, a1, .LBB0_18
 .LBB0_3:                                # %for.cond1.preheader
                                         # =>This Loop Header: Depth=1
                                         #     Child Loop BB0_6 Depth 2
@@ -79,200 +62,186 @@ dspm_mult_s16_arp4:                     # @dspm_mult_s16_arp4
 	blez	a5, .LBB0_2
 # %bb.4:                                # %for.body4.lr.ph
                                         #   in Loop: Header=BB0_3 Depth=1
-	li	s6, 0
-	lw	a0, 28(sp)                      # 4-byte Folded Reload
-	lw	a1, 24(sp)                      # 4-byte Folded Reload
-	mul	a1, a1, a0
-	lw	a2, 4(sp)                       # 4-byte Folded Reload
-	add	a1, a1, a2
-	lw	s9, 16(sp)                      # 4-byte Folded Reload
-	add	s9, s9, a1
-	mul	a1, a0, a5
-	slli	a1, a1, 1
-	lw	a0, 12(sp)                      # 4-byte Folded Reload
-	add	a3, a0, a1
-	lw	s2, 8(sp)                       # 4-byte Folded Reload
-	sw	a3, 48(sp)                      # 4-byte Folded Spill
+	li	s7, 0
+	mul	s0, a7, a5
+	slli	s0, s0, 1
+	lw	s5, 16(sp)                      # 4-byte Folded Reload
+	add	s5, s5, s0
+	lw	s6, 12(sp)                      # 4-byte Folded Reload
 	j	.LBB0_6
 .LBB0_5:                                # %for.cond.cleanup8
                                         #   in Loop: Header=BB0_6 Depth=2
-	slli	a0, s6, 1
-	add	a0, a0, a3
-	sh	s0, 0(a0)
-	addi	s6, s6, 1
-	addi	s2, s2, 2
-	beq	s6, a5, .LBB0_2
+	slli	a1, s7, 1
+	add	a1, a1, s5
+	sh	s0, 0(a1)
+	addi	s7, s7, 1
+	addi	s6, s6, 2
+	beq	s7, a5, .LBB0_2
 .LBB0_6:                                # %for.body4
                                         #   Parent Loop BB0_3 Depth=1
                                         # =>  This Loop Header: Depth=2
                                         #       Child Loop BB0_8 Depth 3
                                         #       Child Loop BB0_13 Depth 3
-	li	s11, 0
-	blt	a4, t0, .LBB0_11
+	blt	a4, s3, .LBB0_11
 # %bb.7:                                # %for.body9.7.preheader
                                         #   in Loop: Header=BB0_6 Depth=2
-	lw	s0, 56(sp)                      # 4-byte Folded Reload
-	mv	ra, s2
-	mv	s7, t1
-	mv	s1, t1
+	li	s9, 0
+	li	s11, 0
+	mv	s1, s4
+	mv	s10, s6
+	mv	ra, t1
 .LBB0_8:                                # %for.body9.7
                                         #   Parent Loop BB0_3 Depth=1
                                         #     Parent Loop BB0_6 Depth=2
                                         # =>    This Inner Loop Header: Depth=3
-	lh	s5, -8(s0)
-	lh	s8, 0(ra)
-	lh	a1, -6(s0)
-	add	a3, ra, s10
+	lh	s0, -8(s1)
+	lh	s2, 0(s10)
+	mul	s0, s2, s0
+	srai	s2, s0, 31
+	add	s0, s0, ra
+	lh	a1, -6(s1)
+	add	a3, s10, s8
 	lh	a2, 0(a3)
-	lh	a0, -4(s0)
-	add	a3, a3, s10
-	lh	a7, 0(a3)
-	lh	t3, -2(s0)
-	add	a3, a3, s10
-	lh	t2, 0(a3)
-	lh	s4, 0(s0)
-	add	a3, a3, s10
-	lh	t6, 0(a3)
-	lh	s3, 2(s0)
-	add	a3, a3, s10
-	lh	t0, 0(a3)
-	lh	a6, 4(s0)
-	add	a3, a3, s10
-	lh	a5, 0(a3)
-	lh	t1, 6(s0)
-	add	a3, a3, s10
-	lh	a3, 0(a3)
-	mul	s5, s8, s5
+	sltu	ra, s0, ra
+	add	s2, s2, s11
+	add	s2, s2, ra
 	mul	a1, a2, a1
-	mul	a0, a7, a0
-	mul	a2, t2, t3
-	mul	a7, t6, s4
-	mul	t0, t0, s3
-	mul	t2, a5, a6
-	mul	a6, a3, t1
-	srai	a3, s5, 31
-	srai	a5, a1, 31
-	srai	t1, a0, 31
-	srai	t3, a2, 31
-	srai	t6, a7, 31
-	srai	s3, t0, 31
-	srai	s4, t2, 31
-	srai	s8, a6, 31
-	add	s5, s5, s1
-	sltu	s1, s5, s1
-	add	a3, a3, s11
-	add	a3, a3, s1
-	add	a1, a1, s5
-	sltu	s1, a1, s5
-	add	a3, a3, a5
-	add	a0, a0, a1
-	sltu	a1, a0, a1
-	add	t1, t1, s1
-	add	a3, a3, t1
-	add	a1, a1, t3
-	add	a1, a1, a3
-	add	a2, a2, a0
-	sltu	a0, a2, a0
-	add	a0, a0, t6
-	add	a0, a0, a1
-	add	a7, a7, a2
-	sltu	a1, a7, a2
-	add	a1, a1, s3
-	add	a0, a0, a1
-	add	t0, t0, a7
-	sltu	a1, t0, a7
-	add	a1, a1, s4
-	add	a0, a0, a1
-	add	t2, t2, t0
-	sltu	a1, t2, t0
-	add	a1, a1, s8
-	add	a0, a0, a1
-	add	s1, t2, a6
-	sltu	s11, s1, t2
-	add	s11, s11, a0
-	addi	s0, s0, 16
-	add	ra, ra, t5
-	bne	s0, s9, .LBB0_8
+	srai	s11, a1, 31
+	lh	ra, -4(s1)
+	add	a3, a3, s8
+	lh	a2, 0(a3)
+	add	a1, a1, s0
+	sltu	s0, a1, s0
+	add	s2, s2, s11
+	mul	s11, a2, ra
+	srai	a2, s11, 31
+	add	ra, s0, a2
+	lh	s0, -2(s1)
+	add	a3, a3, s8
+	lh	a2, 0(a3)
+	add	s11, s11, a1
+	sltu	a1, s11, a1
+	add	s2, s2, ra
+	mul	a2, a2, s0
+	srai	s0, a2, 31
+	add	ra, a1, s0
+	lh	s0, 0(s1)
+	add	a3, a3, s8
+	lh	a1, 0(a3)
+	add	s2, s2, ra
+	add	a2, a2, s11
+	sltu	s11, a2, s11
+	mul	a1, a1, s0
+	srai	s0, a1, 31
+	add	s11, s11, s0
+	lh	ra, 2(s1)
+	add	a3, a3, s8
+	lh	s0, 0(a3)
+	add	s2, s2, s11
+	add	a1, a1, a2
+	sltu	s11, a1, a2
+	mul	a2, s0, ra
+	srai	s0, a2, 31
+	add	s11, s11, s0
+	lh	ra, 4(s1)
+	add	a3, a3, s8
+	lh	s0, 0(a3)
+	add	s2, s2, s11
+	add	a2, a2, a1
+	sltu	s11, a2, a1
+	mul	a1, s0, ra
+	srai	s0, a1, 31
+	add	s11, s11, s0
+	lh	s0, 6(s1)
+	add	a3, a3, s8
+	lh	a3, 0(a3)
+	add	s2, s2, s11
+	add	a1, a1, a2
+	sltu	a2, a1, a2
+	mul	ra, a3, s0
+	srai	a3, ra, 31
+	add	a2, a2, a3
+	add	a2, a2, s2
+	add	ra, ra, a1
+	sltu	s11, ra, a1
+	add	s11, s11, a2
+	addi	s9, s9, 8
+	add	s10, s10, t6
+	addi	s1, s1, 16
+	blt	s9, t2, .LBB0_8
 # %bb.9:                                #   in Loop: Header=BB0_6 Depth=2
-	lw	a2, 32(sp)                      # 4-byte Folded Reload
-	lw	a6, 36(sp)                      # 4-byte Folded Reload
-	lw	a5, 44(sp)                      # 4-byte Folded Reload
-	mv	t1, s7
-	li	a7, 15
-	li	t0, 8
-	lw	a3, 48(sp)                      # 4-byte Folded Reload
-	blt	a2, a4, .LBB0_12
+	mv	s0, t3
+	blt	t3, a4, .LBB0_12
 .LBB0_10:                               #   in Loop: Header=BB0_6 Depth=2
-	mv	ra, s1
+	mv	s9, ra
 	j	.LBB0_14
 .LBB0_11:                               #   in Loop: Header=BB0_6 Depth=2
-	li	a2, 0
-	mv	s1, t1
+	li	s11, 0
+	li	s0, 0
+	mv	ra, t1
 	blez	a4, .LBB0_10
 .LBB0_12:                               # %for.body9.clone.preheader
                                         #   in Loop: Header=BB0_6 Depth=2
-	sub	s0, a4, a2
-	mul	s8, s10, a2
-	add	s8, s8, s2
-	slli	a2, a2, 1
-	lw	s5, 52(sp)                      # 4-byte Folded Reload
-	add	s5, s5, a2
+	sub	s10, a4, s0
+	mul	s1, s8, s0
+	add	s1, s1, s6
+	slli	s0, s0, 1
+	add	s0, s0, a0
 .LBB0_13:                               # %for.body9.clone
                                         #   Parent Loop BB0_3 Depth=1
                                         #     Parent Loop BB0_6 Depth=2
                                         # =>    This Inner Loop Header: Depth=3
-	lh	a0, 0(s5)
-	lh	a1, 0(s8)
-	mul	ra, a1, a0
-	srai	a0, ra, 31
-	add	ra, ra, s1
-	sltu	a1, ra, s1
-	add	a0, a0, s11
-	add	s11, a0, a1
-	addi	s0, s0, -1
-	add	s8, s8, s10
-	addi	s5, s5, 2
-	mv	s1, ra
-	bnez	s0, .LBB0_13
+	lh	a1, 0(s0)
+	lh	a2, 0(s1)
+	mul	s9, a2, a1
+	srai	a1, s9, 31
+	add	s9, s9, ra
+	sltu	a2, s9, ra
+	add	a1, a1, s11
+	add	s11, a1, a2
+	addi	s10, s10, -1
+	add	s1, s1, s8
+	addi	s0, s0, 2
+	mv	ra, s9
+	bnez	s10, .LBB0_13
 .LBB0_14:                               # %for.cond.cleanup8
                                         #   in Loop: Header=BB0_6 Depth=2
-	addi	a0, t4, -32
-	bltz	a0, .LBB0_16
+	addi	a1, t5, -32
+	bltz	a1, .LBB0_16
 # %bb.15:                               # %for.cond.cleanup8
                                         #   in Loop: Header=BB0_6 Depth=2
-	sra	s0, s11, t4
-	bge	a7, a6, .LBB0_5
+	sra	s0, s11, t5
+	bge	t4, a6, .LBB0_5
 	j	.LBB0_17
 .LBB0_16:                               #   in Loop: Header=BB0_6 Depth=2
-	srl	a0, ra, t4
-	not	a1, t4
+	srl	a1, s9, t5
+	not	a2, t5
 	slli	s11, s11, 1
-	sll	s0, s11, a1
-	or	s0, s0, a0
-	bge	a7, a6, .LBB0_5
+	sll	s0, s11, a2
+	or	s0, s0, a1
+	bge	t4, a6, .LBB0_5
 .LBB0_17:                               #   in Loop: Header=BB0_6 Depth=2
-	lw	a1, 40(sp)                      # 4-byte Folded Reload
-	sll	a0, ra, a1
-	addi	a1, a1, -32
-	srai	a1, a1, 31
-	and	s0, a1, a0
+	sll	a1, s9, t0
+	addi	a2, t0, -32
+	srai	a2, a2, 31
+	and	s0, a2, a1
 	j	.LBB0_5
 .LBB0_18:                               # %for.cond.cleanup
 	li	a0, 0
-	lw	ra, 108(sp)                     # 4-byte Folded Reload
-	lw	s0, 104(sp)                     # 4-byte Folded Reload
-	lw	s1, 100(sp)                     # 4-byte Folded Reload
-	lw	s2, 96(sp)                      # 4-byte Folded Reload
-	lw	s3, 92(sp)                      # 4-byte Folded Reload
-	lw	s4, 88(sp)                      # 4-byte Folded Reload
-	lw	s5, 84(sp)                      # 4-byte Folded Reload
-	lw	s6, 80(sp)                      # 4-byte Folded Reload
-	lw	s7, 76(sp)                      # 4-byte Folded Reload
-	lw	s8, 72(sp)                      # 4-byte Folded Reload
-	lw	s9, 68(sp)                      # 4-byte Folded Reload
-	lw	s10, 64(sp)                     # 4-byte Folded Reload
-	lw	s11, 60(sp)                     # 4-byte Folded Reload
-	addi	sp, sp, 112
+	lw	ra, 76(sp)                      # 4-byte Folded Reload
+	lw	s0, 72(sp)                      # 4-byte Folded Reload
+	lw	s1, 68(sp)                      # 4-byte Folded Reload
+	lw	s2, 64(sp)                      # 4-byte Folded Reload
+	lw	s3, 60(sp)                      # 4-byte Folded Reload
+	lw	s4, 56(sp)                      # 4-byte Folded Reload
+	lw	s5, 52(sp)                      # 4-byte Folded Reload
+	lw	s6, 48(sp)                      # 4-byte Folded Reload
+	lw	s7, 44(sp)                      # 4-byte Folded Reload
+	lw	s8, 40(sp)                      # 4-byte Folded Reload
+	lw	s9, 36(sp)                      # 4-byte Folded Reload
+	lw	s10, 32(sp)                     # 4-byte Folded Reload
+	lw	s11, 28(sp)                     # 4-byte Folded Reload
+	addi	sp, sp, 80
 	ret
 .Lfunc_end0:
 	.size	dspm_mult_s16_arp4, .Lfunc_end0-dspm_mult_s16_arp4

@@ -56,112 +56,101 @@ for.cond110.preheader:                            ; preds = %for.body9.7, %for.b
 for.body9.7:                                      ; preds = %for.body9.7, %for.body4
   %s.060 = phi i32 [ %inc.7, %for.body9.7 ], [ 0, %for.body4 ]
   %acc.059 = phi i64 [ %add17.7, %for.body9.7 ], [ %conv, %for.body4 ]
-  
-  ; 计算所有的数组索引
-  %inc = or disjoint i32 %s.060, 1
-  %inc.1 = or disjoint i32 %s.060, 2  
-  %inc.2 = or disjoint i32 %s.060, 3
-  %inc.3 = or disjoint i32 %s.060, 4
-  %inc.4 = or disjoint i32 %s.060, 5
-  %inc.5 = or disjoint i32 %s.060, 6
-  %inc.6 = or disjoint i32 %s.060, 7
-  %inc.7 = add nuw nsw i32 %s.060, 8
   %arrayidx = getelementptr i16, ptr %1, i32 %s.060
-  %arrayidx.1 = getelementptr i16, ptr %1, i32 %inc
-  %arrayidx.2 = getelementptr i16, ptr %1, i32 %inc.1
-  %arrayidx.3 = getelementptr i16, ptr %1, i32 %inc.2
-  %arrayidx.4 = getelementptr i16, ptr %1, i32 %inc.3
-  %arrayidx.5 = getelementptr i16, ptr %1, i32 %inc.4
-  %arrayidx.6 = getelementptr i16, ptr %1, i32 %inc.5
-  %arrayidx.7 = getelementptr i16, ptr %1, i32 %inc.6
-
-  ; 计算所有的mul11
-  %mul11 = mul nsw i32 %s.060, %k
-  %mul11.1 = mul nsw i32 %inc, %k
-  %mul11.2 = mul nsw i32 %inc.1, %k
-  %mul11.3 = mul nsw i32 %inc.2, %k
-  %mul11.4 = mul nsw i32 %inc.3, %k
-  %mul11.5 = mul nsw i32 %inc.4, %k
-  %mul11.6 = mul nsw i32 %inc.5, %k
-  %mul11.7 = mul nsw i32 %inc.6, %k
-
-  ; 计算所有的gep
-  %gep = getelementptr i16, ptr %invariant.gep, i32 %mul11
-  %gep.1 = getelementptr i16, ptr %invariant.gep, i32 %mul11.1
-  %gep.2 = getelementptr i16, ptr %invariant.gep, i32 %mul11.2
-  %gep.3 = getelementptr i16, ptr %invariant.gep, i32 %mul11.3
-  %gep.4 = getelementptr i16, ptr %invariant.gep, i32 %mul11.4
-  %gep.5 = getelementptr i16, ptr %invariant.gep, i32 %mul11.5
-  %gep.6 = getelementptr i16, ptr %invariant.gep, i32 %mul11.6
-  %gep.7 = getelementptr i16, ptr %invariant.gep, i32 %mul11.7
-
-  ; 加载所有的数据
   %3 = load i16, ptr %arrayidx, align 2, !tbaa !6
-  %4 = load i16, ptr %gep, align 2, !tbaa !6
-  %5 = load i16, ptr %arrayidx.1, align 2, !tbaa !6
-  %6 = load i16, ptr %gep.1, align 2, !tbaa !6
-  %7 = load i16, ptr %arrayidx.2, align 2, !tbaa !6
-  %8 = load i16, ptr %gep.2, align 2, !tbaa !6
-  %9 = load i16, ptr %arrayidx.3, align 2, !tbaa !6
-  %10 = load i16, ptr %gep.3, align 2, !tbaa !6
-  %11 = load i16, ptr %arrayidx.4, align 2, !tbaa !6
-  %12 = load i16, ptr %gep.4, align 2, !tbaa !6
-  %13 = load i16, ptr %arrayidx.5, align 2, !tbaa !6
-  %14 = load i16, ptr %gep.5, align 2, !tbaa !6
-  %15 = load i16, ptr %arrayidx.6, align 2, !tbaa !6
-  %16 = load i16, ptr %gep.6, align 2, !tbaa !6
-  %17 = load i16, ptr %arrayidx.7, align 2, !tbaa !6
-  %18 = load i16, ptr %gep.7, align 2, !tbaa !6
-
-  ; 符号扩展
   %conv10 = sext i16 %3 to i32
+  %mul11 = mul nsw i32 %s.060, %k
+  %gep = getelementptr i16, ptr %invariant.gep, i32 %mul11
+  %4 = load i16, ptr %gep, align 2, !tbaa !6
   %conv14 = sext i16 %4 to i32
-  %conv10.1 = sext i16 %5 to i32
-  %conv14.1 = sext i16 %6 to i32
-  %conv10.2 = sext i16 %7 to i32
-  %conv14.2 = sext i16 %8 to i32
-  %conv10.3 = sext i16 %9 to i32
-  %conv14.3 = sext i16 %10 to i32
-  %conv10.4 = sext i16 %11 to i32
-  %conv14.4 = sext i16 %12 to i32
-  %conv10.5 = sext i16 %13 to i32
-  %conv14.5 = sext i16 %14 to i32
-  %conv10.6 = sext i16 %15 to i32
-  %conv14.6 = sext i16 %16 to i32
-  %conv10.7 = sext i16 %17 to i32
-  %conv14.7 = sext i16 %18 to i32
-
-  ; 乘法运算
   %mul15 = mul nsw i32 %conv14, %conv10
-  %mul15.1 = mul nsw i32 %conv14.1, %conv10.1
-  %mul15.2 = mul nsw i32 %conv14.2, %conv10.2
-  %mul15.3 = mul nsw i32 %conv14.3, %conv10.3
-  %mul15.4 = mul nsw i32 %conv14.4, %conv10.4
-  %mul15.5 = mul nsw i32 %conv14.5, %conv10.5
-  %mul15.6 = mul nsw i32 %conv14.6, %conv10.6
-  %mul15.7 = mul nsw i32 %conv14.7, %conv10.7
-
-  ; 符号扩展乘法结果
   %conv16 = sext i32 %mul15 to i64
-  %conv16.1 = sext i32 %mul15.1 to i64
-  %conv16.2 = sext i32 %mul15.2 to i64
-  %conv16.3 = sext i32 %mul15.3 to i64
-  %conv16.4 = sext i32 %mul15.4 to i64
-  %conv16.5 = sext i32 %mul15.5 to i64
-  %conv16.6 = sext i32 %mul15.6 to i64
-  %conv16.7 = sext i32 %mul15.7 to i64
-
-  ; 累加运算
   %add17 = add nsw i64 %acc.059, %conv16
+  %inc = add nuw nsw i32 %s.060, 1
+  %exitcond.not = icmp eq i32 %inc, %n
+  %arrayidx.1 = getelementptr i16, ptr %1, i32 %inc
+  %5 = load i16, ptr %arrayidx.1, align 2, !tbaa !6
+  %conv10.1 = sext i16 %5 to i32
+  %mul11.1 = mul nsw i32 %inc, %k
+  %gep.1 = getelementptr i16, ptr %invariant.gep, i32 %mul11.1
+  %6 = load i16, ptr %gep.1, align 2, !tbaa !6
+  %conv14.1 = sext i16 %6 to i32
+  %mul15.1 = mul nsw i32 %conv14.1, %conv10.1
+  %conv16.1 = sext i32 %mul15.1 to i64
   %add17.1 = add nsw i64 %add17, %conv16.1
+  %inc.1 = add nuw nsw i32 %s.060, 2
+  %exitcond.not.1 = icmp eq i32 %inc.1, %n
+  %arrayidx.2 = getelementptr i16, ptr %1, i32 %inc.1
+  %7 = load i16, ptr %arrayidx.2, align 2, !tbaa !6
+  %conv10.2 = sext i16 %7 to i32
+  %mul11.2 = mul nsw i32 %inc.1, %k
+  %gep.2 = getelementptr i16, ptr %invariant.gep, i32 %mul11.2
+  %8 = load i16, ptr %gep.2, align 2, !tbaa !6
+  %conv14.2 = sext i16 %8 to i32
+  %mul15.2 = mul nsw i32 %conv14.2, %conv10.2
+  %conv16.2 = sext i32 %mul15.2 to i64
   %add17.2 = add nsw i64 %add17.1, %conv16.2
+  %inc.2 = add nuw nsw i32 %s.060, 3
+  %exitcond.not.2 = icmp eq i32 %inc.2, %n
+  %arrayidx.3 = getelementptr i16, ptr %1, i32 %inc.2
+  %9 = load i16, ptr %arrayidx.3, align 2, !tbaa !6
+  %conv10.3 = sext i16 %9 to i32
+  %mul11.3 = mul nsw i32 %inc.2, %k
+  %gep.3 = getelementptr i16, ptr %invariant.gep, i32 %mul11.3
+  %10 = load i16, ptr %gep.3, align 2, !tbaa !6
+  %conv14.3 = sext i16 %10 to i32
+  %mul15.3 = mul nsw i32 %conv14.3, %conv10.3
+  %conv16.3 = sext i32 %mul15.3 to i64
   %add17.3 = add nsw i64 %add17.2, %conv16.3
+  %inc.3 = add nuw nsw i32 %s.060, 4
+  %exitcond.not.3 = icmp eq i32 %inc.3, %n
+  %arrayidx.4 = getelementptr i16, ptr %1, i32 %inc.3
+  %11 = load i16, ptr %arrayidx.4, align 2, !tbaa !6
+  %conv10.4 = sext i16 %11 to i32
+  %mul11.4 = mul nsw i32 %inc.3, %k
+  %gep.4 = getelementptr i16, ptr %invariant.gep, i32 %mul11.4
+  %12 = load i16, ptr %gep.4, align 2, !tbaa !6
+  %conv14.4 = sext i16 %12 to i32
+  %mul15.4 = mul nsw i32 %conv14.4, %conv10.4
+  %conv16.4 = sext i32 %mul15.4 to i64
   %add17.4 = add nsw i64 %add17.3, %conv16.4
+  %inc.4 = add nuw nsw i32 %s.060, 5
+  %exitcond.not.4 = icmp eq i32 %inc.4, %n
+  %arrayidx.5 = getelementptr i16, ptr %1, i32 %inc.4
+  %13 = load i16, ptr %arrayidx.5, align 2, !tbaa !6
+  %conv10.5 = sext i16 %13 to i32
+  %mul11.5 = mul nsw i32 %inc.4, %k
+  %gep.5 = getelementptr i16, ptr %invariant.gep, i32 %mul11.5
+  %14 = load i16, ptr %gep.5, align 2, !tbaa !6
+  %conv14.5 = sext i16 %14 to i32
+  %mul15.5 = mul nsw i32 %conv14.5, %conv10.5
+  %conv16.5 = sext i32 %mul15.5 to i64
   %add17.5 = add nsw i64 %add17.4, %conv16.5
+  %inc.5 = add nuw nsw i32 %s.060, 6
+  %exitcond.not.5 = icmp eq i32 %inc.5, %n
+  %arrayidx.6 = getelementptr i16, ptr %1, i32 %inc.5
+  %15 = load i16, ptr %arrayidx.6, align 2, !tbaa !6
+  %conv10.6 = sext i16 %15 to i32
+  %mul11.6 = mul nsw i32 %inc.5, %k
+  %gep.6 = getelementptr i16, ptr %invariant.gep, i32 %mul11.6
+  %16 = load i16, ptr %gep.6, align 2, !tbaa !6
+  %conv14.6 = sext i16 %16 to i32
+  %mul15.6 = mul nsw i32 %conv14.6, %conv10.6
+  %conv16.6 = sext i32 %mul15.6 to i64
   %add17.6 = add nsw i64 %add17.5, %conv16.6
+  %inc.6 = add nuw nsw i32 %s.060, 7
+  %exitcond.not.6 = icmp eq i32 %inc.6, %n
+  %arrayidx.7 = getelementptr i16, ptr %1, i32 %inc.6
+  %17 = load i16, ptr %arrayidx.7, align 2, !tbaa !6
+  %conv10.7 = sext i16 %17 to i32
+  %mul11.7 = mul nsw i32 %inc.6, %k
+  %gep.7 = getelementptr i16, ptr %invariant.gep, i32 %mul11.7
+  %18 = load i16, ptr %gep.7, align 2, !tbaa !6
+  %conv14.7 = sext i16 %18 to i32
+  %mul15.7 = mul nsw i32 %conv14.7, %conv10.7
+  %conv16.7 = sext i32 %mul15.7 to i64
   %add17.7 = add nsw i64 %add17.6, %conv16.7
-
-  ; 循环控制
+  %inc.7 = add nuw nsw i32 %s.060, 8
   %exitcond.not.7 = icmp slt i32 %inc.7, %sub6
   br i1 %exitcond.not.7, label %for.body9.7, label %for.cond110.preheader, !llvm.loop !10
 

@@ -114,8 +114,8 @@ for.body.7:                                       ; preds = %for.body.7, %for.bo
   %exitcond.not.7 = icmp slt i32 %inc.7, %and
   br i1 %exitcond.not.7, label %for.body.7, label %for.cond.cleanup.loopexit, !llvm.loop !8
 
-for.body.clone:                                   ; preds = %for.body.clone, %for.cond73.preheader
-  %19 = phi i64 [ %result0.0.lcssa, %for.cond73.preheader ], [ %add.clone, %for.body.clone ]
+for.body.clone:                                   ; preds = %for.cond73.preheader, %for.body.clone
+  %19 = phi i64 [ %add.clone, %for.body.clone ], [ %result0.0.lcssa, %for.cond73.preheader ]
   %i.025.clone = phi i32 [ %inc.clone, %for.body.clone ], [ %i.0.lcssa, %for.cond73.preheader ]
   %arrayidx.clone = getelementptr inbounds i16, ptr %src1, i32 %i.025.clone
   %20 = load i16, ptr %arrayidx.clone, align 2, !tbaa !4

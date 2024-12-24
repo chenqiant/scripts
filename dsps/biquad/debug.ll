@@ -1,8 +1,3 @@
-; ModuleID = 'after_customlicm.ll'
-source_filename = "dsps_biquad_f32_ansi.c"
-target datalayout = "e-m:e-p:32:32-i64:64-n32-S128"
-target triple = "riscv32-esp-unknown-elf"
-
 ; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite)
 define dso_local noundef i32 @dsps_biquad_f32_ansi(ptr noalias nocapture noundef readonly %input, ptr noalias nocapture noundef writeonly %output, i32 noundef %len, ptr noalias nocapture noundef readonly %coef, ptr noalias nocapture noundef %w) local_unnamed_addr #0 {
 entry:
@@ -42,7 +37,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %10 = load float, ptr %arrayidx, align 4, !tbaa !4
   %11 = tail call float @llvm.fmuladd.f32(float %6, float %8, float %10)
   %12 = tail call float @llvm.fmuladd.f32(float %7, float %9, float %11)
-  %mul9 = fmul float %4, %8
+  %mul9 = fmul float %8, %4
   %13 = tail call float @llvm.fmuladd.f32(float %3, float %12, float %mul9)
   %14 = tail call float @llvm.fmuladd.f32(float %5, float %9, float %13)
   %arrayidx12 = getelementptr inbounds float, ptr %output, i32 %i.031
@@ -52,7 +47,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %15 = load float, ptr %arrayidx.1, align 4, !tbaa !4
   %16 = tail call float @llvm.fmuladd.f32(float %6, float %12, float %15)
   %17 = tail call float @llvm.fmuladd.f32(float %7, float %8, float %16)
-  %mul9.1 = fmul float %4, %12
+  %mul9.1 = fmul float %12, %4
   %18 = tail call float @llvm.fmuladd.f32(float %3, float %17, float %mul9.1)
   %19 = tail call float @llvm.fmuladd.f32(float %5, float %8, float %18)
   %arrayidx12.1 = getelementptr inbounds float, ptr %output, i32 %inc
@@ -62,7 +57,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %20 = load float, ptr %arrayidx.2, align 4, !tbaa !4
   %21 = tail call float @llvm.fmuladd.f32(float %6, float %17, float %20)
   %22 = tail call float @llvm.fmuladd.f32(float %7, float %12, float %21)
-  %mul9.2 = fmul float %4, %17
+  %mul9.2 = fmul float %17, %4
   %23 = tail call float @llvm.fmuladd.f32(float %3, float %22, float %mul9.2)
   %24 = tail call float @llvm.fmuladd.f32(float %5, float %12, float %23)
   %arrayidx12.2 = getelementptr inbounds float, ptr %output, i32 %inc.1
@@ -72,7 +67,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %25 = load float, ptr %arrayidx.3, align 4, !tbaa !4
   %26 = tail call float @llvm.fmuladd.f32(float %6, float %22, float %25)
   %27 = tail call float @llvm.fmuladd.f32(float %7, float %17, float %26)
-  %mul9.3 = fmul float %4, %22
+  %mul9.3 = fmul float %22, %4
   %28 = tail call float @llvm.fmuladd.f32(float %3, float %27, float %mul9.3)
   %29 = tail call float @llvm.fmuladd.f32(float %5, float %17, float %28)
   %arrayidx12.3 = getelementptr inbounds float, ptr %output, i32 %inc.2
@@ -82,7 +77,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %30 = load float, ptr %arrayidx.4, align 4, !tbaa !4
   %31 = tail call float @llvm.fmuladd.f32(float %6, float %27, float %30)
   %32 = tail call float @llvm.fmuladd.f32(float %7, float %22, float %31)
-  %mul9.4 = fmul float %4, %27
+  %mul9.4 = fmul float %27, %4
   %33 = tail call float @llvm.fmuladd.f32(float %3, float %32, float %mul9.4)
   %34 = tail call float @llvm.fmuladd.f32(float %5, float %22, float %33)
   %arrayidx12.4 = getelementptr inbounds float, ptr %output, i32 %inc.3
@@ -92,7 +87,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %35 = load float, ptr %arrayidx.5, align 4, !tbaa !4
   %36 = tail call float @llvm.fmuladd.f32(float %6, float %32, float %35)
   %37 = tail call float @llvm.fmuladd.f32(float %7, float %27, float %36)
-  %mul9.5 = fmul float %4, %32
+  %mul9.5 = fmul float %32, %4
   %38 = tail call float @llvm.fmuladd.f32(float %3, float %37, float %mul9.5)
   %39 = tail call float @llvm.fmuladd.f32(float %5, float %27, float %38)
   %arrayidx12.5 = getelementptr inbounds float, ptr %output, i32 %inc.4
@@ -102,7 +97,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %40 = load float, ptr %arrayidx.6, align 4, !tbaa !4
   %41 = tail call float @llvm.fmuladd.f32(float %6, float %37, float %40)
   %42 = tail call float @llvm.fmuladd.f32(float %7, float %32, float %41)
-  %mul9.6 = fmul float %4, %37
+  %mul9.6 = fmul float %37, %4
   %43 = tail call float @llvm.fmuladd.f32(float %3, float %42, float %mul9.6)
   %44 = tail call float @llvm.fmuladd.f32(float %5, float %32, float %43)
   %arrayidx12.6 = getelementptr inbounds float, ptr %output, i32 %inc.5
@@ -112,7 +107,7 @@ for.body.7:                                       ; preds = %for.body.7, %for.co
   %45 = load float, ptr %arrayidx.7, align 4, !tbaa !4
   %46 = tail call float @llvm.fmuladd.f32(float %6, float %42, float %45)
   %47 = tail call float @llvm.fmuladd.f32(float %7, float %37, float %46)
-  %mul9.7 = fmul float %4, %42
+  %mul9.7 = fmul float %42, %4
   %48 = tail call float @llvm.fmuladd.f32(float %3, float %47, float %mul9.7)
   %49 = tail call float @llvm.fmuladd.f32(float %5, float %37, float %48)
   %arrayidx12.7 = getelementptr inbounds float, ptr %output, i32 %inc.6
@@ -171,7 +166,7 @@ for.body.clone:                                   ; preds = %for.body.clone, %fo
   %59 = tail call float @llvm.fmuladd.f32(float %neg.clone, float %57, float %58)
   %neg5.clone = fneg float %.pre17
   %60 = tail call float @llvm.fmuladd.f32(float %neg5.clone, float %56, float %59)
-  %mul9.clone = fmul float %.pre19, %57
+  %mul9.clone = fmul float %57, %.pre19
   %61 = tail call float @llvm.fmuladd.f32(float %.pre18, float %60, float %mul9.clone)
   %62 = tail call float @llvm.fmuladd.f32(float %.pre20, float %56, float %61)
   %arrayidx12.clone = getelementptr inbounds float, ptr %output, i32 %i.031.clone
@@ -182,23 +177,3 @@ for.body.clone:                                   ; preds = %for.body.clone, %fo
   %exitcond.not.clone = icmp eq i32 %inc.clone, %len
   br i1 %exitcond.not.clone, label %if.end, label %for.body.clone, !llvm.loop !8
 }
-
-; Function Attrs: nocallback nofree nosync nounwind speculatable willreturn memory(none)
-declare float @llvm.fmuladd.f32(float, float, float) #1
-
-attributes #0 = { nofree norecurse nosync nounwind memory(argmem: readwrite) "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="generic-rv32" "target-features"="+32bit,+a,+c,+f,+m,+relax,+xesppie,+zicsr,+zifencei,-d,-e,-experimental-zacas,-experimental-zcmop,-experimental-zfbfmin,-experimental-zicfilp,-experimental-zicfiss,-experimental-zimop,-experimental-ztso,-experimental-zvfbfmin,-experimental-zvfbfwma,-h,-smaia,-smepmp,-ssaia,-svinval,-svnapot,-svpbmt,-v,-xcvalu,-xcvbi,-xcvbitmanip,-xcvelw,-xcvmac,-xcvmem,-xcvsimd,-xsfvcp,-xsfvfnrclipxfqf,-xsfvfwmaccqqq,-xsfvqmaccdod,-xsfvqmaccqoq,-xtheadba,-xtheadbb,-xtheadbs,-xtheadcmo,-xtheadcondmov,-xtheadfmemidx,-xtheadmac,-xtheadmemidx,-xtheadmempair,-xtheadsync,-xtheadvdot,-xventanacondops,-za128rs,-za64rs,-zawrs,-zba,-zbb,-zbc,-zbkb,-zbkc,-zbkx,-zbs,-zca,-zcb,-zcd,-zce,-zcf,-zcmp,-zcmt,-zdinx,-zfa,-zfh,-zfhmin,-zfinx,-zhinx,-zhinxmin,-zic64b,-zicbom,-zicbop,-zicboz,-ziccamoa,-ziccif,-zicclsm,-ziccrse,-zicntr,-zicond,-zihintntl,-zihintpause,-zihpm,-zk,-zkn,-zknd,-zkne,-zknh,-zkr,-zks,-zksed,-zksh,-zkt,-zmmul,-zvbb,-zvbc,-zve32f,-zve32x,-zve64d,-zve64f,-zve64x,-zvfh,-zvfhmin,-zvkb,-zvkg,-zvkn,-zvknc,-zvkned,-zvkng,-zvknha,-zvknhb,-zvks,-zvksc,-zvksed,-zvksg,-zvksh,-zvkt,-zvl1024b,-zvl128b,-zvl16384b,-zvl2048b,-zvl256b,-zvl32768b,-zvl32b,-zvl4096b,-zvl512b,-zvl64b,-zvl65536b,-zvl8192b" }
-attributes #1 = { nocallback nofree nosync nounwind speculatable willreturn memory(none) }
-
-!llvm.module.flags = !{!0, !1, !2}
-!llvm.ident = !{!3}
-
-!0 = !{i32 1, !"wchar_size", i32 4}
-!1 = !{i32 1, !"target-abi", !"ilp32f"}
-!2 = !{i32 8, !"SmallDataLimit", i32 8}
-!3 = !{!"Espressif clang version 18.1.2 (https://gitlab.espressif.cn:6688/idf/llvm-project.git esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-13-g45f4abc esp-18.1.2_20240912-13-g45f4abc)"}
-!4 = !{!5, !5, i64 0}
-!5 = !{!"float", !6, i64 0}
-!6 = !{!"omnipotent char", !7, i64 0}
-!7 = !{!"Simple C/C++ TBAA"}
-!8 = distinct !{!8, !9}
-!9 = !{!"llvm.loop.mustprogress"}

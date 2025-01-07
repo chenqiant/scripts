@@ -15,7 +15,7 @@
 #include "dspi_conv.h"
 #include "esp_log.h"
 
-/*
+
 esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter, image2d_t *out_image)
 {
     const int in_image_step_x = in_image->step_x;
@@ -221,9 +221,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
     }
     return ESP_OK;
 }
-*/
 
 
+/*
 esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter, image2d_t *out_image)
 {
     const int in_image_step_x = in_image->step_x;
@@ -379,6 +379,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
             const int up_x = rest_x - x;
             float *f_data =  filter_data;
             for (int m = 0 ; m < filter_size_y ; m++) {
+                // for (int n = up_x ; n < filter_size_x ; n++) {
+                //     acc += i_data[i_pos_x + n * in_image_step_x] * f_data[filter_step_x * n];
+                // }
                 int n;
                 for (n = up_x ; n < filter_size_x - 7; n+=8) {
                     const int i_pos_x_n = i_pos_x + n * in_image_step_x;
@@ -407,6 +410,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
             float *f_data =  filter_data;
             const int temp6 = temp2 - x;
             for (int m = 0 ; m < filter_size_y ; m++) {
+                // for (int n = 0 ; n < temp6; n++) {
+                //     acc += i_data[i_pos_x + n * in_image_step_x] * f_data[filter_step_x * n];
+                // }
                 int n;
                 for (n = 0 ; n < temp6 - 7; n+=8) {
                     const int i_pos_x_n = i_pos_x + n * in_image_step_x;
@@ -444,6 +450,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
             float *f_data =  filter_data; 
             const int up_x = rest_x - x;
             for (int m = 0 ; m < temp7; m++) {
+                // for (int n = up_x ; n < filter_size_x; n++) {
+                //     acc += i_data[i_pos_x + n * in_image_step_x] * f_data[filter_step_x * n];
+                // }
                 int n;
                 for (n = up_x ; n < filter_size_x - 7; n+=8) {
                     const int i_pos_x_n = i_pos_x + n * in_image_step_x;
@@ -471,6 +480,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
             float acc = 0;
             float *f_data =  filter_data;
             for (int m = 0 ; m < temp7; m++) {
+                // for (int n = 0 ; n < filter_size_x; n++) {
+                //     acc += i_data[i_pos_x + n * in_image_step_x] * f_data[filter_step_x * n];
+                // }
                 int n;
                 for (n = 0 ; n < filter_size_x - 7; n+=8) {
                     const int i_pos_x_n = i_pos_x + n * in_image_step_x;
@@ -498,6 +510,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
             float acc = 0;
             float *f_data =  filter_data;
             for (int m = 0 ; m < temp7; m++) {
+                // for (int n = 0 ; n < temp2 - x; n++) {
+                //     acc += i_data[i_pos_x + n * in_image_step_x] * f_data[filter_step_x * n];
+                // }                
                 int n;
                 for (n = 0 ; n < temp2 - x - 7; n+= 8) {
                     const int i_pos_x_n = i_pos_x + n * in_image_step_x;
@@ -533,6 +548,9 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
             float acc = 0;
             float *f_data =  filter_data;
             for (int m = 0 ; m < filter_size_y ; m++) {
+                // for (int n = 0 ; n < filter_size_x; n++) {
+                //     acc += i_data[i_pos_x + n * in_image_step_x] * f_data[filter_step_x * n];
+                // }                
                 int n;
                 for (n = 0 ; n < filter_size_x - 7; n+=8) {
                     const int i_pos_x_n = i_pos_x + n * in_image_step_x;
@@ -559,4 +577,4 @@ esp_err_t dspi_conv_f32_ansi(const image2d_t *in_image, const image2d_t *filter,
     }
     return ESP_OK;
 }
-
+*/

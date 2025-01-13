@@ -31,7 +31,7 @@ opt  after_customlicm.ll -mtriple=riscv32-esp-unknown-elf -passes=riscv-loop-unr
 # llc --mcpu=esp32p4 --mtriple=riscv32 manully.ll -O3 -filetype=asm -o manully.s
 # llc --mcpu=esp32p4 --mtriple=riscv32 dsps_fird_f32_best.ll -O3 -filetype=asm -o dsps_fird_f32_best.s
 
-llc  --enable-esp32-p4-optimize --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
+llc --mcpu=esp32p4 --mtriple=riscv32 after_loopunrollandremainder.ll -O3 -filetype=asm -o after_loopunrollandremainder.s
 
 ../preprocess_asm.sh after_loopunrollandremainder.s
 cp after_loopunrollandremainder.s /home/chenqian/esp/esp-idf/components/esp-dsp/modules/fir/float/dsps_fird_f32_arp4.S

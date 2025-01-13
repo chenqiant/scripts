@@ -46,91 +46,84 @@ for.body4:                                        ; preds = %for.cond.cleanup11,
 
 for.cond110.preheader:                            ; preds = %for.body12.7, %for.body4
   %s.0.lcssa = phi i32 [ %inc.7, %for.body12.7 ], [ 1, %for.body4 ]
-  %acc.0.lcssa = phi float [ %m27, %for.body12.7 ], [ %mul6, %for.body4 ]
+  %acc.0.lcssa = phi float [ %27, %for.body12.7 ], [ %mul6, %for.body4 ]
   %cmp111262 = icmp slt i32 %s.0.lcssa, %n
   br i1 %cmp111262, label %for.body12.clone, label %for.cond.cleanup11
 
 for.body12.7:                                     ; preds = %for.body12.7, %for.body4
-  %3 = phi float [ %m27, %for.body12.7 ], [ %mul6, %for.body4 ]
+  %3 = phi float [ %27, %for.body12.7 ], [ %mul6, %for.body4 ]
   %s.051 = phi i32 [ %inc.7, %for.body12.7 ], [ 1, %for.body4 ]
-  %inc = add nuw nsw i32 %s.051, 1
-  %inc.1 = add nuw nsw i32 %s.051, 2  
-  %inc.2 = add nuw nsw i32 %s.051, 3
-  %inc.3 = add nuw nsw i32 %s.051, 4
-  %inc.4 = add nuw nsw i32 %s.051, 5
-  %inc.5 = add nuw nsw i32 %s.051, 6
-  %inc.6 = add nuw nsw i32 %s.051, 7
-  %inc.7 = add nuw nsw i32 %s.051, 8
-
-  %mul16 = mul nsw i32 %s.051, %k
-  %mul16.1 = mul nsw i32 %inc, %k
-  %mul16.2 = mul nsw i32 %inc.1, %k
-  %mul16.3 = mul nsw i32 %inc.2, %k
-  %mul16.4 = mul nsw i32 %inc.3, %k
-  %mul16.5 = mul nsw i32 %inc.4, %k
-  %mul16.6 = mul nsw i32 %inc.5, %k
-  %mul16.7 = mul nsw i32 %inc.6, %k
-
   %arrayidx15 = getelementptr float, ptr %arrayidx, i32 %s.051
-  %arrayidx15.1 = getelementptr float, ptr %arrayidx, i32 %inc
-  %arrayidx15.2 = getelementptr float, ptr %arrayidx, i32 %inc.1
-  %arrayidx15.3 = getelementptr float, ptr %arrayidx, i32 %inc.2
-  %arrayidx15.4 = getelementptr float, ptr %arrayidx, i32 %inc.3
-  %arrayidx15.5 = getelementptr float, ptr %arrayidx, i32 %inc.4
-  %arrayidx15.6 = getelementptr float, ptr %arrayidx, i32 %inc.5
-  %arrayidx15.7 = getelementptr float, ptr %arrayidx, i32 %inc.6
-
-  %gep = getelementptr float, ptr %arrayidx5, i32 %mul16
-  %gep.1 = getelementptr float, ptr %arrayidx5, i32 %mul16.1
-  %gep.2 = getelementptr float, ptr %arrayidx5, i32 %mul16.2
-  %gep.3 = getelementptr float, ptr %arrayidx5, i32 %mul16.3
-  %gep.4 = getelementptr float, ptr %arrayidx5, i32 %mul16.4
-  %gep.5 = getelementptr float, ptr %arrayidx5, i32 %mul16.5
-  %gep.6 = getelementptr float, ptr %arrayidx5, i32 %mul16.6
-  %gep.7 = getelementptr float, ptr %arrayidx5, i32 %mul16.7
-
   %4 = load float, ptr %arrayidx15, align 4, !tbaa !6
+  %mul16 = mul nsw i32 %s.051, %k
+  %gep = getelementptr float, ptr %arrayidx5, i32 %mul16
   %5 = load float, ptr %gep, align 4, !tbaa !6
-  %7 = load float, ptr %arrayidx15.1, align 4, !tbaa !6
-  %8 = load float, ptr %gep.1, align 4, !tbaa !6
-  %10 = load float, ptr %arrayidx15.2, align 4, !tbaa !6
-  %11 = load float, ptr %gep.2, align 4, !tbaa !6
-  %13 = load float, ptr %arrayidx15.3, align 4, !tbaa !6
-  %14 = load float, ptr %gep.3, align 4, !tbaa !6
-  %16 = load float, ptr %arrayidx15.4, align 4, !tbaa !6
-  %17 = load float, ptr %gep.4, align 4, !tbaa !6
-  %19 = load float, ptr %arrayidx15.5, align 4, !tbaa !6
-  %20 = load float, ptr %gep.5, align 4, !tbaa !6
-  %22 = load float, ptr %arrayidx15.6, align 4, !tbaa !6
-  %23 = load float, ptr %gep.6, align 4, !tbaa !6
-  %25 = load float, ptr %arrayidx15.7, align 4, !tbaa !6
-  %26 = load float, ptr %gep.7, align 4, !tbaa !6
-
-  %m6 = tail call float @llvm.fmuladd.f32(float %4, float %5, float %3)
-  %m9 = tail call float @llvm.fmuladd.f32(float %7, float %8, float %m6)
-  %m12 = tail call float @llvm.fmuladd.f32(float %10, float %11, float %m9)
-  %m15 = tail call float @llvm.fmuladd.f32(float %13, float %14, float %m12)
-  %m18 = tail call float @llvm.fmuladd.f32(float %16, float %17, float %m15)
-  %m21 = tail call float @llvm.fmuladd.f32(float %19, float %20, float %m18)
-  %m24 = tail call float @llvm.fmuladd.f32(float %22, float %23, float %m21)
-  %m27 = tail call float @llvm.fmuladd.f32(float %25, float %26, float %m24)
-
-  store float %m6, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m9, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m12, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m15, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m18, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m21, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m24, ptr %arrayidx8, align 4, !tbaa !6
-  store float %m27, ptr %arrayidx8, align 4, !tbaa !6
-
+  %6 = tail call float @llvm.fmuladd.f32(float %4, float %5, float %3)
+  store float %6, ptr %arrayidx8, align 4, !tbaa !6
+  %inc = add nuw nsw i32 %s.051, 1
   %exitcond.not = icmp eq i32 %inc, %n
+  %arrayidx15.1 = getelementptr float, ptr %arrayidx, i32 %inc
+  %7 = load float, ptr %arrayidx15.1, align 4, !tbaa !6
+  %mul16.1 = mul nsw i32 %inc, %k
+  %gep.1 = getelementptr float, ptr %arrayidx5, i32 %mul16.1
+  %8 = load float, ptr %gep.1, align 4, !tbaa !6
+  %9 = tail call float @llvm.fmuladd.f32(float %7, float %8, float %6)
+  store float %9, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.1 = add nuw nsw i32 %s.051, 2
   %exitcond.not.1 = icmp eq i32 %inc.1, %n
+  %arrayidx15.2 = getelementptr float, ptr %arrayidx, i32 %inc.1
+  %10 = load float, ptr %arrayidx15.2, align 4, !tbaa !6
+  %mul16.2 = mul nsw i32 %inc.1, %k
+  %gep.2 = getelementptr float, ptr %arrayidx5, i32 %mul16.2
+  %11 = load float, ptr %gep.2, align 4, !tbaa !6
+  %12 = tail call float @llvm.fmuladd.f32(float %10, float %11, float %9)
+  store float %12, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.2 = add nuw nsw i32 %s.051, 3
   %exitcond.not.2 = icmp eq i32 %inc.2, %n
+  %arrayidx15.3 = getelementptr float, ptr %arrayidx, i32 %inc.2
+  %13 = load float, ptr %arrayidx15.3, align 4, !tbaa !6
+  %mul16.3 = mul nsw i32 %inc.2, %k
+  %gep.3 = getelementptr float, ptr %arrayidx5, i32 %mul16.3
+  %14 = load float, ptr %gep.3, align 4, !tbaa !6
+  %15 = tail call float @llvm.fmuladd.f32(float %13, float %14, float %12)
+  store float %15, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.3 = add nuw nsw i32 %s.051, 4
   %exitcond.not.3 = icmp eq i32 %inc.3, %n
+  %arrayidx15.4 = getelementptr float, ptr %arrayidx, i32 %inc.3
+  %16 = load float, ptr %arrayidx15.4, align 4, !tbaa !6
+  %mul16.4 = mul nsw i32 %inc.3, %k
+  %gep.4 = getelementptr float, ptr %arrayidx5, i32 %mul16.4
+  %17 = load float, ptr %gep.4, align 4, !tbaa !6
+  %18 = tail call float @llvm.fmuladd.f32(float %16, float %17, float %15)
+  store float %18, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.4 = add nuw nsw i32 %s.051, 5
   %exitcond.not.4 = icmp eq i32 %inc.4, %n
+  %arrayidx15.5 = getelementptr float, ptr %arrayidx, i32 %inc.4
+  %19 = load float, ptr %arrayidx15.5, align 4, !tbaa !6
+  %mul16.5 = mul nsw i32 %inc.4, %k
+  %gep.5 = getelementptr float, ptr %arrayidx5, i32 %mul16.5
+  %20 = load float, ptr %gep.5, align 4, !tbaa !6
+  %21 = tail call float @llvm.fmuladd.f32(float %19, float %20, float %18)
+  store float %21, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.5 = add nuw nsw i32 %s.051, 6
   %exitcond.not.5 = icmp eq i32 %inc.5, %n
+  %arrayidx15.6 = getelementptr float, ptr %arrayidx, i32 %inc.5
+  %22 = load float, ptr %arrayidx15.6, align 4, !tbaa !6
+  %mul16.6 = mul nsw i32 %inc.5, %k
+  %gep.6 = getelementptr float, ptr %arrayidx5, i32 %mul16.6
+  %23 = load float, ptr %gep.6, align 4, !tbaa !6
+  %24 = tail call float @llvm.fmuladd.f32(float %22, float %23, float %21)
+  store float %24, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.6 = add nuw nsw i32 %s.051, 7
   %exitcond.not.6 = icmp eq i32 %inc.6, %n
+  %arrayidx15.7 = getelementptr float, ptr %arrayidx, i32 %inc.6
+  %25 = load float, ptr %arrayidx15.7, align 4, !tbaa !6
+  %mul16.7 = mul nsw i32 %inc.6, %k
+  %gep.7 = getelementptr float, ptr %arrayidx5, i32 %mul16.7
+  %26 = load float, ptr %gep.7, align 4, !tbaa !6
+  %27 = tail call float @llvm.fmuladd.f32(float %25, float %26, float %24)
+  store float %27, ptr %arrayidx8, align 4, !tbaa !6
+  %inc.7 = add nuw nsw i32 %s.051, 8
   %exitcond.not.7 = icmp slt i32 %inc.7, %sub6
   br i1 %exitcond.not.7, label %for.body12.7, label %for.cond110.preheader, !llvm.loop !10
 

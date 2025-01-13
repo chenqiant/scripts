@@ -1,179 +1,116 @@
-; Function Attrs: nofree norecurse nosync nounwind memory(argmem: readwrite)
-define dso_local noundef i32 @dsps_biquad_f32_ansi(ptr noalias nocapture noundef readonly %input, ptr noalias nocapture noundef writeonly %output, i32 noundef %len, ptr noalias nocapture noundef readonly %coef, ptr noalias nocapture noundef %w) local_unnamed_addr #0 {
+; Function Attrs: nounwind
+define dso_local noundef i32 @dsps_fft2r_fc32_arp4_(ptr noalias nocapture noundef %data, i32 noundef %N, ptr noalias nocapture noundef readonly %w) local_unnamed_addr #0 {
 entry:
-  %0 = icmp sgt i32 %len, 2
-  br i1 %0, label %for.cond.preheader, label %for.body.lr.ph.clone
+  %call = tail call zeroext i1 @dsp_is_power_of_two(i32 noundef %N) #3
+  br i1 %call, label %if.end, label %return
 
-for.cond.preheader:                               ; preds = %entry
-  %sub = add nuw nsw i32 %len, -7
-  %arrayidx1 = getelementptr inbounds float, ptr %coef, i32 3
-  %arrayidx3 = getelementptr inbounds float, ptr %coef, i32 4
-  %arrayidx4 = getelementptr inbounds float, ptr %w, i32 1
-  %arrayidx7 = getelementptr inbounds float, ptr %coef, i32 1
-  %arrayidx10 = getelementptr inbounds float, ptr %coef, i32 2
-  %.pre = load float, ptr %w, align 4, !tbaa !4
-  %.pre32 = load float, ptr %arrayidx4, align 4, !tbaa !4
-  %1 = load float, ptr %arrayidx1, align 4, !tbaa !4
-  %2 = load float, ptr %arrayidx3, align 4, !tbaa !4
-  %3 = load float, ptr %coef, align 4, !tbaa !4
-  %4 = load float, ptr %arrayidx7, align 4, !tbaa !4
-  %5 = load float, ptr %arrayidx10, align 4, !tbaa !4
-  %6 = fneg float %1
-  %7 = fneg float %2
-  br label %for.body.7
+if.end:                                           ; preds = %entry
+  %0 = load i8, ptr @dsps_fft2r_initialized, align 1, !tbaa !4
+  %tobool.not = icmp eq i8 %0, 0
+  br i1 %tobool.not, label %return, label %if.end2
 
-if.end:                                           ; preds = %for.cond150.preheader, %for.body.clone, %for.cond.cleanup.clone
-  ret i32 0
+if.end2:                                          ; preds = %if.end
+  %cmp155 = icmp sgt i32 %N, 1
+  br i1 %cmp155, label %for.cond3.preheader, label %return
 
-for.cond150.preheader:                            ; preds = %for.body.7
-  %cmp151376 = icmp slt i32 %inc.7, %len
-  br i1 %cmp151376, label %for.body.lr.ph.clone8, label %if.end
+for.cond3.preheader:                              ; preds = %for.cond.cleanup5, %if.end2
+  %N2.0157.in = phi i32 [ %N2.0157, %for.cond.cleanup5 ], [ %N, %if.end2 ]
+  %ie.0156 = phi i32 [ %shl, %for.cond.cleanup5 ], [ 1, %if.end2 ]
+  %N2.0157 = lshr i32 %N2.0157.in, 1
+  %cmp4152 = icmp sgt i32 %ie.0156, 0
+  br i1 %cmp4152, label %for.body6.lr.ph, label %for.cond.cleanup5
 
-for.body.7:                                       ; preds = %for.body.7, %for.cond.preheader
-  %8 = phi float [ %.pre, %for.cond.preheader ], [ %47, %for.body.7 ]
-  %9 = phi float [ %.pre32, %for.cond.preheader ], [ %42, %for.body.7 ]
-  %i.031 = phi i32 [ 0, %for.cond.preheader ], [ %inc.7, %for.body.7 ]
-  %arrayidx = getelementptr inbounds float, ptr %input, i32 %i.031
-  %10 = load float, ptr %arrayidx, align 4, !tbaa !4
-  %11 = tail call float @llvm.fmuladd.f32(float %6, float %8, float %10)
-  %12 = tail call float @llvm.fmuladd.f32(float %7, float %9, float %11)
-  %mul9 = fmul float %8, %4
-  %13 = tail call float @llvm.fmuladd.f32(float %3, float %12, float %mul9)
-  %14 = tail call float @llvm.fmuladd.f32(float %5, float %9, float %13)
-  %arrayidx12 = getelementptr inbounds float, ptr %output, i32 %i.031
-  store float %14, ptr %arrayidx12, align 4, !tbaa !4
-  %inc = or disjoint i32 %i.031, 1
-  %arrayidx.1 = getelementptr inbounds float, ptr %input, i32 %inc
-  %15 = load float, ptr %arrayidx.1, align 4, !tbaa !4
-  %16 = tail call float @llvm.fmuladd.f32(float %6, float %12, float %15)
-  %17 = tail call float @llvm.fmuladd.f32(float %7, float %8, float %16)
-  %mul9.1 = fmul float %12, %4
-  %18 = tail call float @llvm.fmuladd.f32(float %3, float %17, float %mul9.1)
-  %19 = tail call float @llvm.fmuladd.f32(float %5, float %8, float %18)
-  %arrayidx12.1 = getelementptr inbounds float, ptr %output, i32 %inc
-  store float %19, ptr %arrayidx12.1, align 4, !tbaa !4
-  %inc.1 = or disjoint i32 %i.031, 2
-  %arrayidx.2 = getelementptr inbounds float, ptr %input, i32 %inc.1
-  %20 = load float, ptr %arrayidx.2, align 4, !tbaa !4
-  %21 = tail call float @llvm.fmuladd.f32(float %6, float %17, float %20)
-  %22 = tail call float @llvm.fmuladd.f32(float %7, float %12, float %21)
-  %mul9.2 = fmul float %17, %4
-  %23 = tail call float @llvm.fmuladd.f32(float %3, float %22, float %mul9.2)
-  %24 = tail call float @llvm.fmuladd.f32(float %5, float %12, float %23)
-  %arrayidx12.2 = getelementptr inbounds float, ptr %output, i32 %inc.1
-  store float %24, ptr %arrayidx12.2, align 4, !tbaa !4
-  %inc.2 = or disjoint i32 %i.031, 3
-  %arrayidx.3 = getelementptr inbounds float, ptr %input, i32 %inc.2
-  %25 = load float, ptr %arrayidx.3, align 4, !tbaa !4
-  %26 = tail call float @llvm.fmuladd.f32(float %6, float %22, float %25)
-  %27 = tail call float @llvm.fmuladd.f32(float %7, float %17, float %26)
-  %mul9.3 = fmul float %22, %4
-  %28 = tail call float @llvm.fmuladd.f32(float %3, float %27, float %mul9.3)
-  %29 = tail call float @llvm.fmuladd.f32(float %5, float %17, float %28)
-  %arrayidx12.3 = getelementptr inbounds float, ptr %output, i32 %inc.2
-  store float %29, ptr %arrayidx12.3, align 4, !tbaa !4
-  %inc.3 = or disjoint i32 %i.031, 4
-  %arrayidx.4 = getelementptr inbounds float, ptr %input, i32 %inc.3
-  %30 = load float, ptr %arrayidx.4, align 4, !tbaa !4
-  %31 = tail call float @llvm.fmuladd.f32(float %6, float %27, float %30)
-  %32 = tail call float @llvm.fmuladd.f32(float %7, float %22, float %31)
-  %mul9.4 = fmul float %27, %4
-  %33 = tail call float @llvm.fmuladd.f32(float %3, float %32, float %mul9.4)
-  %34 = tail call float @llvm.fmuladd.f32(float %5, float %22, float %33)
-  %arrayidx12.4 = getelementptr inbounds float, ptr %output, i32 %inc.3
-  store float %34, ptr %arrayidx12.4, align 4, !tbaa !4
-  %inc.4 = or disjoint i32 %i.031, 5
-  %arrayidx.5 = getelementptr inbounds float, ptr %input, i32 %inc.4
-  %35 = load float, ptr %arrayidx.5, align 4, !tbaa !4
-  %36 = tail call float @llvm.fmuladd.f32(float %6, float %32, float %35)
-  %37 = tail call float @llvm.fmuladd.f32(float %7, float %27, float %36)
-  %mul9.5 = fmul float %32, %4
-  %38 = tail call float @llvm.fmuladd.f32(float %3, float %37, float %mul9.5)
-  %39 = tail call float @llvm.fmuladd.f32(float %5, float %27, float %38)
-  %arrayidx12.5 = getelementptr inbounds float, ptr %output, i32 %inc.4
-  store float %39, ptr %arrayidx12.5, align 4, !tbaa !4
-  %inc.5 = or disjoint i32 %i.031, 6
-  %arrayidx.6 = getelementptr inbounds float, ptr %input, i32 %inc.5
-  %40 = load float, ptr %arrayidx.6, align 4, !tbaa !4
-  %41 = tail call float @llvm.fmuladd.f32(float %6, float %37, float %40)
-  %42 = tail call float @llvm.fmuladd.f32(float %7, float %32, float %41)
-  %mul9.6 = fmul float %37, %4
-  %43 = tail call float @llvm.fmuladd.f32(float %3, float %42, float %mul9.6)
-  %44 = tail call float @llvm.fmuladd.f32(float %5, float %32, float %43)
-  %arrayidx12.6 = getelementptr inbounds float, ptr %output, i32 %inc.5
-  store float %44, ptr %arrayidx12.6, align 4, !tbaa !4
-  %inc.6 = or disjoint i32 %i.031, 7
-  %arrayidx.7 = getelementptr inbounds float, ptr %input, i32 %inc.6
-  %45 = load float, ptr %arrayidx.7, align 4, !tbaa !4
-  %46 = tail call float @llvm.fmuladd.f32(float %6, float %42, float %45)
-  %47 = tail call float @llvm.fmuladd.f32(float %7, float %37, float %46)
-  %mul9.7 = fmul float %42, %4
-  %48 = tail call float @llvm.fmuladd.f32(float %3, float %47, float %mul9.7)
-  %49 = tail call float @llvm.fmuladd.f32(float %5, float %37, float %48)
-  %arrayidx12.7 = getelementptr inbounds float, ptr %output, i32 %inc.6
-  store float %49, ptr %arrayidx12.7, align 4, !tbaa !4
-  store float %.pre, ptr %arrayidx4, align 4
-  store float %12, ptr %w, align 4
-  %inc.7 = add nuw nsw i32 %i.031, 8
-  %exitcond.not.7 = icmp slt i32 %inc.7, %sub
-  br i1 %exitcond.not.7, label %for.body.7, label %for.cond150.preheader, !llvm.loop !8
+for.body6.lr.ph:                                  ; preds = %for.cond3.preheader
+  %cmp10149.not = icmp ult i32 %N2.0157.in, 2
+  br label %for.body6
 
-for.body.lr.ph.clone8:                            ; preds = %for.cond150.preheader
-  br label %for.body.clone1
+for.cond.cleanup5:                                ; preds = %for.cond.cleanup11, %for.cond3.preheader
+  %shl = shl i32 %ie.0156, 1
+  %cmp.not = icmp ult i32 %N2.0157.in, 4
+  br i1 %cmp.not, label %return, label %for.cond3.preheader, !llvm.loop !7
 
-for.body.clone1:                                  ; preds = %for.body.clone1, %for.body.lr.ph.clone8
-  %50 = phi float [ %.pre, %for.body.lr.ph.clone8 ], [ %53, %for.body.clone1 ]
-  %i.031.clone2 = phi i32 [ %inc.7, %for.body.lr.ph.clone8 ], [ %inc.clone6, %for.body.clone1 ]
-  %arrayidx.clone3 = getelementptr inbounds float, ptr %input, i32 %i.031.clone2
-  %51 = load float, ptr %arrayidx.clone3, align 4, !tbaa !4
-  %52 = tail call float @llvm.fmuladd.f32(float %6, float %12, float %51)
-  %53 = tail call float @llvm.fmuladd.f32(float %7, float %50, float %52)
-  %54 = tail call float @llvm.fmuladd.f32(float %3, float %53, float %mul9.1)
-  %55 = tail call float @llvm.fmuladd.f32(float %5, float %50, float %54)
-  %arrayidx12.clone5 = getelementptr inbounds float, ptr %output, i32 %i.031.clone2
-  store float %55, ptr %arrayidx12.clone5, align 4, !tbaa !4
-  %inc.clone6 = add nuw nsw i32 %i.031.clone2, 1
-  %exitcond.not.clone7 = icmp eq i32 %inc.clone6, %len
-  br i1 %exitcond.not.clone7, label %for.cond.cleanup.clone, label %for.body.clone1, !llvm.loop !8
+for.body6:                                        ; preds = %for.cond.cleanup11, %for.body6.lr.ph
+  %j.0154 = phi i32 [ 0, %for.body6.lr.ph ], [ %inc75, %for.cond.cleanup11 ]
+  %ia.0153 = phi i32 [ 0, %for.body6.lr.ph ], [ %add73, %for.cond.cleanup11 ]
+  %mul = shl nuw nsw i32 %j.0154, 1
+  %arrayidx = getelementptr inbounds float, ptr %w, i32 %mul
+  %1 = load float, ptr %arrayidx, align 4, !tbaa !9
+  %add = or disjoint i32 %mul, 1
+  %arrayidx8 = getelementptr inbounds float, ptr %w, i32 %add
+  %2 = load float, ptr %arrayidx8, align 4, !tbaa !9
+  br i1 %cmp10149.not, label %for.cond.cleanup11, label %for.body12.lr.ph
 
-for.cond.cleanup.clone:                           ; preds = %for.body.clone1
-  store float %12, ptr %arrayidx4, align 4
-  store float %53, ptr %w, align 4
-  br label %if.end
+for.body12.lr.ph:                                 ; preds = %for.body6
+  %3 = fneg float %2
+  br label %for.body12
 
-for.body.lr.ph.clone:                             ; preds = %entry
-  %arrayidx1.clone = getelementptr inbounds float, ptr %coef, i32 3
-  %arrayidx3.clone = getelementptr inbounds float, ptr %coef, i32 4
-  %arrayidx4.clone = getelementptr inbounds float, ptr %w, i32 1
-  %arrayidx7.clone = getelementptr inbounds float, ptr %coef, i32 1
-  %arrayidx10.clone = getelementptr inbounds float, ptr %coef, i32 2
-  %.pre.clone = load float, ptr %w, align 4, !tbaa !4
-  %.pre32.clone = load float, ptr %arrayidx4.clone, align 4, !tbaa !4
-  %.pre16 = load float, ptr %arrayidx1.clone, align 4, !tbaa !4
-  %.pre17 = load float, ptr %arrayidx3.clone, align 4, !tbaa !4
-  %.pre18 = load float, ptr %coef, align 4, !tbaa !4
-  %.pre19 = load float, ptr %arrayidx7.clone, align 4, !tbaa !4
-  %.pre20 = load float, ptr %arrayidx10.clone, align 4, !tbaa !4
-  br label %for.body.clone
+for.cond.cleanup11:                               ; preds = %for.body12, %for.body6
+  %ia.1.lcssa = phi i32 [ %ia.0153, %for.body6 ], [ %inc71, %for.body12 ]
+  %add73 = add nsw i32 %ia.1.lcssa, %N2.0157
+  %inc75 = add nuw nsw i32 %j.0154, 1
+  %exitcond.not = icmp eq i32 %inc75, %ie.0156
+  br i1 %exitcond.not, label %for.cond.cleanup5, label %for.body6, !llvm.loop !11
 
-for.body.clone:                                   ; preds = %for.body.clone, %for.body.lr.ph.clone
-  %56 = phi float [ %.pre32.clone, %for.body.lr.ph.clone ], [ %57, %for.body.clone ]
-  %57 = phi float [ %.pre.clone, %for.body.lr.ph.clone ], [ %60, %for.body.clone ]
-  %i.031.clone = phi i32 [ 0, %for.body.lr.ph.clone ], [ %inc.clone, %for.body.clone ]
-  %arrayidx.clone = getelementptr inbounds float, ptr %input, i32 %i.031.clone
-  %58 = load float, ptr %arrayidx.clone, align 4, !tbaa !4
-  %neg.clone = fneg float %.pre16
-  %59 = tail call float @llvm.fmuladd.f32(float %neg.clone, float %57, float %58)
-  %neg5.clone = fneg float %.pre17
-  %60 = tail call float @llvm.fmuladd.f32(float %neg5.clone, float %56, float %59)
-  %mul9.clone = fmul float %57, %.pre19
-  %61 = tail call float @llvm.fmuladd.f32(float %.pre18, float %60, float %mul9.clone)
-  %62 = tail call float @llvm.fmuladd.f32(float %.pre20, float %56, float %61)
-  %arrayidx12.clone = getelementptr inbounds float, ptr %output, i32 %i.031.clone
-  store float %62, ptr %arrayidx12.clone, align 4, !tbaa !4
-  store float %57, ptr %arrayidx4.clone, align 4, !tbaa !4
-  store float %60, ptr %w, align 4, !tbaa !4
-  %inc.clone = add nuw nsw i32 %i.031.clone, 1
-  %exitcond.not.clone = icmp eq i32 %inc.clone, %len
-  br i1 %exitcond.not.clone, label %if.end, label %for.body.clone, !llvm.loop !8
+for.body12:                                       ; preds = %for.body12, %for.body12.lr.ph
+  %i.0151 = phi i32 [ 0, %for.body12.lr.ph ], [ %add72, %for.body12 ]
+  %ia.1150 = phi i32 [ %ia.0153, %for.body12.lr.ph ], [ %inc71, %for.body12 ]
+  %add13 = add nsw i32 %ia.1150, %N2.0157
+  %inc = add nsw i32 %ia.1150, 1
+  %add41 = add nsw i32 %inc, %N2.0157
+  %inc71 = add nsw i32 %ia.1150, 2
+  %add72 = add nuw nsw i32 %i.0151, 2
+  %mul14 = shl nsw i32 %ia.1150, 1
+  %mul19 = shl nsw i32 %add13, 1
+  %mul42 = shl nsw i32 %inc, 1
+  %mul47 = shl nsw i32 %add41, 1
+  %add17 = or disjoint i32 %mul14, 1
+  %add22 = or disjoint i32 %mul19, 1
+  %add45 = or disjoint i32 %mul42, 1
+  %add50 = or disjoint i32 %mul47, 1
+  %arrayidx15 = getelementptr inbounds float, ptr %data, i32 %mul14
+  %arrayidx18 = getelementptr inbounds float, ptr %data, i32 %add17
+  %arrayidx20 = getelementptr inbounds float, ptr %data, i32 %mul19
+  %arrayidx23 = getelementptr inbounds float, ptr %data, i32 %add22
+  %arrayidx43 = getelementptr inbounds float, ptr %data, i32 %mul42
+  %arrayidx46 = getelementptr inbounds float, ptr %data, i32 %add45
+  %arrayidx48 = getelementptr inbounds float, ptr %data, i32 %mul47
+  %arrayidx51 = getelementptr inbounds float, ptr %data, i32 %add50
+  %4 = load float, ptr %arrayidx15, align 4, !tbaa !9
+  %5 = load float, ptr %arrayidx18, align 4, !tbaa !9
+  %6 = load float, ptr %arrayidx20, align 4, !tbaa !9
+  %7 = load float, ptr %arrayidx23, align 4, !tbaa !9
+  %8 = load float, ptr %arrayidx43, align 4, !tbaa !9
+  %9 = load float, ptr %arrayidx46, align 4, !tbaa !9
+  %10 = load float, ptr %arrayidx48, align 4, !tbaa !9
+  %11 = load float, ptr %arrayidx51, align 4, !tbaa !9
+  %mul25 = fmul float %2, %7
+  %neg = fmul float %6, %3
+  %mul53 = fmul float %2, %11
+  %neg56 = fmul float %10, %3
+  %12 = tail call float @llvm.fmuladd.f32(float %1, float %6, float %mul25)
+  %13 = tail call float @llvm.fmuladd.f32(float %1, float %7, float %neg)
+  %14 = tail call float @llvm.fmuladd.f32(float %1, float %10, float %mul53)
+  %15 = tail call float @llvm.fmuladd.f32(float %1, float %11, float %neg56)
+  %add34 = fadd float %4, %12
+  %add37 = fadd float %5, %13
+  %add64 = fadd float %8, %14
+  %add67 = fadd float %9, %15
+  %sub = fsub float %4, %12
+  %sub30 = fsub float %5, %13
+  %sub57 = fsub float %8, %14
+  %sub60 = fsub float %9, %15
+  store float %sub, ptr %arrayidx20, align 4, !tbaa !9
+  store float %sub30, ptr %arrayidx23, align 4, !tbaa !9
+  store float %add34, ptr %arrayidx15, align 4, !tbaa !9
+  store float %add37, ptr %arrayidx18, align 4, !tbaa !9
+  store float %sub57, ptr %arrayidx48, align 4, !tbaa !9
+  store float %sub60, ptr %arrayidx51, align 4, !tbaa !9
+  store float %add64, ptr %arrayidx43, align 4, !tbaa !9
+  store float %add67, ptr %arrayidx46, align 4, !tbaa !9
+  %cmp10 = icmp ult i32 %add72, %N2.0157
+  br i1 %cmp10, label %for.body12, label %for.cond.cleanup11, !llvm.loop !12
+
+return:                                           ; preds = %for.cond.cleanup5, %if.end2, %if.end, %entry
+  %retval.0 = phi i32 [ 458753, %entry ], [ 458756, %if.end ], [ 0, %if.end2 ], [ 0, %for.cond.cleanup5 ]
+  ret i32 %retval.0
 }

@@ -1,4 +1,4 @@
-rm -rf *.ll *.s
+# rm -rf *.ll *.s
 export PATH=/home/chenqian/Workspace/tool/build_esp_clang/llvm/bin:$PATH
 clang  -O3 -march=rv32imafc_zicsr_zifencei_xesppie -mabi=ilp32f -emit-llvm -S -o dsps_sub_f32_ansi.ll \
 dsps_sub_f32_ansi.c \
